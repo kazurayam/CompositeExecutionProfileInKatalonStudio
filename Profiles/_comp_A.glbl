@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalVariableEntities>
+   <description></description>
+   <name>_comp_A</name>
+   <tag></tag>
+   <defaultProfile>false</defaultProfile>
+   <GlobalVariableEntity>
+      <description></description>
+      <initValue>'FOOvalue'</initValue>
+      <name>FOO</name>
+   </GlobalVariableEntity>
+</GlobalVariableEntities>
