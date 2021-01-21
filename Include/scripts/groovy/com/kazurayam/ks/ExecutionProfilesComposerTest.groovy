@@ -1,4 +1,5 @@
 package com.kazurayam.ks;
+
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
@@ -17,17 +18,17 @@ public class ExecutionProfilesComposerTest {
 
 	private ExecutionProfilesComposer composer;
 	private Path workdir;
-	
+
 	@Before
 	void setup() {
 		Path projectDir = Paths.get(RunConfiguration.getProjectDir())
-		workdir = projectDir.resolve("build/tmp/ExecutionProfilesComposerTest")
+		workdir = projectDir.resolve("build/tmp/" + this.class.getSimpleName())
 		Files.createDirectories(workdir)
 		Path profilesDir = projectDir.resolve("Profiles")
 		FileUtils.deleteDirectory(workdir.toFile())
 		FileUtils.copyDirectory(profilesDir.toFile(), workdir.toFile())
 	}
-	
+
 	@Test
 	void test_getTemplates() {
 		composer = new ExecutionProfilesComposer();
@@ -37,7 +38,7 @@ public class ExecutionProfilesComposerTest {
 		int actual = templates.size();
 		assertEquals("2 template files not found", actual, expected);
 	}
-	
+
 	@Test
 	void test_compose() {
 		composer = new ExecutionProfilesComposer();

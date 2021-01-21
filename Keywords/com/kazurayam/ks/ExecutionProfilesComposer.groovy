@@ -1,6 +1,7 @@
 package com.kazurayam.ks
 
 import java.nio.file.Files
+import java.nio.file.FileVisitor
 import java.nio.file.Path
 import java.nio.file.Paths
 import java.util.stream.Collectors
@@ -26,35 +27,22 @@ public class ExecutionProfilesComposer {
 	void compose() {
 		this.compose(profilesDir)
 	}
-
+	
 	void compose(Path dir) {
 		List<Path> templates = getTemplates(dir)
 		templates.each { template ->
-			StringBuilder xml = new StringBuilder()
-			xml.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n")
-			xml.append("<GlobalVariableEntities>\n")
-			xml.append("  <description></description>\n")
-			xml.append("  <name>${ toProfileName(template) }</name>\n")
-			xml.append("  <tag></tag>\n")
-			xml.append("  <defaultProfile>false</defaultProfile>\n")
-
-			GPathResult globalVariableEntities = new XmlSlurper().parse(template.toFile())
-
-			xml.append("</GlobalVariableEntities>\n>")
-
-			Path artifact = profilesDir.resolve(toProfileName(template) + FILE_POSTFIX)
-			artifact.toFile().text = xml.toString()
+			Path artifact = profilesDir.resolve(ExecutionProfileVisitor.toProfileName(template) + FILE_POSTFIX)
+			String content = ExecutionProfileVisitor.processTemplate(template, artifact)
 		}
 	}
-
+	
 	List<Path> getTemplates(Path dir) {
 		List<Path> templates = Files.list(dir)
 				.filter { Path f -> f.getFileName().toString().startsWith(TEMPLATE_PREFIX) }
 				.collect(Collectors.toList())
 		return templates
 	}
-
-	String toProfileName(Path template) {
-		return template.getFileName().toString().replaceAll(TEMPLATE_PREFIX, '').replaceAll(FILE_POSTFIX, '')
-	}
+	
+	
+	
 }
