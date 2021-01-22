@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <TestCaseEntity>
    <description></description>
-   <name>GlobalVariableHelperTestRunner</name>
+   <name>ExpandoGlobalVariableTestRunner</name>
    <tag></tag>
    <comment></comment>
    <testCaseGuid>501ddf42-39c1-4bbf-b7b5-813bc425d553</testCaseGuid>

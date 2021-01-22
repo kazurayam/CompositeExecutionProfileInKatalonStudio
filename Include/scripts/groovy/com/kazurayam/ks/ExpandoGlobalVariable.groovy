@@ -3,7 +3,7 @@ package com.kazurayam.ks
 import static org.hamcrest.CoreMatchers.*
 import static org.junit.Assert.*
 
-import com.kazurayam.ks.GlobalVariableHelper as GVH
+import com.kazurayam.ks.ExpandoGlobalVariable as EGV
 import com.kms.katalon.core.configuration.RunConfiguration
 
 import org.junit.BeforeClass
@@ -18,7 +18,7 @@ import java.nio.file.Paths
 import internal.GlobalVariable
 
 @RunWith(JUnit4.class)
-public class GlobalVariableHelpersTest {
+public class ExpandoGlobalVariableTest {
 
 	private static Path json
 	private static String FILENAME = "MyExecutionProfile.json"
@@ -28,7 +28,7 @@ public class GlobalVariableHelpersTest {
 		Path projectDir = Paths.get(RunConfiguration.getProjectDir())
 		Path testOutputDir = projectDir.resolve("build/tmp/testOutput")
 		Path pkgDir = testOutputDir.resolve("com.kazurayam.visualtesting")
-		Path classDir = pkgDir.resolve(GlobalVariableHelpersTest.class.getSimpleName())
+		Path classDir = pkgDir.resolve(ExpandoGlobalVariableTest.class.getSimpleName())
 		if (!Files.exists(classDir)) {
 			Files.createDirectories(classDir)
 		}
@@ -37,12 +37,12 @@ public class GlobalVariableHelpersTest {
 
 	/**
 	 * listGlobalVaraibles() should return a List<String> of GlobalVariable names
-	 * defined in the current context. 
+	 * defined in the current context.
 	 * Here we assume that the "default" Execution Profile is selected where FOO=BAR is defined
 	 */
 	@Test
 	void test_listGlobalVariables() {
-		List<String> names = GVH.listGlobalVariables()
+		List<String> names = EGV.listGlobalVariables()
 		//names.each { String name -> println name }
 		assertTrue("expected 1 or more GlobalVaraiable(s) defined, but not found", names.size() > 0)
 	}
@@ -54,9 +54,9 @@ public class GlobalVariableHelpersTest {
 	 */
 	@Test
 	void test_listGlobalVariablesWithAdditive() {
-		GVH.addGlobalVariable("NEW", "VALUE")
-		println "keySet: " + GVH.storageOfAddedGlobalVariables.keySet()
-		List<String> names = GVH.listGlobalVariables()
+		EGV.addGlobalVariable("NEW", "VALUE")
+		println "keySet: " + EGV.storageOfAddedGlobalVariables.keySet()
+		List<String> names = EGV.listGlobalVariables()
 		assertTrue("names does not contain FOO", names.contains('FOO'))
 		assertTrue("names does not contain NEW", names.contains("NEW"))
 		assertTrue(names.size() >= 2)
@@ -64,7 +64,7 @@ public class GlobalVariableHelpersTest {
 
 	@Test
 	void test_isGlobalVariablePresent_negative() {
-		assertFalse(GVH.isGlobalVariablePresent("THERE_IS_NO_SUCH_VARIABLE"))
+		assertFalse(EGV.isGlobalVariablePresent("THERE_IS_NO_SUCH_VARIABLE"))
 	}
 
 	/**
@@ -72,7 +72,7 @@ public class GlobalVariableHelpersTest {
 	 */
 	@Test
 	void test_addedGlobalVariableShouldImplementSetter() {
-		GVH.addGlobalVariable("SETTABLE", "not yet modified")
+		EGV.addGlobalVariable("SETTABLE", "not yet modified")
 		GlobalVariable.SETTABLE = "Hello, world"
 		assertEquals("Hello, world", GlobalVariable.SETTABLE)
 	}
@@ -81,9 +81,9 @@ public class GlobalVariableHelpersTest {
 	void test_basic_operations() {
 		String name = "foo"
 		Object value = "value"
-		GVH.ensureGlobalVariable(name, value)
-		assertTrue("GlobalVariable.${name} is not present", GVH.isGlobalVariablePresent(name))
-		Object obj = GVH.getGlobalVariableValue(name)
+		EGV.ensureGlobalVariable(name, value)
+		assertTrue("GlobalVariable.${name} is not present", EGV.isGlobalVariablePresent(name))
+		Object obj = EGV.getGlobalVariableValue(name)
 		assertNotNull("GVH.getGlobalVariableValue('${name}') returned null", obj)
 		assertTrue(obj instanceof String)
 		assertEquals((String)value, (String)obj)
@@ -94,16 +94,16 @@ public class GlobalVariableHelpersTest {
 		// setup
 		String gvName = 'CUSTOMLY_CREATED_GLOBALVARIABLE'
 		Object value = "The Hill We Climb"
-		GVH.ensureGlobalVariable(gvName, value)
+		EGV.ensureGlobalVariable(gvName, value)
 		// when:
 		Writer writer = new OutputStreamWriter(new FileOutputStream(json.toFile()),"utf-8")
-		GVH.write([gvName], writer)
+		EGV.write([gvName], writer)
 		// then
 		assertTrue(json.toFile().length() > 0)
 
 		// OK, next
 		Reader reader = new InputStreamReader(new FileInputStream(json.toFile()),"utf-8")
-		Map<String, Object> loaded = GVH.read([gvName], reader)
+		Map<String, Object> loaded = EGV.read([gvName], reader)
 		assertTrue(loaded.containsKey(gvName))
 		assertEquals(value, loaded.get(gvName))
 		//println "value read from file: name=${gvName}, value=${loaded.get(gvName)}"

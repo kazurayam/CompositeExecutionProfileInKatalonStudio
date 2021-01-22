@@ -15,12 +15,12 @@ import com.google.gson.JsonParser
 
 import internal.GlobalVariable
 
-public class GlobalVariableHelper {
+public class ExpandoGlobalVariable {
 
 	// https://docs.groovy-lang.org/latest/html/documentation/core-metaprogramming.html#_properties
 	static final Map<String, Object> storageOfAddedGlobalVariables = Collections.synchronizedMap([:])
-	
-	private GlobalVariableHelper() {}
+
+	private ExpandoGlobalVariable() {}
 
 	/**
 	 * inspect the 'internal.GlobalVariable' object to find the GlobalVariables contained,
@@ -32,8 +32,8 @@ public class GlobalVariableHelper {
 		List<String> result = fields.stream()
 				.filter { f ->
 					isPublic(f.modifiers) &&
-					isStatic(f.modifiers) &&
-					! isTransient(f.modifiers)
+							isStatic(f.modifiers) &&
+							! isTransient(f.modifiers)
 				}
 				.map { f -> f.getName() }
 				.collect(Collectors.toList())
@@ -58,11 +58,12 @@ public class GlobalVariableHelper {
 		storageOfAddedGlobalVariables.put(name, value)
 		MetaClass mc = GlobalVariable.metaClass
 		String getterName = 'get' + ((CharSequence)name).capitalize()
-		mc.static."${getterName}" = { ->
+		mc.static."${getterName}" = {
+			->
 			return storageOfAddedGlobalVariables[name]
 		}
 		String setterName = 'set' + ((CharSequence)name).capitalize()
-		mc.static."${setterName}" = { newValue -> 
+		mc.static."${setterName}" = { newValue ->
 			storageOfAddedGlobalVariables[name] = newValue
 		}
 	}
