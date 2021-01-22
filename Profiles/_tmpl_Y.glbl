@@ -6,12 +6,12 @@
    <defaultProfile>false</defaultProfile>
    <GlobalVariableEntity>
       <description></description>
-      <initValue>'comp_B'</initValue>
+      <initValue>'_comp_B'</initValue>
       <name>__1</name>
    </GlobalVariableEntity>
    <GlobalVariableEntity>
       <description></description>
-      <initValue>'comp_C'</initValue>
+      <initValue>'_comp_C'</initValue>
       <name>__2</name>
    </GlobalVariableEntity>
 </GlobalVariableEntities>
