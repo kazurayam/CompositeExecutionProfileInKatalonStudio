@@ -35,6 +35,14 @@ public class GlobalVariableHelpersTest {
 	}
 
 	@Test
+	void test_listGlobalVariables() {
+		List<String> names = GVH.listGlobalVariables()
+		//names.each { String name -> println name }
+		// Here we assume that the "default" Execution Profile is selected where FOO=BAR is defined
+		assertTrue("expected 1 or more GlobalVaraiable(s) defined, but not found", names.size() > 0)	
+	}
+	
+	@Test
 	void test_isGlobalVariablePresent_negative() {
 		assertFalse(GVH.isGlobalVariablePresent("THERE_IS_NO_SUCH_VARIABLE"))
 	}
@@ -78,6 +86,6 @@ public class GlobalVariableHelpersTest {
 		Map<String, Object> loaded = GVH.read([gvName], reader)
 		assertTrue(loaded.containsKey(gvName))
 		assertEquals(value, loaded.get(gvName))
-		println "value read from file: name=${gvName}, value=${loaded.get(gvName)}"
+		//println "value read from file: name=${gvName}, value=${loaded.get(gvName)}"
 	}
 }

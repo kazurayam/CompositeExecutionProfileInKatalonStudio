@@ -1,20 +1,41 @@
 package com.kazurayam.ks
 
+import static java.lang.reflect.Modifier.isPublic
+import static java.lang.reflect.Modifier.isStatic
+import static java.lang.reflect.Modifier.isTransient
+
 import java.lang.reflect.Field
-import java.lang.reflect.Modifier
+import java.util.stream.Collectors
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
-import com.kms.katalon.core.webui.keyword.WebUiBuiltInKeywords as WebUI
 
 import internal.GlobalVariable
+
 
 public class GlobalVariableHelper {
 
 	private GlobalVariableHelper() {}
+
+	/**
+	 * inspect the 'internal.GlobalVariable' object to find the GlobalVariables contained,
+	 * return the list of them
+	 * 
+	 */
+	static List<String> listGlobalVariables() {
+		List<Field> fields = GlobalVariable.class.getDeclaredFields() as List<Field>
+		return fields.stream()
+				.filter { f ->
+					isPublic(f.modifiers) &&
+					isStatic(f.modifiers) &&
+					! isTransient(f.modifiers)
+				}
+				.map { f -> f.getName() }
+				.collect(Collectors.toList())
+	}
 
 	/**
 	 * insert a public static property of type java.lang.Object
@@ -54,7 +75,6 @@ public class GlobalVariableHelper {
 		} else {
 			return null
 		}
-		Gson gson = new GsonBuilder().setPrettyPrinting().create();
 	}
 
 	/**
