@@ -34,12 +34,28 @@ public class GlobalVariableHelpersTest {
 		json = classDir.resolve(FILENAME)
 	}
 
+	/**
+	 * listGlobalVaraibles() should return a List<String> of GlobalVariable names
+	 * defined in the current context. 
+	 * Here we assume that the "default" Execution Profile is selected where FOO=BAR is defined
+	 */
 	@Test
 	void test_listGlobalVariables() {
 		List<String> names = GVH.listGlobalVariables()
 		//names.each { String name -> println name }
-		// Here we assume that the "default" Execution Profile is selected where FOO=BAR is defined
 		assertTrue("expected 1 or more GlobalVaraiable(s) defined, but not found", names.size() > 0)	
+	}
+	
+	/**
+	 * We will add a new GlobalVariable "NEW=VALUE" dynamically in the current context.
+	 * Here we assume that the "default" Execution Profile is selected.
+	 * So we expect to find 2 GlobalVariables: FOO=BAR and NEW=VALUE
+	 */
+	@Test
+	void test_listGlobalVariablesWithAdditive() {
+		GVH.addGlobalVariable("NEW", "VALUE")
+		List<String> names = GVH.listGlobalVariables()
+		assertTrue("expected 2 or more Global Variables defined, but found ${names.size()}", names.size() >= 2)
 	}
 	
 	@Test
