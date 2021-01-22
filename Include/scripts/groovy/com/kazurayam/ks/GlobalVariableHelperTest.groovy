@@ -7,6 +7,7 @@ import com.kazurayam.ks.GlobalVariableHelper as GVH
 import com.kms.katalon.core.configuration.RunConfiguration
 
 import org.junit.BeforeClass
+import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
@@ -54,8 +55,11 @@ public class GlobalVariableHelpersTest {
 	@Test
 	void test_listGlobalVariablesWithAdditive() {
 		GVH.addGlobalVariable("NEW", "VALUE")
+		println "keySet: " + GVH.storageOfAddedGlobalVariables.keySet()
 		List<String> names = GVH.listGlobalVariables()
-		assertTrue("expected 2 or more Global Variables defined, but found ${names.size()}", names.size() >= 2)
+		assertTrue("names does not contain FOO", names.contains('FOO'))
+		assertTrue("names does not contain NEW", names.contains("NEW"))
+		assertTrue(names.size() >= 2)
 	}
 
 	@Test
@@ -78,11 +82,11 @@ public class GlobalVariableHelpersTest {
 		String name = "foo"
 		Object value = "value"
 		GVH.ensureGlobalVariable(name, value)
-		assertTrue(GVH.isGlobalVariablePresent(name))
+		assertTrue("GlobalVariable.${name} is not present", GVH.isGlobalVariablePresent(name))
 		Object obj = GVH.getGlobalVariableValue(name)
-		assertNotNull(obj)
+		assertNotNull("GVH.getGlobalVariableValue('${name}') returned null", obj)
 		assertTrue(obj instanceof String)
-		assertEquals(value, (String)obj)
+		assertEquals((String)value, (String)obj)
 	}
 
 	@Test

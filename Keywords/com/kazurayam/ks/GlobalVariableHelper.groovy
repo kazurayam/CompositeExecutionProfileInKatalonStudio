@@ -15,9 +15,11 @@ import com.google.gson.JsonParser
 
 import internal.GlobalVariable
 
-
 public class GlobalVariableHelper {
 
+	// https://docs.groovy-lang.org/latest/html/documentation/core-metaprogramming.html#_properties
+	static final Map<String, Object> storageOfAddedGlobalVariables = Collections.synchronizedMap([:])
+	
 	private GlobalVariableHelper() {}
 
 	/**
@@ -26,7 +28,6 @@ public class GlobalVariableHelper {
 	 * 
 	 */
 	static List<String> listGlobalVariables() {
-		GlobalVariableHelper.addGlobalVariable("NEW_GLOBALVARIABLE", "VALUE")
 		List<Field> fields = GlobalVariable.class.getDeclaredFields() as List<Field>
 		List<String> result = fields.stream()
 				.filter { f ->
@@ -36,6 +37,8 @@ public class GlobalVariableHelper {
 				}
 				.map { f -> f.getName() }
 				.collect(Collectors.toList())
+		//
+		result.addAll(storageOfAddedGlobalVariables.keySet())
 		return result
 	}
 
@@ -52,29 +55,28 @@ public class GlobalVariableHelper {
 	 * @param value
 	 */
 	static void addGlobalVariable(String name, Object value) {
+		storageOfAddedGlobalVariables.put(name, value)
 		MetaClass mc = GlobalVariable.metaClass
-		mc.static."${name}"       = value
 		String getterName = 'get' + ((CharSequence)name).capitalize()
-		mc.static."${getterName}" = {-> return value }
+		mc.static."${getterName}" = { ->
+			return storageOfAddedGlobalVariables[name]
+		}
 		String setterName = 'set' + ((CharSequence)name).capitalize()
-		mc.static."${setterName}" = { newValue -> value = newValue }
+		mc.static."${setterName}" = { newValue -> 
+			storageOfAddedGlobalVariables[name] = newValue
+		}
 	}
 
 	/**
 	 * @return true if GlobalVarialbe.name is defined, otherwise false
 	 */
 	static boolean isGlobalVariablePresent(String name) {
-		boolean result = internal.GlobalVariable.metaClass.hasProperty( internal.GlobalVariable, name ) &&
-				internal.GlobalVariable[name]
-		//WebUI.comment("GVH.isGlobalVariablePresent(\"${name}\") internal.GlobalVariable.metaClass.hassProperty(internal.GlobalVariable, name) is ${internal.GlobalVariable.metaClass.hasProperty( internal.GlobalVariable, name )}")
-		//WebUI.comment("GVH.isGlobalVariablePresent(\"${name}\") internal.GlobalVariable[name] is ${internal.GlobalVariable[name]}")
-		//WebUI.comment("GVH.isGlobalVariablePresent(\"${name}\") returns ${result}")
-		return result
+		return storageOfAddedGlobalVariables.containsKey(name)
 	}
 
 	static Object getGlobalVariableValue(String name) {
 		if (isGlobalVariablePresent(name)) {
-			return GlobalVariable[name]
+			return storageOfAddedGlobalVariables[name]
 		} else {
 			return null
 		}

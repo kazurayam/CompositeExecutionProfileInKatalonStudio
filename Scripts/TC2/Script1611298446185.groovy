@@ -13,16 +13,15 @@ GlobalVariableHelper.addGlobalVariable(gvName, "VALUE")
 assert GlobalVariable[gvName] == "VALUE"
 assert GlobalVariable.new_global_variable == "VALUE"
 
-def mp = GlobalVariable.metaClass.getMetaProperty(gvName)
+MetaClass mc = GlobalVariable.metaClass
+MetaProperty mp = mc.getMetaProperty(gvName)
 assert mp != null
 println "mp: ${mp}, ${mp.getName()}, ${mp.getType()}"
 
-MetaClass mc = GlobalVariable.metaClass
 
-
-List<MetaProperty> properties = mc.getMetaProperties()
-properties.each {
-	println "${it}, ${it.getName()}, ${it.getType()}"
+Set<String> keySet = GlobalVariableHelper.addedGlobalVariables.keySet()
+keySet.each {
+	println "${it}"
 }
 
 List<MetaMethod> metaMethods = mc.getMethods().stream()
