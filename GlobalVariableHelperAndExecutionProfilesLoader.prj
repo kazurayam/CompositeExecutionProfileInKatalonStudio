@@ -6,7 +6,7 @@
    <UUID>add21b05-32cf-4bf3-a306-08e87636da6b</UUID>
    <migratedVersion>5.9.0</migratedVersion>
    <pageLoadTimeout>0</pageLoadTimeout>
-   <projectFileLocation>/Users/kazuakiurayama/katalon-workspace/ExecutionProfilesLoader/ExecutionProfilesLoader.prj</projectFileLocation>
+   <projectFileLocation>/Users/kazuakiurayama/katalon-workspace/GlobalVariableHelperAndExecutionProfilesLoader/GlobalVariableHelperAndExecutionProfilesLoader.prj</projectFileLocation>
    <sourceContent>
       <sourceFolderList>
          <sourceFolderConfiguration>
