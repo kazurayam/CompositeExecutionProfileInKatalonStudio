@@ -26,8 +26,9 @@ public class GlobalVariableHelper {
 	 * 
 	 */
 	static List<String> listGlobalVariables() {
+		GlobalVariableHelper.addGlobalVariable("NEW_GLOBALVARIABLE", "VALUE")
 		List<Field> fields = GlobalVariable.class.getDeclaredFields() as List<Field>
-		return fields.stream()
+		List<String> result = fields.stream()
 				.filter { f ->
 					isPublic(f.modifiers) &&
 					isStatic(f.modifiers) &&
@@ -35,26 +36,28 @@ public class GlobalVariableHelper {
 				}
 				.map { f -> f.getName() }
 				.collect(Collectors.toList())
+		return result
 	}
 
 	/**
 	 * insert a public static property of type java.lang.Object
 	 * into the internal.GlobalVarialbe runtime.
 	 *
-	 * e.g, addGlobalVariable('my_new_variable','foo') makes
-	 * internal.GlobalVariable.getMy_new_variale() to return 'foo'
+	 * e.g, GVH.addGlobalVariable('my_new_variable', 'foo') makes
+	 * 1) internal.GlobalVariable.my_new_variable to be present and to have value 'foo'
+	 * 2) internal.GlobalVariable.getMy_new_variale() to return 'foo'
+	 * 3) internal.GlobalVariable.setMy_new_variable('bar') to set 'bar' as the value
 	 *
 	 * @param name
 	 * @param value
 	 */
 	static void addGlobalVariable(String name, Object value) {
-		GroovyShell sh = new GroovyShell()
-		MetaClass mc = sh.evaluate("internal.GlobalVariable").metaClass
+		MetaClass mc = GlobalVariable.metaClass
+		mc.static."${name}"       = value
 		String getterName = 'get' + ((CharSequence)name).capitalize()
-		mc.'static'."${getterName}" = {-> return value }
-		mc.'static'."${name}"       = value
+		mc.static."${getterName}" = {-> return value }
 		String setterName = 'set' + ((CharSequence)name).capitalize()
-		mc.'static'."${setterName}" = { newValue -> value = newValue }
+		mc.static."${setterName}" = { newValue -> value = newValue }
 	}
 
 	/**

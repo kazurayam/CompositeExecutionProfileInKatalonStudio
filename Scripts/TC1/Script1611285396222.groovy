@@ -6,6 +6,7 @@ import java.lang.reflect.Field
 import java.util.stream.Collectors
 
 import internal.GlobalVariable
+import com.kazurayam.ks.GlobalVariableHelper
 
 List<Field> fields = GlobalVariable.class.getDeclaredFields() as List<Field>
 
@@ -17,3 +18,5 @@ List<String> gvNames = fields.stream()
 gvNames.each { gvName ->
 	println "GV: ${gvName}=${GlobalVariable[gvName]}"
 }
+
+GlobalVariableHelper.addGlobalVariable("NEW", "VALUE")

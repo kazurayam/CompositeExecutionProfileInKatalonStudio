@@ -43,9 +43,9 @@ public class GlobalVariableHelpersTest {
 	void test_listGlobalVariables() {
 		List<String> names = GVH.listGlobalVariables()
 		//names.each { String name -> println name }
-		assertTrue("expected 1 or more GlobalVaraiable(s) defined, but not found", names.size() > 0)	
+		assertTrue("expected 1 or more GlobalVaraiable(s) defined, but not found", names.size() > 0)
 	}
-	
+
 	/**
 	 * We will add a new GlobalVariable "NEW=VALUE" dynamically in the current context.
 	 * Here we assume that the "default" Execution Profile is selected.
@@ -57,7 +57,7 @@ public class GlobalVariableHelpersTest {
 		List<String> names = GVH.listGlobalVariables()
 		assertTrue("expected 2 or more Global Variables defined, but found ${names.size()}", names.size() >= 2)
 	}
-	
+
 	@Test
 	void test_isGlobalVariablePresent_negative() {
 		assertFalse(GVH.isGlobalVariablePresent("THERE_IS_NO_SUCH_VARIABLE"))
