@@ -42,6 +42,7 @@ public class ExpandoGlobalVariableTest {
 	 */
 	@Test
 	void test_listAllGlobalVariables() {
+		EGV.clear()
 		List<String> names = EGV.listAllGlobalVariables()
 		//names.each { String name -> println name }
 		assertTrue("expected 1 or more GlobalVaraiable(s) defined, but not found", names.size() > 0)
@@ -56,6 +57,7 @@ public class ExpandoGlobalVariableTest {
 	 */
 	@Test
 	void test_listAllGlobalVariablesWithAdditive() {
+		EGV.clear()
 		EGV.addGlobalVariable("NEW", "VALUE")
 		//println "keySet: " + EGV.additionalProperties.keySet()
 		List<String> names = EGV.listAllGlobalVariables()
@@ -66,6 +68,7 @@ public class ExpandoGlobalVariableTest {
 
 	@Test
 	void test_isGlobalVariablePresent_negative() {
+		EGV.clear()
 		EGV.addGlobalVariable("NEW", "VALUE")
 		assertTrue(EGV.isGlobalVariablePresent("FOO"))  // statically defined in the default Profile
 		assertTrue(EGV.isGlobalVariablePresent("NEW"))
@@ -77,6 +80,7 @@ public class ExpandoGlobalVariableTest {
 	 */
 	@Test
 	void test_addedGlobalVariableShouldImplementSetter() {
+		EGV.clear()
 		EGV.addGlobalVariable("SETTABLE", "not yet modified")
 		GlobalVariable.SETTABLE = "Hello, world"
 		assertEquals("Hello, world", GlobalVariable.SETTABLE)
@@ -84,6 +88,7 @@ public class ExpandoGlobalVariableTest {
 
 	@Test
 	void test_basic_operations() {
+		EGV.clear()
 		String name = "BASIC_NAME"
 		Object value = "BASIC_VALUE"
 		EGV.ensureGlobalVariable(name, value)
@@ -100,6 +105,7 @@ public class ExpandoGlobalVariableTest {
 
 	@Test
 	void test_write_read_JSON() {
+		EGV.clear()
 		// setup
 		String name = 'added_GLOBALVARIABLE'
 		Object value = "The Hill We Climb"

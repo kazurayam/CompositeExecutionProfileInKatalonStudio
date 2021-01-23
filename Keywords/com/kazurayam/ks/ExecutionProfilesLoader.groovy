@@ -14,20 +14,23 @@ public class ExecutionProfilesLoader {
 
 	private Path profilesDir
 	private XmlSlurper xmlSlurper
+	private GroovyShell sh
 
 	ExecutionProfilesLoader() {
 		this(Paths.get(RunConfiguration.getProjectDir()).resolve("Profiles"))
 	}
 
 	ExecutionProfilesLoader(Path profilesDir) {
+		ExpandoGlobalVariable.clear()
 		this.profilesDir = profilesDir
 		this.xmlSlurper = new XmlSlurper()
+		this.sh = new GroovyShell()
 	}
 
 	int load(String profileName) {
-		return this.load( [ profileName] )	
+		return this.load( [profileName])
 	}
-	
+
 	int load(String... profileNames) {
 		List<String> args = profileNames as List<String>
 		return this.load(args)
@@ -42,12 +45,16 @@ public class ExecutionProfilesLoader {
 			Map<String, Object> loadedGlobalVariables = digestProfile(profile)
 			loadedGlobalVariables.entrySet().each { entry ->
 				String name = entry.key.toString()
-				Object value = entry.value.toString()
+				Object value = evaluateGroovyLiteral(entry.value.toString())
 				ExpandoGlobalVariable.addGlobalVariable(name, value)
 				count += 1
 			}
 		}
 		return count  // returns how many GlobalVariables have been added
+	}
+
+	void clear() {
+		ExpandoGlobalVariable.clear()
 	}
 
 	/**
@@ -76,5 +83,10 @@ public class ExecutionProfilesLoader {
 			keyValuePairs.put(entity.name, entity.initValue)
 		}
 		return keyValuePairs
+	}
+
+	Object evaluateGroovyLiteral(String literal) {
+		Objects.requireNonNull(literal)
+		return sh.evaluate(literal)
 	}
 }

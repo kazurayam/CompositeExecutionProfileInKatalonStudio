@@ -86,6 +86,10 @@ public class ExpandoGlobalVariable {
 		}
 	}
 
+	static void clear() {
+		additionalProperties.clear()
+	}
+
 	/**
 	 * @return true if GlobalVarialbe.name is defined either in 2 places
 	 * 1. statically predefined in the Execution Profile
@@ -150,9 +154,9 @@ public class ExpandoGlobalVariable {
 		StringWriter sw = new StringWriter()
 		List<String> names = listAllGlobalVariables()
 		writeJSON(names, sw)
-		return sw.toString()	
+		return sw.toString()
 	}
-	
+
 	static Map<String, Object> readJSON(List<String> nameList, Reader reader) {
 		Objects.requireNonNull(nameList, "nameList must not be null")
 		Objects.requireNonNull(reader, "reader must not be null")
