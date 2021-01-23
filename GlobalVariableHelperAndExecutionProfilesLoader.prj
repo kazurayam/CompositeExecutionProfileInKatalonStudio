@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Project>
    <description></description>
-   <name>GlobalVariableHelperAndExecutionProfilesLoader</name>
+   <name>ExpandoGlobalVariable_and_ExecutionProfilesLoader</name>
    <tag></tag>
    <UUID>add21b05-32cf-4bf3-a306-08e87636da6b</UUID>
    <migratedVersion>5.9.0</migratedVersion>
