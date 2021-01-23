@@ -38,7 +38,7 @@ public class ExpandoGlobalVariable {
 		List<String> names = listStaticGlobalVariables()
 		names.addAll(listAdditionalGlobalVariables())
 		return names
-	} 
+	}
 
 	static List<String> listStaticGlobalVariables() {
 		List<Field> fields = GlobalVariable.class.getDeclaredFields() as List<Field>
@@ -52,13 +52,13 @@ public class ExpandoGlobalVariable {
 				.collect(Collectors.toList())
 		return result
 	}
-	
+
 	static List<String> listAdditionalGlobalVariables() {
 		List<String> result = new ArrayList<String>()
 		result.addAll(additionalProperties.keySet())
-		return result	
+		return result
 	}
-	
+
 	/**
 	 * insert a public static property of type java.lang.Object
 	 * into the internal.GlobalVarialbe runtime.
@@ -95,8 +95,10 @@ public class ExpandoGlobalVariable {
 	}
 
 	static Object getGlobalVariableValue(String name) {
-		if (isGlobalVariablePresent(name)) {
+		if (listAdditionalGlobalVariables().contains(name)) {
 			return additionalProperties[name]
+		} else if (listStaticGlobalVariables().contains(name)) {
+			return GlobalVariable[name]
 		} else {
 			return null
 		}
@@ -127,14 +129,20 @@ public class ExpandoGlobalVariable {
 	static void writeJSON(List<String> nameList, Writer writer) {
 		Objects.requireNonNull(nameList, "nameList must not be null")
 		Objects.requireNonNull(writer, "writer must not be null")
-		Map extract = new HashMap<String, Object>()
+		Map buffer = new HashMap<String, Object>()
 		for (name in nameList) {
 			if (isGlobalVariablePresent(name)) {
-				extract.put(name, getGlobalVariableValue(name))
+				println "[writeJSON] ${name} is present"
+				buffer.put(name, getGlobalVariableValue(name))
+			} else {
+				println "[writeJSON] ${name} is not present"
 			}
 		}
-		Gson gson = new GsonBuilder().setPrettyPrinting().create()
-		writer.write(gson.toJson(extract))
+		println "[writeJSON] buffer.keySet() is ${buffer.keySet()}"
+		println "[writeJSON] buffer is ${buffer}"
+		GsonBuilder gb = new GsonBuilder()
+		Gson gson = gb.setPrettyPrinting().create()
+		writer.write(gson.toJson(buffer))
 		writer.flush()
 	}
 
