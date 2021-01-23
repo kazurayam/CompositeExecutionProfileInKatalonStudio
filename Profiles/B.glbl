@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalVariableEntities>
+   <description></description>
+   <name>B</name>
+   <tag></tag>
+   <defaultProfile>false</defaultProfile>
+   <GlobalVariableEntity>
+      <description></description>
+      <initValue>'I\'m from B'</initValue>
+      <name>BVAR1</name>
+   </GlobalVariableEntity>
+</GlobalVariableEntities>

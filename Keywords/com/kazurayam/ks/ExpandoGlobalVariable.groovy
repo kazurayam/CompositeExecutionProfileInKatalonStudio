@@ -133,20 +133,26 @@ public class ExpandoGlobalVariable {
 		SortedMap buffer = new TreeMap<String, Object>()
 		for (name in nameList) {
 			if (isGlobalVariablePresent(name)) {
-				println "[writeJSON] ${name} is present"
 				buffer.put(name, getGlobalVariableValue(name))
 			} else {
-				println "[writeJSON] ${name} is not present"
+				;
 			}
 		}
-		println "[writeJSON] buffer.keySet() is ${buffer.keySet()}"
-		println "[writeJSON] buffer is ${buffer}"
 		GsonBuilder gb = new GsonBuilder()
-		Gson gson = gb.setPrettyPrinting().create()
+		gb.disableHtmlEscaping()
+		gb.setPrettyPrinting()
+		Gson gson = gb.create()
 		writer.write(gson.toJson(buffer))
 		writer.flush()
 	}
 
+	static String toJSON() {
+		StringWriter sw = new StringWriter()
+		List<String> names = listAllGlobalVariables()
+		writeJSON(names, sw)
+		return sw.toString()	
+	}
+	
 	static Map<String, Object> readJSON(List<String> nameList, Reader reader) {
 		Objects.requireNonNull(nameList, "nameList must not be null")
 		Objects.requireNonNull(reader, "reader must not be null")
