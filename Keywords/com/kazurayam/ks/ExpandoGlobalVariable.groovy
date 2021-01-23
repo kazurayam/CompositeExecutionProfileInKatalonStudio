@@ -24,10 +24,23 @@ public class ExpandoGlobalVariable {
 
 	/**
 	 * inspect the 'internal.GlobalVariable' object to find the GlobalVariables contained,
-	 * return the list of them
+	 * return the list of their names.
 	 * 
+	 * The list will include 2 types of GlobalVariables.
+	 * 
+	 * 1. GlobalVariables statically defined in the Execution Profile which was applied 
+	 *    to this time of Test Case run where the JUnit TestRunner runs
+	 * 
+	 * 2. GlobalVariables dynamically added into the ExpandoGlobalVariable by calling 
+	 *    ExpandoGlobalVariable.addGlobalVariable(name,value)
 	 */
-	static List<String> listGlobalVariables() {
+	static List<String> listAllGlobalVariables() {
+		List<String> names = listStaticGlobalVariables()
+		names.addAll(listAdditionalGlobalVariables())
+		return names
+	} 
+
+	static List<String> listStaticGlobalVariables() {
 		List<Field> fields = GlobalVariable.class.getDeclaredFields() as List<Field>
 		List<String> result = fields.stream()
 				.filter { f ->
@@ -37,11 +50,15 @@ public class ExpandoGlobalVariable {
 				}
 				.map { f -> f.getName() }
 				.collect(Collectors.toList())
-		//
-		result.addAll(additionalProperties.keySet())
 		return result
 	}
-
+	
+	static List<String> listAdditionalGlobalVariables() {
+		List<String> result = new ArrayList<String>()
+		result.addAll(additionalProperties.keySet())
+		return result	
+	}
+	
 	/**
 	 * insert a public static property of type java.lang.Object
 	 * into the internal.GlobalVarialbe runtime.
@@ -69,10 +86,12 @@ public class ExpandoGlobalVariable {
 	}
 
 	/**
-	 * @return true if GlobalVarialbe.name is defined, otherwise false
+	 * @return true if GlobalVarialbe.name is defined either in 2 places
+	 * 1. statically predefined in the Execution Profile
+	 * 2. dynamically added by ExpandoGlobalVariable.addGlobalVariable(name, value) call
 	 */
 	static boolean isGlobalVariablePresent(String name) {
-		return additionalProperties.containsKey(name)
+		return listAllGlobalVariables().contains(name)
 	}
 
 	static Object getGlobalVariableValue(String name) {
@@ -105,7 +124,7 @@ public class ExpandoGlobalVariable {
 	 * @param nameList
 	 * @param writer
 	 */
-	static void write(List<String> nameList, Writer writer) {
+	static void writeJSON(List<String> nameList, Writer writer) {
 		Objects.requireNonNull(nameList, "nameList must not be null")
 		Objects.requireNonNull(writer, "writer must not be null")
 		Map extract = new HashMap<String, Object>()
@@ -119,7 +138,7 @@ public class ExpandoGlobalVariable {
 		writer.flush()
 	}
 
-	static Map<String, Object> read(List<String> nameList, Reader reader) {
+	static Map<String, Object> readJSON(List<String> nameList, Reader reader) {
 		Objects.requireNonNull(nameList, "nameList must not be null")
 		Objects.requireNonNull(reader, "reader must not be null")
 		Map<String, Object> result = new HashMap<String, Object>()
