@@ -37,7 +37,8 @@ public class ExpandoGlobalVariable {
 	static List<String> listAllGlobalVariables() {
 		List<String> names = listStaticGlobalVariables()
 		names.addAll(listAdditionalGlobalVariables())
-		return names
+		List<String> sorted = names.stream().sorted().collect(Collectors.toList())
+		return sorted
 	}
 
 	static List<String> listStaticGlobalVariables() {
@@ -129,7 +130,7 @@ public class ExpandoGlobalVariable {
 	static void writeJSON(List<String> nameList, Writer writer) {
 		Objects.requireNonNull(nameList, "nameList must not be null")
 		Objects.requireNonNull(writer, "writer must not be null")
-		Map buffer = new HashMap<String, Object>()
+		SortedMap buffer = new TreeMap<String, Object>()
 		for (name in nameList) {
 			if (isGlobalVariablePresent(name)) {
 				println "[writeJSON] ${name} is present"
