@@ -55,7 +55,7 @@ public class ExpandoGlobalVariableTest {
 	@Test
 	void test_listGlobalVariablesWithAdditive() {
 		EGV.addGlobalVariable("NEW", "VALUE")
-		println "keySet: " + EGV.storageOfAddedGlobalVariables.keySet()
+		println "keySet: " + EGV.additionalProperties.keySet()
 		List<String> names = EGV.listGlobalVariables()
 		assertTrue("names does not contain FOO", names.contains('FOO'))
 		assertTrue("names does not contain NEW", names.contains("NEW"))

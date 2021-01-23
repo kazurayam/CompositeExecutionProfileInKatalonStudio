@@ -18,7 +18,7 @@ import internal.GlobalVariable
 public class ExpandoGlobalVariable {
 
 	// https://docs.groovy-lang.org/latest/html/documentation/core-metaprogramming.html#_properties
-	static final Map<String, Object> storageOfAddedGlobalVariables = Collections.synchronizedMap([:])
+	static final Map<String, Object> additionalProperties = Collections.synchronizedMap([:])
 
 	private ExpandoGlobalVariable() {}
 
@@ -38,7 +38,7 @@ public class ExpandoGlobalVariable {
 				.map { f -> f.getName() }
 				.collect(Collectors.toList())
 		//
-		result.addAll(storageOfAddedGlobalVariables.keySet())
+		result.addAll(additionalProperties.keySet())
 		return result
 	}
 
@@ -55,16 +55,16 @@ public class ExpandoGlobalVariable {
 	 * @param value
 	 */
 	static void addGlobalVariable(String name, Object value) {
-		storageOfAddedGlobalVariables.put(name, value)
+		additionalProperties.put(name, value)
 		MetaClass mc = GlobalVariable.metaClass
 		String getterName = 'get' + ((CharSequence)name).capitalize()
 		mc.static."${getterName}" = {
 			->
-			return storageOfAddedGlobalVariables[name]
+			return additionalProperties[name]
 		}
 		String setterName = 'set' + ((CharSequence)name).capitalize()
 		mc.static."${setterName}" = { newValue ->
-			storageOfAddedGlobalVariables[name] = newValue
+			additionalProperties[name] = newValue
 		}
 	}
 
@@ -72,12 +72,12 @@ public class ExpandoGlobalVariable {
 	 * @return true if GlobalVarialbe.name is defined, otherwise false
 	 */
 	static boolean isGlobalVariablePresent(String name) {
-		return storageOfAddedGlobalVariables.containsKey(name)
+		return additionalProperties.containsKey(name)
 	}
 
 	static Object getGlobalVariableValue(String name) {
 		if (isGlobalVariablePresent(name)) {
-			return storageOfAddedGlobalVariables[name]
+			return additionalProperties[name]
 		} else {
 			return null
 		}
@@ -92,8 +92,7 @@ public class ExpandoGlobalVariable {
 	 */
 	static void ensureGlobalVariable(String name, Object value) {
 		if (isGlobalVariablePresent(name)) {
-			//GlobalVariable[name] = value
-			addGlobalVariable(name, value)
+			addGlobalVariable(name, value)   // will overwrite the previous value
 		} else {
 			addGlobalVariable(name, value)
 		}
