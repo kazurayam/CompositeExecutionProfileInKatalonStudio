@@ -14,7 +14,9 @@ public class ExecutionProfilesLoader {
 
 	private Path profilesDir
 	private XmlSlurper xmlSlurper
-	private GroovyShell sh
+	
+	public Boolean onlyOnce = true
+	public Boolean alreadyDone = false
 
 	ExecutionProfilesLoader() {
 		this(Paths.get(RunConfiguration.getProjectDir()).resolve("Profiles"))
@@ -23,8 +25,7 @@ public class ExecutionProfilesLoader {
 	ExecutionProfilesLoader(Path profilesDir) {
 		this.profilesDir = profilesDir
 		this.xmlSlurper = new XmlSlurper()
-		this.sh = new GroovyShell()
-		
+
 		// important!
 		ExpandoGlobalVariable.clear()
 	}
@@ -39,6 +40,9 @@ public class ExecutionProfilesLoader {
 	}
 
 	int loadProfiles(List<String> profileNames) {
+		if (this.onlyOnce && this.alreadyDone) {
+			throw new IllegalStateException("the property onlyOnce is set true, and loadProfiles method has already done once")
+		}
 		List<Path> profilePaths = profileNames.stream()
 				.map({ prof -> profilesDir.resolve(prof + '.glbl') })
 				.collect(Collectors.toList())
@@ -52,9 +56,10 @@ public class ExecutionProfilesLoader {
 				count += 1
 			})
 		}
+		alreadyDone = true
 		return count  // returns how many GlobalVariables have been added
 	}
-	
+
 	int loadEntries(Map<String, Object> globalVariableEntries) {
 		int count = 0
 		globalVariableEntries.entrySet().each({ entry ->
@@ -107,11 +112,12 @@ public class ExecutionProfilesLoader {
 	Object evaluateGroovyLiteral(String literal) {
 		Objects.requireNonNull(literal)
 		Object result
+		GroovyShell sh = new GroovyShell()
 		try {
 			result = sh.evaluate(literal)
 		} catch (Exception ex) {
 			throw new IllegalArgumentException("literal=\'${literal}\'", ex)
 		}
-		return sh.evaluate(literal)
+		return result
 	}
 }

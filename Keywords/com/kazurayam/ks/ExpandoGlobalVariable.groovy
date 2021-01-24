@@ -72,7 +72,7 @@ public class ExpandoGlobalVariable {
 	 * @param name
 	 * @param value
 	 */
-	static void addGlobalVariable(String name, Object value) {
+	static int addGlobalVariable(String name, Object value) {
 		additionalProperties.put(name, value)
 		MetaClass mc = GlobalVariable.metaClass
 		String getterName = 'get' + ((CharSequence)name).capitalize()
@@ -84,6 +84,20 @@ public class ExpandoGlobalVariable {
 		mc.static."${setterName}" = { newValue ->
 			additionalProperties[name] = newValue
 		}
+		return 1
+	}
+	
+	/**
+	 * 
+	 * @param entries
+	 * @return the number of entries which have been dynamically added as GlobalVariable
+	 */
+	static int addGlobalVariables(Map<String, Object> entries) {
+		int count = 0
+		entries.each { entry ->
+			count += addGlobalVariable(entry.key, entry.value)
+		}
+		return count
 	}
 
 	static void clear() {
