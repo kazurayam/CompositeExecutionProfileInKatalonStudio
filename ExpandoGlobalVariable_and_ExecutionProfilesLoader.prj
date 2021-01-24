@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Project>
    <description></description>
-   <name>ExecutionProfilesLoader</name>
+   <name>ExpandoGlobalVariable_and_ExecutionProfilesLoader</name>
    <tag></tag>
    <UUID>add21b05-32cf-4bf3-a306-08e87636da6b</UUID>
    <migratedVersion>5.9.0</migratedVersion>
    <pageLoadTimeout>0</pageLoadTimeout>
-   <projectFileLocation>/Users/kazuakiurayama/katalon-workspace/ExecutionProfilesLoader/ExecutionProfilesLoader.prj</projectFileLocation>
+   <projectFileLocation>/Users/kazuakiurayama/katalon-workspace/ExpandoGlobalVariable_and_ExecutionProfilesLoader/ExpandoGlobalVariable_and_ExecutionProfilesLoader.prj</projectFileLocation>
    <sourceContent>
       <sourceFolderList>
          <sourceFolderConfiguration>

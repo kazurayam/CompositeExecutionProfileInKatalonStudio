@@ -21,36 +21,47 @@ public class ExecutionProfilesLoader {
 	}
 
 	ExecutionProfilesLoader(Path profilesDir) {
-		ExpandoGlobalVariable.clear()
 		this.profilesDir = profilesDir
 		this.xmlSlurper = new XmlSlurper()
 		this.sh = new GroovyShell()
+		
+		// important!
+		ExpandoGlobalVariable.clear()
 	}
 
-	int load(String profileName) {
-		return this.load( [profileName])
+	int loadProfile(String profileName) {
+		return this.loadProfiles( [profileName])
 	}
 
-	int load(String... profileNames) {
+	int loadProfiles(String... profileNames) {
 		List<String> args = profileNames as List<String>
-		return this.load(args)
+		return this.loadProfiles(args)
 	}
 
-	int load(List<String> profileNames) {
+	int loadProfiles(List<String> profileNames) {
 		List<Path> profilePaths = profileNames.stream()
 				.map({ prof -> profilesDir.resolve(prof + '.glbl') })
 				.collect(Collectors.toList())
 		int count = 0
 		profilePaths.each { profile ->
 			Map<String, Object> loadedGlobalVariables = digestProfile(profile)
-			loadedGlobalVariables.entrySet().each { entry ->
+			loadedGlobalVariables.entrySet().each({ entry ->
 				String name = entry.key.toString()
 				Object value = evaluateGroovyLiteral(entry.value.toString())
 				ExpandoGlobalVariable.addGlobalVariable(name, value)
 				count += 1
-			}
+			})
 		}
 		return count  // returns how many GlobalVariables have been added
+	}
+	
+	int loadEntries(Map<String, Object> globalVariableEntries) {
+		int count = 0
+		globalVariableEntries.entrySet().each({ entry ->
+			ExpandoGlobalVariable.addGlobalVariable(entry.key.toString(), entry.value)
+			count += 1
+		})
+		return count
 	}
 
 	void clear() {
@@ -85,8 +96,22 @@ public class ExecutionProfilesLoader {
 		return keyValuePairs
 	}
 
+	/**
+	 * Parse the given parameter string as a Groovy script, which is
+	 * suppose to be a literal of various types.
+	 * Evaluate the script to obtain a Object instanace and return it
+	 * 
+	 * @param literal
+	 * @return
+	 */
 	Object evaluateGroovyLiteral(String literal) {
 		Objects.requireNonNull(literal)
+		Object result
+		try {
+			result = sh.evaluate(literal)
+		} catch (Exception ex) {
+			throw new IllegalArgumentException("literal=\'${literal}\'", ex)
+		}
 		return sh.evaluate(literal)
 	}
 }
