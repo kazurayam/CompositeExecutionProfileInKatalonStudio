@@ -14,7 +14,7 @@ public class ExecutionProfilesLoader {
 
 	private Path profilesDir
 	private XmlSlurper xmlSlurper
-	
+
 	public Boolean onlyOnce = true
 	public Boolean alreadyDone = false
 
