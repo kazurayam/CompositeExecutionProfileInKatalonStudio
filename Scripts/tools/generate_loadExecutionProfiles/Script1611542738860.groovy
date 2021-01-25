@@ -37,7 +37,10 @@ selectProfiles(profilesDir, 'main_env').each { environment ->
 		}
 	}
 }
+sb.append("""loader.loadEntries(["LOADED_ENTRY1":"VALUE", "loaded_entry2":999])""")
+
 println sb.toString()
+
 println "-----------------------------"
 println "${count} lines were generated\n"
 

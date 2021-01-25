@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <TestCaseEntity>
    <description></description>
-   <name>generateLoadingScript</name>
+   <name>generate_loadExecutionProfiles</name>
    <tag></tag>
    <comment></comment>
    <testCaseGuid>925c0b84-07d5-4758-8acd-4ecfa5d9cf49</testCaseGuid>

@@ -15,7 +15,7 @@ public class ExecutionProfilesLoader {
 	private Path profilesDir
 	private XmlSlurper xmlSlurper
 
-	public Boolean onlyOnce = true
+	public Boolean onlyOnce = false
 	public Boolean alreadyDone = false
 
 	ExecutionProfilesLoader() {
@@ -63,7 +63,7 @@ public class ExecutionProfilesLoader {
 	int loadEntries(Map<String, Object> globalVariableEntries) {
 		int count = 0
 		globalVariableEntries.entrySet().each({ entry ->
-			ExpandoGlobalVariable.addGlobalVariable(entry.key.toString(), entry.value)
+			ExpandoGlobalVariable.addGlobalVariable(entry.key, entry.value)
 			count += 1
 		})
 		return count

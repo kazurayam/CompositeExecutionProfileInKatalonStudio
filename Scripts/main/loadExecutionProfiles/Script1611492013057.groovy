@@ -182,4 +182,4 @@ loader.loadProfiles('main_Base', 'main_envDevelopment', 'main_category0', 'main_
 //loader.loadProfiles('main_Base', 'main_envStaging', 'main_category3', 'main_includeSheets_GroupG', 'main_includeURLs_ALL')
 //loader.loadProfiles('main_Base', 'main_envStaging', 'main_category3', 'main_includeSheets_GroupG', 'main_includeURLs_login')
 //loader.loadProfiles('main_Base', 'main_envStaging', 'main_category3', 'main_includeSheets_GroupG', 'main_includeURLs_top')
-
+loader.loadEntries(["LOADED_ENTRY1":"VALUE", "loaded_entry2":999])

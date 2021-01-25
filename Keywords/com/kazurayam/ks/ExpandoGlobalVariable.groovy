@@ -15,6 +15,9 @@ import com.google.gson.JsonParser
 
 import internal.GlobalVariable
 
+import java.util.regex.Pattern
+import java.util.regex.Matcher
+
 public class ExpandoGlobalVariable {
 
 	// https://docs.groovy-lang.org/latest/html/documentation/core-metaprogramming.html#_properties
@@ -29,35 +32,52 @@ public class ExpandoGlobalVariable {
 	 * The list will include 2 types of GlobalVariables.
 	 * 
 	 * 1. GlobalVariables statically defined in the Execution Profile which was applied 
-	 *    to this time of Test Case run where the JUnit TestRunner runs
+	 *    to this time of Test Case run where the JUnit TestRunner runs. In this category,
+	 *    there are 2 types of GlobalVariable.
+	 *    a) GlobalVariables defined in the Profile actually applied to the test case execution.
+	 *    b) GlobalVariables defined in any of Profiles which are NOT applied to the test case execution.
+	 *    
+	 *    The a) type of GlobalVariable will have some meaningful value.
+	 *    But the b) type will have 'null' value.
 	 * 
 	 * 2. GlobalVariables dynamically added into the ExpandoGlobalVariable by calling 
 	 *    ExpandoGlobalVariable.addGlobalVariable(name,value)
 	 */
-	static List<String> listAllGlobalVariables() {
-		List<String> names = listStaticGlobalVariables()
-		names.addAll(listAdditionalGlobalVariables())
-		List<String> sorted = names.stream().sorted().collect(Collectors.toList())
+	static Set<String> keySetOfGlobalVariables() {
+		Set<String> names = keySetOfStaticGlobalVariables()
+		List<String> result = names.stream()
+				.filter { n ->
+					! additionalProperties.containsKey(n)
+				}
+				.collect(Collectors.toList())
+		result.addAll(keySetOfAdditionalGlobalVariables())
+		SortedSet<String> sorted = new TreeSet()
+		sorted.addAll(result)
 		return sorted
 	}
 
-	static List<String> listStaticGlobalVariables() {
-		List<Field> fields = GlobalVariable.class.getDeclaredFields() as List<Field>
-		List<String> result = fields.stream()
+
+	static Set<String> keySetOfStaticGlobalVariables() {
+		// getDelaredFields() return fields both of static and additional
+		Set<Field> fields = GlobalVariable.class.getDeclaredFields() as Set<Field>
+		Set<String> result = fields.stream()
 				.filter { f ->
 					isPublic(f.modifiers) &&
 							isStatic(f.modifiers) &&
 							! isTransient(f.modifiers)
 				}
 				.map { f -> f.getName() }
-				.collect(Collectors.toList())
-		return result
+				.collect(Collectors.toSet())
+		SortedSet<String> sorted = new TreeSet()
+		sorted.addAll(result)
+		return sorted
 	}
 
-	static List<String> listAdditionalGlobalVariables() {
-		List<String> result = new ArrayList<String>()
-		result.addAll(additionalProperties.keySet())
-		return result
+
+	static Set<String> keySetOfAdditionalGlobalVariables() {
+		SortedSet<String> sorted = new TreeSet<String>()
+		sorted.addAll(additionalProperties.keySet())
+		return sorted
 	}
 
 	/**
@@ -73,20 +93,67 @@ public class ExpandoGlobalVariable {
 	 * @param value
 	 */
 	static int addGlobalVariable(String name, Object value) {
-		additionalProperties.put(name, value)
+		// characters in the name must be valid for a Groovy variable name
+		validateVariableName(name)
+
+		// obtain the ExpandoMetaClass of the internal.GlobalVariable class
 		MetaClass mc = GlobalVariable.metaClass
-		String getterName = 'get' + ((CharSequence)name).capitalize()
-		mc.static."${getterName}" = {
-			->
-			return additionalProperties[name]
-		}
-		String setterName = 'set' + ((CharSequence)name).capitalize()
-		mc.static."${setterName}" = { newValue ->
+
+		// register the Getter method for the name
+		String getterName = getGetterName(name)
+		mc.'static'."${getterName}" = { -> return additionalProperties[name] }
+
+		// register the Setter method for the name
+		String setterName = getSetterName(name)
+		mc.'static'."${setterName}" = { newValue ->
 			additionalProperties[name] = newValue
 		}
+
+		// store the value into the storage
+		additionalProperties.put(name, value)
+
 		return 1
 	}
-	
+
+	static String getGetterName(String name) {
+		return 'get' + getAccessorName(name)
+	}
+
+	static String getSetterName(String name) {
+		return 'set' + getAccessorName(name)
+	}
+
+	static String getAccessorName(String name) {
+		return ((CharSequence)name).capitalize()
+	}
+
+
+	/**
+	 * check if the given string is valid as a name of GlobalVaraible.
+	 * 1) should not starts with digits [0-9]
+	 * 2) should not starts with punctuations [$_]
+	 * 3) if the 1st character is upper case, then the second character MUST NOT be lower case
+	 * 
+	 * @param name
+	 * @throws IllegalArgumentException
+	 */
+	static Pattern PTTN_LEADING_DIGITS = Pattern.compile('^[0-9]')
+	static Pattern PTTN_LEADING_PUNCTUATIONS = Pattern.compile('^[$_]')
+	static Pattern PTTN_UPPER_LOWER    = Pattern.compile('^[A-Z][a-z]')
+
+	static void validateVariableName(String name) {
+		Objects.requireNonNull(name)
+		if (PTTN_LEADING_DIGITS.matcher(name).find()) {
+			throw new IllegalArgumentException("name=${name} must not start with digits")
+		}
+		if (PTTN_LEADING_PUNCTUATIONS.matcher(name).find()) {
+			throw new IllegalArgumentException("name=${name} must not start with punctuations")
+		}
+		if (PTTN_UPPER_LOWER.matcher(name).find()) {
+			throw new IllegalArgumentException("name=${name} must not start with a uppercase letter followed by a lower case letter")
+		}
+	}
+
 	/**
 	 * 
 	 * @param entries
@@ -110,13 +177,13 @@ public class ExpandoGlobalVariable {
 	 * 2. dynamically added by ExpandoGlobalVariable.addGlobalVariable(name, value) call
 	 */
 	static boolean isGlobalVariablePresent(String name) {
-		return listAllGlobalVariables().contains(name)
+		return keySetOfGlobalVariables().contains(name)
 	}
 
 	static Object getGlobalVariableValue(String name) {
-		if (listAdditionalGlobalVariables().contains(name)) {
+		if (keySetOfAdditionalGlobalVariables().contains(name)) {
 			return additionalProperties[name]
-		} else if (listStaticGlobalVariables().contains(name)) {
+		} else if (keySetOfStaticGlobalVariables().contains(name)) {
 			return GlobalVariable[name]
 		} else {
 			return null
@@ -145,7 +212,7 @@ public class ExpandoGlobalVariable {
 	 * @param nameList
 	 * @param writer
 	 */
-	static void writeJSON(List<String> nameList, Writer writer) {
+	static void writeJSON(Set<String> nameList, Writer writer) {
 		Objects.requireNonNull(nameList, "nameList must not be null")
 		Objects.requireNonNull(writer, "writer must not be null")
 		SortedMap buffer = new TreeMap<String, Object>()
@@ -166,20 +233,20 @@ public class ExpandoGlobalVariable {
 
 	static String toJSON() {
 		StringWriter sw = new StringWriter()
-		List<String> names = listAllGlobalVariables()
+		Set<String> names = keySetOfGlobalVariables()
 		writeJSON(names, sw)
 		return sw.toString()
 	}
 
-	static Map<String, Object> readJSON(List<String> nameList, Reader reader) {
-		Objects.requireNonNull(nameList, "nameList must not be null")
+	static Map<String, Object> readJSON(Set<String> names, Reader reader) {
+		Objects.requireNonNull(names, "nameList must not be null")
 		Objects.requireNonNull(reader, "reader must not be null")
 		Map<String, Object> result = new HashMap<String, Object>()
 		JsonParser jsonParser = new JsonParser()
 		JsonElement jsonTree = jsonParser.parse(reader)
 		if (jsonTree.isJsonObject()) {
 			JsonObject jo = jsonTree.getAsJsonObject()
-			for (name in nameList) {
+			for (name in names) {
 				JsonElement je = jo.get(name)
 				if (je != null) {
 					result.put(name, je.getAsString())

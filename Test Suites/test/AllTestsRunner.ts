@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <TestSuiteEntity>
    <description></description>
-   <name>TS1</name>
+   <name>AllTestsRunner</name>
    <tag></tag>
    <isRerun>false</isRerun>
    <mailRecipient></mailRecipient>
@@ -10,17 +10,17 @@
    <pageLoadTimeoutDefault>true</pageLoadTimeoutDefault>
    <rerunFailedTestCasesOnly>false</rerunFailedTestCasesOnly>
    <rerunImmediately>false</rerunImmediately>
-   <testSuiteGuid>254693cf-54f6-4f12-9a27-fc4a2d2f9eed</testSuiteGuid>
+   <testSuiteGuid>1af25ce7-c3f3-4694-8cba-805cc727d5e9</testSuiteGuid>
    <testCaseLink>
-      <guid>a0c040dd-8fc2-439c-ba5d-539783f4377b</guid>
+      <guid>674946c4-2967-4b21-b62b-d3159eb5755e</guid>
       <isReuseDriver>false</isReuseDriver>
       <isRun>true</isRun>
-      <testCaseId>Test Cases/main/loadExecutionProfiles</testCaseId>
+      <testCaseId>Test Cases/test/ExpandoGlobalVariableTestRunner</testCaseId>
    </testCaseLink>
    <testCaseLink>
-      <guid>47cdfd5b-8451-4110-851f-bceaf6d4a4c9</guid>
+      <guid>abb5865b-6d32-4e1c-9f4a-0287c90a2b5f</guid>
       <isReuseDriver>false</isReuseDriver>
       <isRun>true</isRun>
-      <testCaseId>Test Cases/main/TC1</testCaseId>
+      <testCaseId>Test Cases/test/ExecutionProfilesLoaderTestRunner</testCaseId>
    </testCaseLink>
 </TestSuiteEntity>

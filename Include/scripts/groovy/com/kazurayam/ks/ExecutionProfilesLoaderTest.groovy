@@ -7,6 +7,8 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 
+import internal.GlobalVariable
+
 @RunWith(JUnit4.class)
 public class ExecutionProfilesLoaderTest {
 
@@ -49,21 +51,21 @@ public class ExecutionProfilesLoaderTest {
 		Object value = epl.evaluateGroovyLiteral("""['localhost', 8090]""")
 		assertTrue("expected to be a List", value instanceof java.util.List)
 	}
-	
+
 	@Test
 	void test_evaluateGroovyLiteral_null() {
 		ExecutionProfilesLoader epl = new ExecutionProfilesLoader()
 		Object value = epl.evaluateGroovyLiteral("""null""")
 		assertTrue("expected to be null", value == null)
 	}
-	
+
 	@Test
 	void test_evaluateGroovyLiteral_emptyStrng() {
 		ExecutionProfilesLoader epl = new ExecutionProfilesLoader()
 		Object value = epl.evaluateGroovyLiteral("""''""")
 		assertTrue("expected to be an empty String", value == '')
 	}
-	
+
 	@Test
 	void test_loadEntries() {
 		ExecutionProfilesLoader epl = new ExecutionProfilesLoader()
@@ -74,9 +76,18 @@ public class ExecutionProfilesLoaderTest {
 			"entry3": ["keyX":"valX", "keyY": 999],
 			"entry4": true,
 			"entry5": null,
-			]
+			"ENTRY_NAME_6": "value6"
+		]
 		int count = epl.loadEntries(entries)
-		assertEquals(6, count)
+		assertEquals(7, count)
+		assertEquals("value", GlobalVariable.entry0)
+		assertEquals("value", GlobalVariable["entry0"])
+		assertEquals(777, GlobalVariable.entry1)
+		assertEquals(777, GlobalVariable['entry1'])
+		assertEquals(["foo", 888], GlobalVariable.entry2)
+		assertEquals(["foo", 888], GlobalVariable["entry2"])
+		assertEquals("value6", GlobalVariable.ENTRY_NAME_6)
+		assertEquals("value6", GlobalVariable['ENTRY_NAME_6'])
 	}
 
 	@Test
