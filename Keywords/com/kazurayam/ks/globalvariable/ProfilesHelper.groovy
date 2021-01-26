@@ -4,6 +4,9 @@ import java.nio.file.Files
 import java.nio.file.Path
 import java.util.stream.Collectors
 
+import groovy.xml.XmlSlurper
+import groovy.xml.slurpersupport.GPathResult
+
 public class ProfilesHelper {
 
 	private ProfilesHelper() {}
@@ -24,5 +27,10 @@ public class ProfilesHelper {
 		SortedSet<String> sorted = new TreeSet()
 		sorted.addAll(entries)
 		return sorted
+	}
+
+	static GPathResult parseProfile(Path profile) {
+		XmlSlurper slurper = new XmlSlurper()
+		return slurper.parse(profile)
 	}
 }
