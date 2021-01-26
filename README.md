@@ -214,6 +214,9 @@ These output will tell you that the `ExecutionProfilesLoader` enabled me to load
 
 ## How to use ExecutionProfilesLoader in your own Katalon Project
 
+You can reuse my custom Groovy classes `com.kazurayam.ks.globalvariable.ExecutionProfilesLoader` and `com.kazurayam.ks.globalvariable.ExpandoExecutionProfile` by importing a jar file into the `Drivers` folder in your own Katalon Project.
+
+You can down load the `ExecutionProfilesLoader-x.x.jar` file from the [Releases](https://github.com/kazurayam/ExecutionProfilesLoader/releases) page.
 
 # See also
 
