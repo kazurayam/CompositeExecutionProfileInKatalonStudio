@@ -43,7 +43,7 @@ public class ExpandoGlobalVariable {
 	 * 2. GlobalVariables dynamically added into the ExpandoGlobalVariable by calling 
 	 *    ExpandoGlobalVariable.addGlobalVariable(name,value)
 	 */
-	static Set<String> keySetOfGlobalVariables() {
+	static SortedSet<String> keySetOfGlobalVariables() {
 		Set<String> names = keySetOfStaticGlobalVariables()
 		List<String> result = names.stream()
 				.filter { n ->
@@ -57,7 +57,7 @@ public class ExpandoGlobalVariable {
 	}
 
 
-	static Set<String> keySetOfStaticGlobalVariables() {
+	static SortedSet<String> keySetOfStaticGlobalVariables() {
 		// getDelaredFields() return fields both of static and additional
 		Set<Field> fields = GlobalVariable.class.getDeclaredFields() as Set<Field>
 		Set<String> result = fields.stream()
@@ -74,7 +74,7 @@ public class ExpandoGlobalVariable {
 	}
 
 
-	static Set<String> keySetOfAdditionalGlobalVariables() {
+	static SortedSet<String> keySetOfAdditionalGlobalVariables() {
 		SortedSet<String> sorted = new TreeSet<String>()
 		sorted.addAll(additionalProperties.keySet())
 		return sorted
