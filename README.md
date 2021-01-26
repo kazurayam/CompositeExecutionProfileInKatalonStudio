@@ -104,11 +104,13 @@ Unfortunately Katalon Studio does not provide a feature that satisfies my requir
 - [`com.kazurayam.ks.globalvariable.ExecutionProfilesLoader`](Keywords/com/kazurayam/ks/globalvariable/ExecutionProfilesLoader.groovy)
 - [`com.kazurayam.ks.globalvariable.ExpandoGlobalVariable.groovy`](Keywords/com/kazurayam/ks/globalvariable/ExpandoGlobalVariable.groovy)
 
-In these classes I used Java Reflection API and Groovy Metaprogramming API. I'm afraind that only highly skilled programmers can read the source. So would not explain the code here.
+In these classes I used Java Reflection API and Groovy Metaprogramming API extensively. I'm afraid that only highly skilled programmers can read the source.
 
 ## Demo
 
-I have made a demo `Test Suites/main/TS1` which executes 2 test cases [`Test Cases/main/loadExecutionProfiles`](Scripts/main/loadExecutionProfiles/Scripts/main/Script1611492013057.groovy) and [`Test Cases/main/TC1`](Scripts/main/TC1/Script1611492023914.groovy)
+I have made `Test Suites/main/TS1` which demonstrates how I utilize the custom classes. The `TS1` executes 2 test cases:
+- [`Test Cases/main/loadExecutionProfiles`](Scripts/main/loadExecutionProfiles/Script1611492013057.groovy)
+- [`Test Cases/main/TC1`](Scripts/main/TC1/Script1611492023914.groovy)
 
 Here I copy&past the code fragments for easier reference:
 
