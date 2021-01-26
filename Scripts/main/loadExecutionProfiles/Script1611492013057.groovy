@@ -1,4 +1,4 @@
-import com.kazurayam.ks.ExecutionProfilesLoader
+import com.kazurayam.ks.globalvariable.ExecutionProfilesLoader
 
 ExecutionProfilesLoader loader = new ExecutionProfilesLoader()
 

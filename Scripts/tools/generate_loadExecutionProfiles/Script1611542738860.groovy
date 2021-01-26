@@ -13,7 +13,7 @@ Path projectDir = Paths.get(RunConfiguration.getProjectDir())
 Path profilesDir = projectDir.resolve('Profiles')
 
 StringBuilder sb = new StringBuilder()
-sb.append("import com.kazurayam.ks.ExecutionProfilesLoader\n")
+sb.append("import com.kazurayam.ks.globalvariable.ExecutionProfilesLoader\n")
 sb.append("\n")
 sb.append("ExecutionProfilesLoader loader = new ExecutionProfilesLoader()\n")
 sb.append("\n")

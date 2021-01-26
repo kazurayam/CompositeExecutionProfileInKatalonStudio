@@ -1,4 +1,4 @@
-package com.kazurayam.ks
+package com.kazurayam.ks.globalvariable
 
 import java.nio.file.Path
 import java.nio.file.Paths

@@ -1,4 +1,4 @@
-package com.kazurayam.ks
+package com.kazurayam.ks.globalvariable
 
 import static org.junit.Assert.*
 

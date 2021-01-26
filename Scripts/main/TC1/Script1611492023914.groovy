@@ -1,5 +1,5 @@
 import internal.GlobalVariable as GlobalVariable
-import com.kazurayam.ks.ExpandoGlobalVariable
+import com.kazurayam.ks.globalvariable.ExpandoGlobalVariable
 
 /**
  * Test Cases/TC1

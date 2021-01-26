@@ -1,9 +1,9 @@
-package com.kazurayam.ks
+package com.kazurayam.ks.globalvariable
 
 import static org.hamcrest.CoreMatchers.*
 import static org.junit.Assert.*
 
-import com.kazurayam.ks.ExpandoGlobalVariable as EGV
+import com.kazurayam.ks.globalvariable.ExpandoGlobalVariable as EGV
 import com.kms.katalon.core.configuration.RunConfiguration
 
 import org.junit.BeforeClass
@@ -86,7 +86,7 @@ public class ExpandoGlobalVariableTest {
 			;
 		}
 	}
-	
+
 	@Test
 	void test_validateVariableName_1stUpperLetter_2ndLowerLetter() {
 		try	{
@@ -96,7 +96,7 @@ public class ExpandoGlobalVariableTest {
 			;
 		}
 	}
-	
+
 	@Test
 	void test_getGetterName() {
 		EGV.clear()

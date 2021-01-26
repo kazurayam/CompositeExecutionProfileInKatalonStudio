@@ -1,4 +1,4 @@
-package com.kazurayam.ks
+package com.kazurayam.ks.globalvariable
 
 import static java.lang.reflect.Modifier.isPublic
 import static java.lang.reflect.Modifier.isStatic
