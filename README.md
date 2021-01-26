@@ -212,7 +212,7 @@ GlobalVariable.myList : null
 2021-01-26 22:26:24.183 INFO  c.k.katalon.core.main.TestCaseExecutor   - END Test Cases/main/TC1
 ```
 
-These output will tell you that the `ExecutionProfilesLoader` enabled me to load multiple Execption Profiles for a single test run, and I could specify a particular set of values of 5 GlobalVariables that I liked. Please note that I could avoid creating 1800 Profiles; I prepared only 16 Profiles. This design is much cleaner than what I did last year.
+These output will tell you that the `ExecutionProfilesLoader` enabled me to load multiple Execution Profiles for a single test run, and hence I could specify a particular set of values of 5 GlobalVariables that I liked. Please note that I could avoid creating 180 Profiles; I prepared only 16 Profiles. This design is much cleaner than what I did last year.
 
 ## How to reuse this solution in your Katalon Project
 
