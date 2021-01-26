@@ -210,13 +210,11 @@ GlobalVariable.myList : null
 2021-01-26 22:26:24.183 INFO  c.k.katalon.core.main.TestCaseExecutor   - END Test Cases/main/TC1
 ```
 
-These output will tell you that the `ExecutionProfilesLoader` enabled me to load multiple Execption Profiles for a single test run, and I could specify a particular set of values of 5 GlobalVariables that I liked. Please note that I could avoid creating lots of Profiles, I prepared only 16 Profiles. This design is much cleaner that what I did last year.
+These output will tell you that the `ExecutionProfilesLoader` enabled me to load multiple Execption Profiles for a single test run, and I could specify a particular set of values of 5 GlobalVariables that I liked. Please note that I could avoid creating 1800 Profiles; I prepared only 16 Profiles. This design is much cleaner than what I did last year.
 
-## How to use ExecutionProfilesLoader in your own Katalon Project
+## How to reuse this solution in your Katalon Project
 
-You can reuse my custom Groovy classes `com.kazurayam.ks.globalvariable.ExecutionProfilesLoader` and `com.kazurayam.ks.globalvariable.ExpandoExecutionProfile` by importing a jar file into the `Drivers` folder in your own Katalon Project.
-
-You can down load the `ExecutionProfilesLoader-x.x.jar` file from the [Releases](https://github.com/kazurayam/ExecutionProfilesLoader/releases) page.
+You can reuse my custom Groovy classes: `com.kazurayam.ks.globalvariable.ExecutionProfilesLoader` and `com.kazurayam.ks.globalvariable.ExpandoExecutionProfile` as [External Library](https://docs.katalon.com/katalon-studio/docs/external-libraries.html). You want to download the `ExecutionProfilesLoader-x.x.jar` file from the [Releases](https://github.com/kazurayam/ExecutionProfilesLoader/releases) page, save the jar into the `Drivers` folder in your own Katalon Project. You should stop/restart KS to let it acknowledge the new jar file.
 
 # See also
 
