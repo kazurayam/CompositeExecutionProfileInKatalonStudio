@@ -18,19 +18,19 @@ I have developed and published a tool named [VisualTestingInKatalonStudio](https
 
 Last year (2020) I worked for an [Application Service Provider (ASP)](https://en.wikipedia.org/wiki/Application_service_provider) in financial industry. They had approximately 40 customers, they provided many URLs to customers: 50 URL as average per a single customer. The Web system maintained 3 environments (Development, Staging, Production) for every customers. This resulted 40 * 50 * 3 = 6000 URL to test.
 
-A collegue who is in charge of this service created a large Excel workbook file which has 40 sheets where the urls for each customers are listed. The following picture shows how it looked like:
+A diligent staff in charge of this service created a large Excel workbook file which contained 40 sheets where the urls for each customers were listed. The following picture shows how it looked like:
 
 ![config.png](docs/images/config.png)
 
-I developed a Katalon Studio project which works on top of the Visual Testing framework supplied with the configuration file which contains 6000 URLs.
+I developed a Katalon Studio project which works on top of the Visual Testing framework supplied with the configuration file which contains 6000 URLs. I wanted to do visual testing over these mass of URLs.
 
 However, a problem arose. The Visual Testing tool takes approximately 10 seconds per a single URL to test. So if I ran the tool against all 6000 URL, it would take me 6000 * 10 seconds = over 17 hours. Obviously it's too long. 
 
-I wanted to select smaller number of URLs by some criteria out of the spreadsheets to make the test run in a shorter time period. If I choose 60 URLs, then the tool will run in 600 seconds = 10 minutes. That's OK. 10 minutes break of work for tea is welcomed.
+I wanted to select smaller number of URLs by some criteria out of the spreadsheets to make the test run in a shorter time period. If I choose 60 URLs, then the tool will run in 600 seconds = 10 minutes. That's OK. 10 minutes break of work for tea will be welcomed.
 
-At the same time, I wanted the tool to be flexible. For example, Yesterday, I tested the production URLs for CompanyA; Today, I want to test the development URLs for CommpanyB; Tomorrow, I would want to test the staging URLs for CompanyL + CompanyM + CompanyN; next week, I have to test the production URLs which ends with a string `login.html` of all 40 customers; ...
+Also I wanted the tool to be flexible enough. For example, yesterday, I tested the production URLs for CompanyA; today, I want to test the development URLs for CommpanyB; tomorrow, I would want to test the staging URLs for CompanyL + CompanyM + CompanyN; next week, I have to test the production URLs which ends with a string `login.html` of all 40 customers; etc.
 
-I decided to introduce a set of **GlobalVariables** to the testing project which would express the URL selection criteria. I enumerated 5 GlobalVariables, each of which may take a range of possible values as follows:
+I decided to introduce a set of **GlobalVariables** to the testing project which would express URL selection criteria. I enumerated 5 GlobalVariables, each of which may take a range of possible values as follows:
 
 |No.| GlobalVariable name | possible values |
 |---|---|---|
@@ -42,17 +42,17 @@ I decided to introduce a set of **GlobalVariables** to the testing project which
 
 OK. I can restate my problem to solve. **How can I specify a particular set of values for these 5 GlobalVariables when I execute my test in Katalon Studio?**
 
-Now I look back the Katalon Studio features. It provides [*Execution Profile*](https://docs.katalon.com/katalon-studio/docs/execution-profile-v54.html). In an Exceution Profile, you can define a set of name=value pairs of GlobalVariables. You can create as many Execution Profiles as you want. But you should note that **you can appoint only a single Execution Profile for a test execution.**
-
-Therefore I createded bunch of Profiles, each of which contains 5 GlobalVariables with values assigned. This is the usual way how a Katalon user writes an Execution Profile. The following screenshot shows an example:
+Katalon Studio provides a feature named [*Execution Profile*](https://docs.katalon.com/katalon-studio/docs/execution-profile-v54.html). In an Exceution Profile, you can define a set of name=value pairs of GlobalVariables. You can create as many Execution Profiles as you want. So I createded bunch of Profiles, each of which contains 5 GlobalVariables with values assigned. This is the usual way how a Katalon user writes an Execution Profile. The following screenshot shows an example:
 
 ![SelfContainedProfileExample](docs/images/SelfContainedProfileExample.png)
 
-Here I realized a difficulty. I had a lot of possible selection criterias. 1 CONFIG * 3 ENVIRONMENTS * 5 CATEGORIES * 6 INCLUDE_SHEETS * 3 INCLUDE_URLs = 180. Therefore I had to prepare 180 Execution Profiles. It was a crasy job. The following screenshot shows how the project looked ridiculous:
+Now you should remember, **you can appoint only a single Execution Profile for a test execution.**
+
+I realized a difficulty. I had a lot of possible selection criterias: 1 CONFIG * 3 ENVIRONMENTS * 5 CATEGORIES * 6 INCLUDE_SHEETS * 3 INCLUDE_URLs = 180. Therefore I had to prepare 180 Execution Profiles in Katalon Studio GUI. It was a crasy job. The following screenshot shows how the project looked like:
 
 ![180ExecutionProfiles](docs/images/180ExecutionProfiles.png)
 
-Further more, the range of `GlobalVariable.INCLUDE_SHEETS' values was 4 once, but it could possibly increase to 40. In that case, should I prepare 1800? No way!
+Further more, the range of `GlobalVariable.INCLUDE_SHEETS' values was initially 4, but it could possibly increase to 40. In that case, should I prepare 1800 Profiles? No way!
 
 I found a fundamental design problem in Katalon Studio here. This problem has been outstading for me for several months since May 2020.
 
@@ -60,7 +60,7 @@ I found a fundamental design problem in Katalon Studio here. This problem has be
 
 If I can appoint **multiple Execution Profiles for a single test run** in Katalon Studio, then my problem will be resolved.
 
-# Soluton Description
+# Solution Description
 
 Let me tell you my idea. I will create just 16 Execution Profiles, which contains only a single name=value pair of GlobalVariable, as follows:
 
@@ -119,7 +119,7 @@ Unfortunately Katalon Studio does not provide a feature that satisfies my requir
 - [`com.kazurayam.ks.globalvariable.ExecutionProfilesLoader`](Keywords/com/kazurayam/ks/globalvariable/ExecutionProfilesLoader.groovy)
 - [`com.kazurayam.ks.globalvariable.ExpandoGlobalVariable.groovy`](Keywords/com/kazurayam/ks/globalvariable/ExpandoGlobalVariable.groovy)
 
-In these classes I used Java Reflection API and Groovy Metaprogramming API extensively. I'm afraid that only highly skilled programmers can read the source.
+These classes enables me to create GlobalVariables by code on the fly.
 
 ## Demo
 
@@ -233,7 +233,7 @@ These output will tell you that the `ExecutionProfilesLoader` enabled me to load
 
 ## Alternative approach: creating GlobalVariables by code on the fly 
 
-`ExecutionProfilesLoader` class implements another method `loadEntries(Map<String, Object>)` method. It enables us to define GlobalVariables by code on the fly. There is a sample code ['Test Cases/main/defineGlobalVariablesByCode'](Scripts/main/defineGlobalVariablesByCode/Script1611707572407.groovy), which goes as follows:
+`ExecutionProfilesLoader` class implements another method `loadEntries(Map<String, Object>)` method. There is a sample code ['Test Cases/main/defineGlobalVariablesByCode'](Scripts/main/defineGlobalVariablesByCode/Script1611707572407.groovy), which goes as follows:
 
 ```
 import com.kazurayam.ks.globalvariable.ExecutionProfilesLoader
@@ -272,8 +272,8 @@ GlobalVariable.INCLUDE_URLS=[top.html]
 2021-01-27 09:38:56.363 INFO  c.k.katalon.core.main.TestCaseExecutor   - END Test Cases/main/defineGlobalVariablesByCode
 ```
 
-You may feed puzzled how GlobalVariables are dynamically created and are accessible just like those defined by Execution Profiles built-in Katalon Studio.
- That's the magic of [`com.kazurayam.ks.globalvariable.ExpandoExecutionProfile.addGlobalVariable(String name, Object value)`](Keywords/com/kazurayam/ks/globalvariable/ExpandoGlobalVariable.groovy).
+You may feel puzzled how GlobalVariables are dynamically created and become accessible just in the same way as those defined by Execution Profiles in Katalon Studio GUI. That's the magic performed by [`com.kazurayam.ks.globalvariable.ExpandoExecutionProfile.addGlobalVariable(String name, Object value)`](Keywords/com/kazurayam/ks/globalvariable/ExpandoGlobalVariable.groovy) method. I used Java Reflection API and Groovy Metaprogramming API extensively. Only highly skilled programmers can read the source, I am afraid.
+
 
 ## How to reuse this solution in your Katalon Project
 
