@@ -33,13 +33,17 @@ OK. I can restate my problem to solve. **How can I specify a particular set of v
 
 Now I look back the Katalon Studio features. It provides [*Execution Profile*](https://docs.katalon.com/katalon-studio/docs/execution-profile-v54.html). In an Exceution Profile, you can define a set of name=value pairs of GlobalVariables. You can create as many Execution Profiles as you want. But you should note that **you can appoint only a single Execution Profile for a test execution.**
 
-Remember, I have quite a lot of variaties of possible selection criterias. 1 CONFIG * 3 ENVIRONMENTS * 5 CATEGORIES * 6 INCLUDE_SHEETS * 3 INCLUDE_URLs = 180. Therefore I had to create 180 Execution Profiles. The following screenshot shows how the project looked like:
+Therefore I createded bunch of Profiles, each of which contains 5 GlobalVariables with values assigned. This is the usual way how a Katalon user writes an Execution Profile. The following screenshot shows an example:
+
+![SelfContainedProfileExample](docs/images/SelfContainedProfileExample.png)
+
+Here I realized a difficulty. I had a lot of possible selection criterias. 1 CONFIG * 3 ENVIRONMENTS * 5 CATEGORIES * 6 INCLUDE_SHEETS * 3 INCLUDE_URLs = 180. Therefore I had to prepare 180 Execution Profiles. It was a crasy job. The following screenshot shows how the project looked ridiculous:
 
 ![180ExecutionProfiles](docs/images/180ExecutionProfiles.png)
 
-It was a crasy job creating 180 Execution Profiles. Further more, the range of `GlobalVariable.INCLUDE_SHEETS' values could be much more than 4, it could be, say, 40. In that case, do I prepare 1800? No way!
+Further more, the range of `GlobalVariable.INCLUDE_SHEETS' values was 4 once, but it could possibly increase to 40. In that case, should I prepare 1800? No way!
 
-I found a fundamental design problem in Katalon Studio. This problem has been outstading for me for several months since May 2020.
+I found a fundamental design problem in Katalon Studio here. This problem has been outstading for me for several months since May 2020.
 
 # Solution
 
@@ -97,7 +101,7 @@ The following screenshot shows these Execution Profiles prepared in my project:
 
 ## Loading multiple Execution Profiles to a test run
 
-Now I would restate my problem again: **how can appoint multiple Execution Profiles for a single test run?**
+Now I would restate my problem: **how can I appoint multiple Execution Profiles for a single test run?**
 
 Unfortunately Katalon Studio does not provide a feature that satisfies my requirement. Therefore I have developed custom Groovy classes in the `Keywords` directory.
 
@@ -122,6 +126,8 @@ ExecutionProfilesLoader loader = new ExecutionProfilesLoader()
 
 loader.loadProfiles('main_Base', 'main_envDevelopment', 'main_category0', 'main_includeSheets_GroupG', 'main_includeURLs_top')
 ```
+
+I have developed [a tool](Scripts/tools/generate_loadExecutionProfiles/Script1611542738860.groovy) that generates the source of `loadExecutionProfiles` from the `XXXX.glbl` files in the `Profiles` directory.
 
 **`Test Cases/main/TC1`**
 ```
@@ -212,7 +218,50 @@ GlobalVariable.myList : null
 2021-01-26 22:26:24.183 INFO  c.k.katalon.core.main.TestCaseExecutor   - END Test Cases/main/TC1
 ```
 
-These output will tell you that the `ExecutionProfilesLoader` enabled me to load multiple Execution Profiles for a single test run, and hence I could specify a particular set of values of 5 GlobalVariables that I liked. Please note that I could avoid creating 180 Profiles; I prepared only 16 Profiles. This design is much cleaner than what I did last year.
+These output will tell you that the `ExecutionProfilesLoader` enabled me to load multiple Execution Profiles for a single test run, and hence I could specify a particular set of values of 5 GlobalVariables that I liked. Please note that I could avoid preparing 180 Profiles; I prepared only 16 Profiles. This design is much cleaner than what I did last year.
+
+## Alternative approach: defining GlobalVariables by code on the fly 
+
+`ExecutionProfilesLoader` class implements another method `loadEntries(Map<String, Object>)` method. It enables us to define GlobalVariables by code on the fly. There is a sample code ['Test Cases/main/defineGlobalVariablesByCode'](Scripts/main/defineGlobalVariablesByCode/Script1611707572407.groovy), which goes as follows:
+
+```
+import com.kazurayam.ks.globalvariable.ExecutionProfilesLoader
+
+import internal.GlobalVariable
+
+ExecutionProfilesLoader loader = new ExecutionProfilesLoader()
+
+loader.loadEntries([
+	"CONFIG"         : "./Include/fixture/Config.xlsx",
+	"DEBUG_MODE"     : false,
+	"ENVIRONMENT"    : "Development",
+	"CATEGORY"       : 0,
+	"INCLUDE_SHEETS" : ["CompanyL", "CompanyM", "CompanyN"],
+	"INCLUDE_URLS"   : ["top.html"],
+	])
+
+println "GlobalVariable.CONFIG=" + GlobalVariable.CONFIG
+println "GlobalVariable.DEBUG_MODE=" + GlobalVariable.DEBUG_MODE
+println "GlobalVariable.ENVIRONMENT=" + GlobalVariable.ENVIRONMENT
+println "GlobalVariable.CATEGORY=" + GlobalVariable.CATEGORY
+println "GlobalVariable.INCLUDE_SHEETS=" + GlobalVariable.INCLUDE_SHEETS
+println "GlobalVariable.INCLUDE_URLS=" + GlobalVariable.INCLUDE_URLS
+```
+
+When I ran this script, I got the following output in the console:
+
+```
+2021-01-27 09:38:55.181 INFO  c.k.katalon.core.main.TestCaseExecutor   - START Test Cases/main/defineGlobalVariablesByCode
+GlobalVariable.CONFIG=./Include/fixture/Config.xlsx
+GlobalVariable.DEBUG_MODE=false
+GlobalVariable.ENVIRONMENT=Development
+GlobalVariable.CATEGORY=0
+GlobalVariable.INCLUDE_SHEETS=[CompanyL, CompanyM, CompanyN]
+GlobalVariable.INCLUDE_URLS=[top.html]
+2021-01-27 09:38:56.363 INFO  c.k.katalon.core.main.TestCaseExecutor   - END Test Cases/main/defineGlobalVariablesByCode
+```
+
+Intuitive enough, isn't it?
 
 ## How to reuse this solution in your Katalon Project
 
