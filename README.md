@@ -14,23 +14,23 @@ In this README, I will explain a problem I got a few months ago, and how I recen
 
 # Problem to solve
 
-I have developed and published a tool named [VisualTestingInKatalonStudio](https://forum.katalon.com/t/visual-testing-in-katalon-studio/13361) project on top of [Katalon Studio](https://www.katalon.com/katalon-studio/), which enables me to take screenshots of a Web service on browser and to compare the images between environments (Development and Production) or between 2 different timings (before and after system changes).
+I have developed and published a tool named [VisualTestingInKatalonStudio](https://forum.katalon.com/t/visual-testing-in-katalon-studio/13361) project on top of [Katalon Studio](https://www.katalon.com/katalon-studio/), which enables me to take screenshots of Web services on browser and to compare the images between environments (e.g. Development and Production) or between 2 different timings (e.g. before and after work of system changes).
 
-Last year (2020) I worked for an [Application Service Provider (ASP)](https://en.wikipedia.org/wiki/Application_service_provider) in financial industry. They had approximately 40 customers, they provided many URLs to customers: 50 URL as average per a single customer. The Web system maintained 3 environments (Development, Staging, Production) for every customers. This resulted 40 * 50 * 3 = 6000 URL to test.
+Last year (2020) I worked for an [Application Service Provider (ASP)](https://en.wikipedia.org/wiki/Application_service_provider) in Financial industry. They had approximately 40 customers, they provided many URLs to customers: 50 URL as average per a single customer. They maintained 3 environments (Development, Staging, Production) for every customers. This resulted 40 * 50 * 3 = 6000 URL for developers to test frequently to ensure the service quality.
 
-A diligent staff in charge of this service created a large Excel workbook file which contained 40 sheets where the urls for each customers were listed. The following picture shows how it looked like:
+A diligent staff in charge of the Web service mainteined a large Excel file which contained 40 sheets where the urls for each customers were listed. The following picture shows how it looked like:
 
 ![config.png](docs/images/config.png)
 
-I developed a Katalon Studio project which works on top of the Visual Testing framework supplied with the configuration file which contains 6000 URLs. I wanted to do visual testing over these mass of URLs.
+I developed a Katalon Studio project which works on top of the Visual Testing framework supplied with the Excel file. I wanted to perform *visual testing* over the mass of URLs.
 
-However, a problem arose. The Visual Testing tool takes approximately 10 seconds per a single URL to test. So if I ran the tool against all 6000 URL, it would take me 6000 * 10 seconds = over 17 hours. Obviously it's too long. 
+However, a problem arose. The Visual Testing tool takes approximately 10 seconds per a single URL to test. So if I ran the tool against all 6000 URL as a batch, it would take me 6000 * 10 seconds = over 17 hours. Obviously it's too long to repeat frequently.
 
-I wanted to select smaller number of URLs by some criteria out of the spreadsheets to make the test run in a shorter time period. If I choose 60 URLs, then the tool will run in 600 seconds = 10 minutes. That's OK. 10 minutes break of work for tea will be welcomed.
+Therefore I wanted to select smaller number of URLs by some criteria out of the Excwel file to make the test run in a shorter time period. If I choose 60 URLs, then the tool will run in 600 seconds = 10 minutes. That's OK. 10 minutes break of work for tea will be welcomed.
 
-Also I wanted the tool to be flexible enough. For example, yesterday, I tested the production URLs for CompanyA; today, I want to test the development URLs for CommpanyB; tomorrow, I would want to test the staging URLs for CompanyL + CompanyM + CompanyN; next week, I have to test the production URLs which ends with a string `login.html` of all 40 customers; etc.
+Also I wanted the tool to be flexible enough. For example, yesterday, I tested the production URLs for CompanyA; today, I want to test the development URLs for CommpanyB; tomorrow, I would want to test the staging URLs for CompanyL + CompanyM + CompanyN; next week, I will test the production URLs which ends with a string `login.html` of all 40 customers; etc.
 
-I decided to introduce a set of **GlobalVariables** to the testing project which would express URL selection criteria. I enumerated 5 GlobalVariables, each of which may take a range of possible values as follows:
+I tried to find a solution, and decided to introduce a set of **GlobalVariables** to the testing project which would express URL selection criteria. I enumerated 5 GlobalVariables, each of which may take a range of possible values as follows:
 
 |No.| GlobalVariable name | possible values |
 |---|---|---|
@@ -42,11 +42,11 @@ I decided to introduce a set of **GlobalVariables** to the testing project which
 
 OK. I can restate my problem to solve. **How can I specify a particular set of values for these 5 GlobalVariables when I execute my test in Katalon Studio?**
 
-Katalon Studio provides a feature named [*Execution Profile*](https://docs.katalon.com/katalon-studio/docs/execution-profile-v54.html). In an Exceution Profile, you can define a set of name=value pairs of GlobalVariables. You can create as many Execution Profiles as you want. So I createded bunch of Profiles, each of which contains 5 GlobalVariables with values assigned. This is the usual way how a Katalon user writes an Execution Profile. The following screenshot shows an example:
+Katalon Studio provides a feature named [*Execution Profile*](https://docs.katalon.com/katalon-studio/docs/execution-profile-v54.html). In an Exceution Profile, you can define a set of name=value pairs of GlobalVariables. You can prepare as many Execution Profiles as you want using Katalon Studio GUI. So I createded bunch of Profiles, each of which contains 5 GlobalVariables with values assigned. The following screenshot shows an example:
 
 ![SelfContainedProfileExample](docs/images/SelfContainedProfileExample.png)
 
-Now you should remember, **you can appoint only a single Execution Profile for a test execution.**
+Now you should remember, **Katalon Studio allows you to appoint only a single Execution Profile for a test execution.**
 
 I realized a difficulty. I had a lot of possible selection criterias: 1 CONFIG * 3 ENVIRONMENTS * 5 CATEGORIES * 6 INCLUDE_SHEETS * 3 INCLUDE_URLs = 180. Therefore I had to prepare 180 Execution Profiles in Katalon Studio GUI. It was a crasy job. The following screenshot shows how the project looked like:
 
@@ -54,7 +54,7 @@ I realized a difficulty. I had a lot of possible selection criterias: 1 CONFIG *
 
 Further more, the range of `GlobalVariable.INCLUDE_SHEETS' values was initially 4, but it could possibly increase to 40. In that case, should I prepare 1800 Profiles? No way!
 
-I found a fundamental design problem in Katalon Studio here. This problem has been outstading for me for several months since May 2020.
+I found a fundamental design problem in Katalon Studio here. This issue has remained unresolved for me since May 2020.
 
 # Solution
 
