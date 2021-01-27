@@ -11,6 +11,7 @@ loader.loadEntries([
 	"CATEGORY"       : 0,
 	"INCLUDE_SHEETS" : ["CompanyL", "CompanyM", "CompanyN"],
 	"INCLUDE_URLS"   : ["top.html"],
+	"newVar" : "foo"
 	])
 
 println "GlobalVariable.CONFIG=" + GlobalVariable.CONFIG
@@ -19,3 +20,4 @@ println "GlobalVariable.ENVIRONMENT=" + GlobalVariable.ENVIRONMENT
 println "GlobalVariable.CATEGORY=" + GlobalVariable.CATEGORY
 println "GlobalVariable.INCLUDE_SHEETS=" + GlobalVariable.INCLUDE_SHEETS
 println "GlobalVariable.INCLUDE_URLS=" + GlobalVariable.INCLUDE_URLS
+println "GlobalVariable.newVar=" + GlobalVariable.newVar

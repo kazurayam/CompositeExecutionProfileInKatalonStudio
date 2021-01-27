@@ -26,7 +26,7 @@ I developed a Katalon Studio project which works on top of the Visual Testing fr
 
 However, a problem arose. The Visual Testing tool takes approximately 10 seconds per a single URL to test. So if I ran the tool against all 6000 URL as a batch, it would take me 6000 * 10 seconds = over 17 hours. Obviously it's too long to repeat frequently.
 
-Therefore I wanted to select smaller number of URLs by some criteria out of the Excwel file to make the test run in a shorter time period. If I choose 60 URLs, then the tool will run in 600 seconds = 10 minutes. That's OK. 10 minutes break of work for tea will be welcomed.
+Therefore I wanted to select smaller number of URLs by some criteria out of the Excel file to make the test run in a shorter time period. If I choose 60 URLs, then the tool will run in 600 seconds = 10 minutes. That's OK. 10 minutes break of work for tea will be welcomed.
 
 Also I wanted the tool to be flexible enough. For example, yesterday, I tested the production URLs for CompanyA; today, I want to test the development URLs for CommpanyB; tomorrow, I would want to test the staging URLs for CompanyL + CompanyM + CompanyN; next week, I will test the production URLs which ends with a string `login.html` of all 40 customers; etc.
 
@@ -241,7 +241,7 @@ These output will tell you that the `ExecutionProfilesLoader` enabled me to load
 
 ## Alternative approach: creating GlobalVariables by code on the fly 
 
-`ExecutionProfilesLoader` class implements another method `loadEntries(Map<String, Object>)` method. There is a sample code ['Test Cases/main/defineGlobalVariablesByCode'](Scripts/main/defineGlobalVariablesByCode/Script1611707572407.groovy), which goes as follows:
+`ExecutionProfilesLoader` class implements another method `loadEntries(Map<String, Object>)`. There is a sample code ['Test Cases/main/defineGlobalVariablesByCode'](Scripts/main/defineGlobalVariablesByCode/Script1611707572407.groovy), which goes as follows:
 
 ```
 import com.kazurayam.ks.globalvariable.ExecutionProfilesLoader
@@ -257,6 +257,7 @@ loader.loadEntries([
 	"CATEGORY"       : 0,
 	"INCLUDE_SHEETS" : ["CompanyL", "CompanyM", "CompanyN"],
 	"INCLUDE_URLS"   : ["top.html"],
+	"newVar" : "foo",
 	])
 
 println "GlobalVariable.CONFIG=" + GlobalVariable.CONFIG
@@ -265,6 +266,7 @@ println "GlobalVariable.ENVIRONMENT=" + GlobalVariable.ENVIRONMENT
 println "GlobalVariable.CATEGORY=" + GlobalVariable.CATEGORY
 println "GlobalVariable.INCLUDE_SHEETS=" + GlobalVariable.INCLUDE_SHEETS
 println "GlobalVariable.INCLUDE_URLS=" + GlobalVariable.INCLUDE_URLS
+println "GlobalVariable.newVar=" + GlobalVariable.newVar
 ```
 
 I think, this script looks intuitive. When I ran this script, I got the following output in the console:
@@ -277,10 +279,11 @@ GlobalVariable.ENVIRONMENT=Development
 GlobalVariable.CATEGORY=0
 GlobalVariable.INCLUDE_SHEETS=[CompanyL, CompanyM, CompanyN]
 GlobalVariable.INCLUDE_URLS=[top.html]
+GlobalVariable.newVar=foo
 2021-01-27 09:38:56.363 INFO  c.k.katalon.core.main.TestCaseExecutor   - END Test Cases/main/defineGlobalVariablesByCode
 ```
 
-You may feel puzzled how GlobalVariables are dynamically created here, and become accessible just in the same way as those defined by Execution Profiles in Katalon Studio GUI. That's the magic performed by [`com.kazurayam.ks.globalvariable.ExpandoExecutionProfile.addGlobalVariable(String name, Object value)`](Keywords/com/kazurayam/ks/globalvariable/ExpandoGlobalVariable.groovy) method. It employs Java Reflection API and Groovy Metaprogramming API extensively.
+You may feel puzzled how `GlobalVariable.newVar` is dynamically created and become accessible just in the same way as those defined by Execution Profiles in Katalon Studio GUI. That's the magic performed by [`com.kazurayam.ks.globalvariable.ExpandoExecutionProfile.addGlobalVariable(String name, Object value)`](Keywords/com/kazurayam/ks/globalvariable/ExpandoGlobalVariable.groovy) method. It employs Java Reflection API and Groovy Metaprogramming API extensively.
 
 
 ## How to reuse this solution in your Katalon Project
