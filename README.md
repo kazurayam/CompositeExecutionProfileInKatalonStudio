@@ -62,7 +62,7 @@ If I can appoint **multiple Execution Profiles for a single test run** in Katalo
 
 # Solution Description
 
-Let me tell you my idea. I will create just 16 Execution Profiles, which contains only a single name=value pair of GlobalVariable, as follows:
+Let me tell you my idea. I will create just 16 Execution Profiles. Each of them contains only a single name=value pair of GlobalVariable, as follows:
 
 ## main_Base
 |No.| Profile name | GlobalVariable name | value |
@@ -121,13 +121,13 @@ Unfortunately Katalon Studio does not provide a feature that satisfies my requir
 
 These classes enables me to create GlobalVariables by code on the fly.
 
-The API Documentation is available [here](docs/api/index.html)
+The API Documentation is available [here](https://kazurayam.github.io/ExecutionProfilesLoader/docs/api/index.html)
 
 ## Demo
 
-I have made `Test Suites/main/TS1` which demonstrates how I utilize the custom classes. The `TS1` executes 2 test cases:
-- [`Test Cases/main/loadExecutionProfiles`](Scripts/main/loadExecutionProfiles/Script1611492013057.groovy)
-- [`Test Cases/main/TC1`](Scripts/main/TC1/Script1611492023914.groovy)
+I have made `Test Suites/main/TS1` which demonstrates how I utilize the custom classes. The `TS1` executes 2 test cases in this sequence:
+1. [`Test Cases/main/loadExecutionProfiles`](Scripts/main/loadExecutionProfiles/Script1611492013057.groovy)
+2. [`Test Cases/main/TC1`](Scripts/main/TC1/Script1611492023914.groovy)
 
 Here I copy&past the code fragments for easier reference:
 
@@ -137,7 +137,13 @@ import com.kazurayam.ks.globalvariable.ExecutionProfilesLoader
 
 ExecutionProfilesLoader loader = new ExecutionProfilesLoader()
 
-loader.loadProfiles('main_Base', 'main_envDevelopment', 'main_category0', 'main_includeSheets_GroupG', 'main_includeURLs_top')
+loader.loadProfiles(
+	'main_Base',
+	'main_envDevelopment',
+	'main_category0',
+	'main_includeSheets_GroupG',
+	'main_includeURLs_top'
+	)
 ```
 
 I have developed [a tool](Scripts/tools/generate_loadExecutionProfiles/Script1611542738860.groovy) that generates the source of `loadExecutionProfiles` from the `XXXX.glbl` files in the `Profiles` directory.
@@ -231,7 +237,7 @@ GlobalVariable.myList : null
 2021-01-26 22:26:24.183 INFO  c.k.katalon.core.main.TestCaseExecutor   - END Test Cases/main/TC1
 ```
 
-These output will tell you that the `ExecutionProfilesLoader` enabled me to load multiple Execution Profiles for a single test run, and hence I could specify a particular set of values of 5 GlobalVariables that I liked. Please note that I could avoid preparing 180 Profiles; I prepared only 16 Profiles. This design is much cleaner than what I did last year.
+These output will tell you that the `ExecutionProfilesLoader` enabled me to load multiple Execution Profiles for a single test run, and hence I could specify a particular set of values of 5 GlobalVariables that I liked. Please note that I could avoid preparing 180 combinational Profiles; I prepared only 16 elemental Profiles. This design is much cleaner than what I did last year.
 
 ## Alternative approach: creating GlobalVariables by code on the fly 
 
