@@ -121,6 +121,8 @@ Unfortunately Katalon Studio does not provide a feature that satisfies my requir
 
 These classes enables me to create GlobalVariables by code on the fly.
 
+The API Documentation is available [here](docs/api/index.html)
+
 ## Demo
 
 I have made `Test Suites/main/TS1` which demonstrates how I utilize the custom classes. The `TS1` executes 2 test cases:
@@ -272,7 +274,7 @@ GlobalVariable.INCLUDE_URLS=[top.html]
 2021-01-27 09:38:56.363 INFO  c.k.katalon.core.main.TestCaseExecutor   - END Test Cases/main/defineGlobalVariablesByCode
 ```
 
-You may feel puzzled how GlobalVariables are dynamically created and become accessible just in the same way as those defined by Execution Profiles in Katalon Studio GUI. That's the magic performed by [`com.kazurayam.ks.globalvariable.ExpandoExecutionProfile.addGlobalVariable(String name, Object value)`](Keywords/com/kazurayam/ks/globalvariable/ExpandoGlobalVariable.groovy) method. I used Java Reflection API and Groovy Metaprogramming API extensively. Only highly skilled programmers can read the source, I am afraid.
+You may feel puzzled how GlobalVariables are dynamically created here, and become accessible just in the same way as those defined by Execution Profiles in Katalon Studio GUI. That's the magic performed by [`com.kazurayam.ks.globalvariable.ExpandoExecutionProfile.addGlobalVariable(String name, Object value)`](Keywords/com/kazurayam/ks/globalvariable/ExpandoGlobalVariable.groovy) method. It employs Java Reflection API and Groovy Metaprogramming API extensively.
 
 
 ## How to reuse this solution in your Katalon Project
