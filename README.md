@@ -1,6 +1,17 @@
 ExecutionProfilesLoader
 ======================
 
+<p>@date Jan 2021</p>
+<p>@author kazurayam</p>
+
+# Overview of this project
+
+This is a [Katalon Studio](https://www.katalon.com/katalon-studio/) project for demonstration purpose. You can download this to your PC and run it with your Katalon Studio.
+
+This project was developed using Katalon Studio v7.6.6. It should work on every version above v7.0.
+
+In this README, I will explain a problem I got a few months ago, and how I recently resolved it by developing a set of custom Groovy classes which enables me to create GlobalVariables by code on the fly.
+
 # Problem to solve
 
 I have developed and published a tool named [VisualTestingInKatalonStudio](https://forum.katalon.com/t/visual-testing-in-katalon-studio/13361) project on top of [Katalon Studio](https://www.katalon.com/katalon-studio/), which enables me to take screenshots of a Web service on browser and to compare the images between environments (Development and Production) or between 2 different timings (before and after system changes).
@@ -220,7 +231,7 @@ GlobalVariable.myList : null
 
 These output will tell you that the `ExecutionProfilesLoader` enabled me to load multiple Execution Profiles for a single test run, and hence I could specify a particular set of values of 5 GlobalVariables that I liked. Please note that I could avoid preparing 180 Profiles; I prepared only 16 Profiles. This design is much cleaner than what I did last year.
 
-## Alternative approach: defining GlobalVariables by code on the fly 
+## Alternative approach: creating GlobalVariables by code on the fly 
 
 `ExecutionProfilesLoader` class implements another method `loadEntries(Map<String, Object>)` method. It enables us to define GlobalVariables by code on the fly. There is a sample code ['Test Cases/main/defineGlobalVariablesByCode'](Scripts/main/defineGlobalVariablesByCode/Script1611707572407.groovy), which goes as follows:
 
@@ -248,7 +259,7 @@ println "GlobalVariable.INCLUDE_SHEETS=" + GlobalVariable.INCLUDE_SHEETS
 println "GlobalVariable.INCLUDE_URLS=" + GlobalVariable.INCLUDE_URLS
 ```
 
-When I ran this script, I got the following output in the console:
+I think, this script looks intuitive. When I ran this script, I got the following output in the console:
 
 ```
 2021-01-27 09:38:55.181 INFO  c.k.katalon.core.main.TestCaseExecutor   - START Test Cases/main/defineGlobalVariablesByCode
@@ -261,7 +272,8 @@ GlobalVariable.INCLUDE_URLS=[top.html]
 2021-01-27 09:38:56.363 INFO  c.k.katalon.core.main.TestCaseExecutor   - END Test Cases/main/defineGlobalVariablesByCode
 ```
 
-Intuitive enough, isn't it?
+You may feed puzzled how GlobalVariables are dynamically created and are accessible just like those defined by Execution Profiles built-in Katalon Studio.
+ That's the magic of [`com.kazurayam.ks.globalvariable.ExpandoExecutionProfile.addGlobalVariable(String name, Object value)`](Keywords/com/kazurayam/ks/globalvariable/ExpandoGlobalVariable.groovy).
 
 ## How to reuse this solution in your Katalon Project
 
