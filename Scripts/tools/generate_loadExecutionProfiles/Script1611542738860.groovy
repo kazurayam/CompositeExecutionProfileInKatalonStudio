@@ -1,3 +1,4 @@
+import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
 
@@ -42,3 +43,10 @@ println sb.toString()
 
 println "-----------------------------"
 println "${count} lines were generated\n"
+
+Path gensrcDir = projectDir.resolve('generated-src')
+Files.createDirectories(gensrcDir)
+Path generated = gensrcDir.resolve("loadExecutionProfiles.groovy")
+generated.toFile().text = sb.toString()
+println "written ${generated}"
+
