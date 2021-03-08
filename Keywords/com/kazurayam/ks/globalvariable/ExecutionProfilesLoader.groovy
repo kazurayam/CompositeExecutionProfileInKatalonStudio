@@ -60,15 +60,7 @@ public class ExecutionProfilesLoader {
 		return count  // returns how many GlobalVariables have been added
 	}
 
-	int loadEntries(Map<String, Object> globalVariableEntries) {
-		int count = 0
-		globalVariableEntries.entrySet().each({ entry ->
-			ExpandoGlobalVariable.addGlobalVariable(entry.key, entry.value)
-			count += 1
-		})
-		return count
-	}
-
+	
 	void clear() {
 		ExpandoGlobalVariable.clear()
 	}
@@ -120,4 +112,23 @@ public class ExecutionProfilesLoader {
 		}
 		return result
 	}
+	
+	
+	
+	
+	/**
+	 * actually update GlobalVariables
+	 * 
+	 * @param globalVariableEntries
+	 * @return
+	 */
+	static int loadEntries(Map<String, Object> globalVariableEntries) {
+		int count = 0
+		globalVariableEntries.entrySet().each({ entry ->
+			ExpandoGlobalVariable.addGlobalVariable(entry.key, entry.value)
+			count += 1
+		})
+		return count
+	}
+	
 }

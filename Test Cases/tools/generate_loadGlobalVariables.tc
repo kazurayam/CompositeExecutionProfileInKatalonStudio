@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <TestCaseEntity>
    <description></description>
-   <name>defineGlobalVariablesByCode</name>
+   <name>generate_loadGlobalVariables</name>
    <tag></tag>
    <comment></comment>
-   <testCaseGuid>b3517198-e9d8-4dda-9901-dd6d5bb59b4c</testCaseGuid>
+   <testCaseGuid>a673a92f-b746-418a-93b3-091bef0a88e3</testCaseGuid>
 </TestCaseEntity>
