@@ -1,6 +1,7 @@
 package their.globalvariable.domain
 
 public enum Category {
+
 	ZERO(0),
 	ONE(1),
 	TWO(2),

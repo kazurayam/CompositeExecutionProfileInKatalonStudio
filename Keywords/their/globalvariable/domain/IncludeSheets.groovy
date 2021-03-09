@@ -3,6 +3,7 @@ package their.globalvariable.domain
 import groovy.json.JsonOutput
 
 enum IncludeSheets {
+
 	All([]),
 	CompanyA(["CompanyA"]),
 	CompanyB(["CompanyB"]),

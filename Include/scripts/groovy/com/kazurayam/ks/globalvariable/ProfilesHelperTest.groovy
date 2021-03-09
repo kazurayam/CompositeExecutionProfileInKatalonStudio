@@ -25,10 +25,10 @@ public class ProfilesHelperTest {
 	}
 
 	@Test
-	void test_selectProfiles_main_Base() {
-		Set<String> entries = ProfilesHelper.selectProfiles(profilesDir, 'main_Base')
-		assertEquals(1, entries.size())
-		assertEquals('main_Base', entries[0])
+	void test_selectProfiles_main_category() {
+		Set<String> entries = ProfilesHelper.selectProfiles(profilesDir, 'main_category')
+		assertEquals(4, entries.size())
+		assertEquals('main_category0', entries[0])
 	}
 
 	@Test

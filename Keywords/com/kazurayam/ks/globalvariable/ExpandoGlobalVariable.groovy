@@ -238,25 +238,28 @@ public class ExpandoGlobalVariable {
 		return sw.toString()
 	}
 
-	static Map<String, Object> readJSON(Set<String> names, Reader reader) {
-		Objects.requireNonNull(names, "nameList must not be null")
-		Objects.requireNonNull(reader, "reader must not be null")
-		Map<String, Object> result = new HashMap<String, Object>()
-		JsonParser jsonParser = new JsonParser()
-		JsonElement jsonTree = jsonParser.parse(reader)
-		if (jsonTree.isJsonObject()) {
-			JsonObject jo = jsonTree.getAsJsonObject()
-			for (name in names) {
-				JsonElement je = jo.get(name)
-				if (je != null) {
-					result.put(name, je.getAsString())
-				} else {
-					// just ignore it
-				}
-			}
-		} else {
-			// if the input file is not a well-formed JSON text (e.g., empty string), just return an empty Map
-		}
-		return result
-	}
+	/*
+	 static Map<String, Object> readJSON(Set<String> names, Reader reader) {
+	 Objects.requireNonNull(names, "names must not be null")
+	 Objects.requireNonNull(reader, "reader must not be null")
+	 Map<String, Object> result = new HashMap<String, Object>()
+	 JsonParser jsonParser = new JsonParser()
+	 JsonElement jsonTree = jsonParser.parse(reader)
+	 if (jsonTree.isJsonObject()) {
+	 JsonObject jo = jsonTree.getAsJsonObject()
+	 for (name in names) {
+	 JsonElement je = jo.get(name)
+	 println "name: ${name}, je: ${je.toString()}"
+	 if (je != null) {
+	 result.put(name, je.getAsString())
+	 } else {
+	 // just ignore it
+	 }
+	 }
+	 } else {
+	 // if the input file is not a well-formed JSON text (e.g., empty string), just return an empty Map
+	 }
+	 return result
+	 }
+	 */
 }

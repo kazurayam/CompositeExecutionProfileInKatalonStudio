@@ -41,7 +41,7 @@ public class ExpandoGlobalVariableTest {
 	/**
 	 * keySetOfGlobalVaraibles() should return a Set<String> of GlobalVariable names
 	 * defined in the current context.
-	 * Here we assume that the "default" Execution Profile is selected where FOO=BAR is defined
+	 * Here we assume that the "default" Execution Profile is selected where CONFIG="./Include/fixture/Config.xlsx" is defined
 	 */
 	@Test
 	void test_keySetOfGlobalVariables() {
@@ -49,21 +49,18 @@ public class ExpandoGlobalVariableTest {
 		Set<String> names = EGV.keySetOfGlobalVariables()
 		//names.each { String name -> println name }
 		assertTrue("expected 1 or more GlobalVaraiable(s) defined, but not found", names.size() > 0)
-		assertTrue("expected GlobalVariable.FOO but not found", names.contains('FOO'))
-		assertEquals("expected", "BAR", GlobalVariable["FOO"])
+		assertTrue("expected GlobalVariable.CONFIG but not found", names.contains('CONFIG'))
+		assertEquals("expected", "./Include/fixture/Config.xlsx", GlobalVariable["CONFIG"])
 	}
 
 	/**
 	 * We will add a new GlobalVariable "NEW=VALUE" dynamically in the current context.
-	 * Here we assume that the "default" Execution Profile is selected.
-	 * So we expect to find 2 GlobalVariables: FOO=BAR and NEW=VALUE
 	 */
 	@Test
 	void test_keySetOfGlobalVariables_withAdditive() {
 		EGV.clear()
 		EGV.addGlobalVariable("NEW", "VALUE")
 		Set<String> names = EGV.keySetOfGlobalVariables()
-		assertTrue("names does not contain FOO", names.contains('FOO'))
 		assertTrue("names does not contain NEW", names.contains("NEW"))
 		assertTrue(names.size() >= 2)
 	}
@@ -72,7 +69,6 @@ public class ExpandoGlobalVariableTest {
 	void test_isGlobalVariablePresent_negative() {
 		EGV.clear()
 		EGV.addGlobalVariable("NEW", "VALUE")
-		assertTrue("FOO is not present", EGV.isGlobalVariablePresent("FOO"))  // statically defined in the default Profile
 		assertTrue("NEW is not present", EGV.isGlobalVariablePresent("NEW"))
 		assertFalse("THERE_IS_NO_SUCH_VARIABLE should not be there", EGV.isGlobalVariablePresent("THERE_IS_NO_SUCH_VARIABLE"))
 	}
@@ -174,6 +170,7 @@ public class ExpandoGlobalVariableTest {
 		assertEquals((String)value, (String)obj)
 	}
 
+	/*
 	@Test
 	void test_write_read_JSON() {
 		EGV.clear()
@@ -195,6 +192,7 @@ public class ExpandoGlobalVariableTest {
 		assertEquals(value, loaded.get(name))
 		//println "value read from file: name=${gvName}, value=${loaded.get(gvName)}"
 	}
+	 */
 
 	@Test
 	void test_String_capitalize() {

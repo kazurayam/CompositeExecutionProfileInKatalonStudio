@@ -1,6 +1,7 @@
 package their.globalvariable.domain
 
 enum Env {
+
 	DEVELOPMENT("Development"),
 	PRODUCTION("Production"),
 	STAGING("Staging");

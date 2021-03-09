@@ -1,6 +1,7 @@
 package their.globalvariable.domain
 
 enum SaveHTML {
+
 	YES(true),
 	NO(false);
 

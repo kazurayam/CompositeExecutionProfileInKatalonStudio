@@ -3,6 +3,7 @@ package their.globalvariable.domain
 import groovy.json.JsonOutput
 
 enum IncludeURLs {
+
 	ALL([]),
 	Login(["login.html"]),
 	Top(["top.html"]);
