@@ -60,7 +60,7 @@ public class ExecutionProfilesLoader {
 		return count  // returns how many GlobalVariables have been added
 	}
 
-	
+
 	void clear() {
 		ExpandoGlobalVariable.clear()
 	}
@@ -112,10 +112,10 @@ public class ExecutionProfilesLoader {
 		}
 		return result
 	}
-	
-	
-	
-	
+
+
+
+
 	/**
 	 * actually update GlobalVariables
 	 * 
@@ -130,5 +130,4 @@ public class ExecutionProfilesLoader {
 		})
 		return count
 	}
-	
 }

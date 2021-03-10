@@ -26,7 +26,7 @@ PH.selectProfiles(profilesDir, 'main_env').each { environment ->
 				if (count != 14) {
 					sb.append("""//""")
 				}
-				sb.append("""loader.loadProfiles('main_Base', """)
+				sb.append("""loader.loadProfiles(""")
 				sb.append("""'${environment}', """)
 				sb.append("""'${category}', """)
 				sb.append("""'${sheets}', """)
