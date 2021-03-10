@@ -1,9 +1,13 @@
 package their.globalvariable.domain
 
-enum SaveHTML {
+import com.kazurayam.ks.globalvariable.ExecutionProfile.GlobalVariableEntity as GVE
 
-	YES(true),
-	NO(false);
+import com.kazurayam.ks.globalvariable.SerializableToGlobalVariableEntity
+
+enum SaveHTML implements SerializableToGlobalVariableEntity {
+
+	Save(true),
+	NoSave(false);
 
 	private Boolean value
 	Boolean isRequired() {
@@ -11,5 +15,12 @@ enum SaveHTML {
 	}
 	SaveHTML(Boolean value) {
 		this.value = value
+	}
+	GVE toGlobalVariableEntity() {
+		GVE gve = new GVE()
+		gve.description("")
+		gve.initValue(this.isRequired().toString())
+		gve.name("SAVE_HTML")
+		return gve
 	}
 }

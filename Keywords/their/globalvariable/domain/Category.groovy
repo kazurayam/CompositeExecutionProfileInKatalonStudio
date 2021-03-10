@@ -1,6 +1,9 @@
 package their.globalvariable.domain
 
-public enum Category {
+import com.kazurayam.ks.globalvariable.ExecutionProfile.GlobalVariableEntity as GVE
+import com.kazurayam.ks.globalvariable.SerializableToGlobalVariableEntity
+
+public enum Category implements SerializableToGlobalVariableEntity {
 
 	ZERO(0),
 	ONE(1),
@@ -13,5 +16,12 @@ public enum Category {
 	}
 	Category(int value) {
 		this.value = value
+	}
+	GVE toGlobalVariableEntity() {
+		GVE gve = new GVE()
+		gve.description("")
+		gve.initValue(this.getValue().toString())
+		gve.name("CATEGORY")
+		return gve
 	}
 }

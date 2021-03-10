@@ -41,27 +41,27 @@ import groovy.xml.XmlUtil
 public class ExecutionProfile {
 
 	GlobalVariableEntities entities
-	
+
 	ExecutionProfile(GlobalVariableEntities entities) {
 		this.entities = entities
 	}
-	
+
 	GlobalVariableEntities getContent() {
-		return entities	
+		return entities
 	}
-	
+
 	void save(File file) {
 		XmlUtil.serialize(entities.toString(), new FileOutputStream(file))
 	}
-	
+
 	void save(Writer writer) {
 		XmlUtil.serialize(entities.toString(), writer)
 	}
-	
+
 	static ExecutionProfile newInstance(Path xml) {
 		return newInstance(xml.toFile())
 	}
-	
+
 	static ExecutionProfile newInstance(File xmlFile) {
 		DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder builder = builderFactory.newDocumentBuilder();
@@ -70,7 +70,7 @@ public class ExecutionProfile {
 		GlobalVariableEntities entities = build(xmlDocument)
 		return new ExecutionProfile(entities)
 	}
-	
+
 	static ExecutionProfile newInstance(String xmlText) {
 		DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder builder = builderFactory.newDocumentBuilder();
@@ -80,7 +80,7 @@ public class ExecutionProfile {
 		GlobalVariableEntities entities = build(xmlDocument)
 		return new ExecutionProfile(entities)
 	}
-	
+
 	static GlobalVariableEntities build(Document xmlDocument) {
 		GlobalVariableEntities result = new GlobalVariableEntities()
 		XPath xPath = XPathFactory.newInstance().newXPath();
@@ -95,7 +95,7 @@ public class ExecutionProfile {
 			entity.description( (String)xPath.compile("description/text()").evaluate(xmlNode, XPathConstants.STRING) )
 			entity.initValue( (String)xPath.compile("initValue/text()").evaluate(xmlNode, XPathConstants.STRING) )
 			entity.name( (String)xPath.compile("name/text()").evaluate(xmlNode, XPathConstants.STRING) )
-			result.addEntity(entity)	
+			result.addEntity(entity)
 		}
 		return result
 	}

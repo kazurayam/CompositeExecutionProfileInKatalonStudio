@@ -1,10 +1,13 @@
 package their.globalvariable.domain
 
+import com.kazurayam.ks.globalvariable.ExecutionProfile.GlobalVariableEntity as GVE
+
 import groovy.json.JsonOutput
+import com.kazurayam.ks.globalvariable.SerializableToGlobalVariableEntity
 
-enum IncludeURLs {
+enum IncludeURLs implements SerializableToGlobalVariableEntity {
 
-	ALL([]),
+	AllURLs([]),
 	Login(["login.html"]),
 	Top(["top.html"]);
 
@@ -17,5 +20,12 @@ enum IncludeURLs {
 	}
 	IncludeURLs(List<String> urls) {
 		this.urls = urls
+	}
+	GVE toGlobalVariableEntity() {
+		GVE gve = new GVE()
+		gve.description("")
+		gve.initValue(this.getUrlsAsJson())
+		gve.name("INCLUDE_URLS")
+		return gve
 	}
 }

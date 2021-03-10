@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?><GlobalVariableEntities>
+  <description/>
+  <name/>
+  <tag/>
+  <defaultProfile>false</defaultProfile>
+  <GlobalVariableEntity>
+    <description/>
+    <initValue>Production</initValue>
+    <name>ENV</name>
+  </GlobalVariableEntity>
+  <GlobalVariableEntity>
+    <description/>
+    <initValue>2</initValue>
+    <name>CATEGORY</name>
+  </GlobalVariableEntity>
+  <GlobalVariableEntity>
+    <description/>
+    <initValue>["CompanyE","CompanyF","CompanyG"]</initValue>
+    <name>INCLUDE_SHEETS</name>
+  </GlobalVariableEntity>
+  <GlobalVariableEntity>
+    <description/>
+    <initValue>["login.html"]</initValue>
+    <name>INCLUDE_URLS</name>
+  </GlobalVariableEntity>
+  <GlobalVariableEntity>
+    <description/>
+    <initValue>true</initValue>
+    <name>SAVE_HTML</name>
+  </GlobalVariableEntity>
+</GlobalVariableEntities>

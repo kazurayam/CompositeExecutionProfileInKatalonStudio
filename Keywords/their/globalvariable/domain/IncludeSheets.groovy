@@ -1,10 +1,12 @@
 package their.globalvariable.domain
 
+import com.kazurayam.ks.globalvariable.ExecutionProfile.GlobalVariableEntity as GVE
 import groovy.json.JsonOutput
+import com.kazurayam.ks.globalvariable.SerializableToGlobalVariableEntity
 
-enum IncludeSheets {
+enum IncludeSheets implements SerializableToGlobalVariableEntity {
 
-	All([]),
+	AllSheets([]),
 	CompanyA(["CompanyA"]),
 	CompanyB(["CompanyB"]),
 	CompanyC(["CompanyC"]),
@@ -23,5 +25,12 @@ enum IncludeSheets {
 	}
 	IncludeSheets(List<String> sheets) {
 		this.sheets = sheets
+	}
+	GVE toGlobalVariableEntity() {
+		GVE gve = new GVE()
+		gve.description("")
+		gve.initValue(this.getSheetsAsJson())
+		gve.name("INCLUDE_SHEETS")
+		return gve
 	}
 }

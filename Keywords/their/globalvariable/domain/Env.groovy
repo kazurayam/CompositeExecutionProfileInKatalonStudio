@@ -1,6 +1,9 @@
 package their.globalvariable.domain
 
-enum Env {
+import com.kazurayam.ks.globalvariable.ExecutionProfile.GlobalVariableEntity as GVE
+import com.kazurayam.ks.globalvariable.SerializableToGlobalVariableEntity
+
+enum Env implements SerializableToGlobalVariableEntity {
 
 	DEVELOPMENT("Development"),
 	PRODUCTION("Production"),
@@ -12,5 +15,12 @@ enum Env {
 	}
 	Env(String id) {
 		this.id = id
+	}
+	GVE toGlobalVariableEntity() {
+		GVE gve = new GVE()
+		gve.description("")
+		gve.initValue(this.getId())
+		gve.name("ENV")
+		return gve
 	}
 }
