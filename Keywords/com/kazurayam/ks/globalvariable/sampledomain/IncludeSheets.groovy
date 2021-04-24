@@ -1,4 +1,4 @@
-package their.globalvariable.domain
+package com.kazurayam.ks.globalvariable.sampledomain
 
 import com.kazurayam.ks.globalvariable.ExecutionProfile.GlobalVariableEntity as GVE
 import groovy.json.JsonOutput

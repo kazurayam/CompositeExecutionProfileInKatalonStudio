@@ -1,8 +1,8 @@
-import their.globalvariable.domain.Category
-import their.globalvariable.domain.Env
-import their.globalvariable.domain.IncludeSheets
-import their.globalvariable.domain.IncludeURLs
-import their.globalvariable.domain.SaveHTML
+import com.kazurayam.ks.globalvariable.sampledomain.Category
+import com.kazurayam.ks.globalvariable.sampledomain.Env
+import com.kazurayam.ks.globalvariable.sampledomain.IncludeSheets
+import com.kazurayam.ks.globalvariable.sampledomain.IncludeURLs
+import com.kazurayam.ks.globalvariable.sampledomain.SaveHTML
 
 import java.nio.file.Files
 import java.nio.file.Path
@@ -10,12 +10,13 @@ import java.nio.file.Paths
 
 import com.kazurayam.ks.globalvariable.ExecutionProfile
 import com.kazurayam.ks.globalvariable.ProfilesHelper as PH
+import com.kazurayam.ks.globalvariable.SampleDomainHelper
 import com.kms.katalon.core.configuration.RunConfiguration
 import org.apache.commons.io.FileUtils
 
 /**
  * Factory function to instanciate ExecutionProfile.GlobalVariableEntities with
- * their.globalvariable.domain objects
+ * com.kazurayam.ks.globalvariable.sampledomain objects
  * 
  * @param env
  * @param category
@@ -23,7 +24,7 @@ import org.apache.commons.io.FileUtils
  * @param urls
  * @param saveHTML
  * @return
- */
+ *
 ExecutionProfile.GlobalVariableEntities newInstance(
 		Env env, Category category, IncludeSheets sheets, IncludeURLs urls, SaveHTML saveHTML) {
 	ExecutionProfile.GlobalVariableEntities gve = new ExecutionProfile.GlobalVariableEntities()
@@ -35,13 +36,15 @@ ExecutionProfile.GlobalVariableEntities newInstance(
 	gve.addEntity(saveHTML.toGlobalVariableEntity())
 	return gve
 }
-
+ */
+/*
 String newProfileName(
 	Env env, Category category, IncludeSheets sheets, IncludeURLs urls, SaveHTML saveHTML) {
 	StringBuilder sb = new StringBuilder()
 	sb.append("main_${sheets.name()}_${urls.name()}_${env.name()}_${category.getValue()}_${saveHTML.name()}.glbl")
 	return sb.toString()
 }
+ */
 
 Path projectDir = Paths.get(RunConfiguration.getProjectDir())
 Path gensrcDir = projectDir.resolve('generated-src')
@@ -57,9 +60,9 @@ Env.values().each { env ->
 		IncludeSheets.values().each { sheets ->
 			IncludeURLs.values().each { urls ->
 				SaveHTML.values().each { saveHTML ->
-					ExecutionProfile.GlobalVariableEntities gve = newInstance(env, category, sheets, urls, saveHTML)
+					ExecutionProfile.GlobalVariableEntities gve = SampleDomainHelper.newInstance(env, category, sheets, urls, saveHTML)
 					ExecutionProfile ep = new ExecutionProfile(gve)
-					String fileName = newProfileName(env, category, sheets, urls, saveHTML)
+					String fileName = SampleDomainHelper.newProfileName(env, category, sheets, urls, saveHTML)
 					Path out = profilesDir.resolve(fileName)
 					ep.save(out.toFile())
 					println "${out}"

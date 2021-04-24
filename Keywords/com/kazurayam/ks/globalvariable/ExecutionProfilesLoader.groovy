@@ -6,8 +6,8 @@ import java.util.stream.Collectors
 
 import com.kms.katalon.core.configuration.RunConfiguration
 
-import groovy.xml.XmlSlurper
-import groovy.xml.slurpersupport.GPathResult
+import groovy.util.XmlSlurper
+import groovy.util.slurpersupport.GPathResult
 
 
 public class ExecutionProfilesLoader {

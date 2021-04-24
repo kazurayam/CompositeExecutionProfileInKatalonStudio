@@ -1,11 +1,13 @@
 plugins {
   id 'java'
-  id "com.katalon.gradle-plugin" version "0.0.7"
+  id 'groovy'
+  id 'com.github.johnrengelman.shadow' version '4.0.4'
+  id "com.katalon.gradle-plugin" version "0.0.6"
 }
 
 group = 'com.kazurayam'
 archivesBaseName = 'ExecutionProfilesLoader'
-version = '1.0'
+version = '1.0.0'
 
 sourceCompatibility = '1.8'
 targetCompatibility = '1.8'
@@ -34,14 +36,18 @@ tasks.withType(GroovyCompile).each {it.groovyOptions.encoding = defaultEncoding 
 sourceSets {
     main {
         groovy {
-            srcDirs = ['Keywords', 'Include/scripts/groovy']
-            srcDir 'Libs'
+            srcDirs = ['Keywords', 'Lisbs', 'Include/scripts/groovy']
         }
     }
 }
 
+shadowJar {
+        exclude 'Temp*.class'
+        exclude 'their/*.class'
+}
+
 katalon {
-    dependencyPrefix = "com.kazurayam.ks"
+    dependencyPrefix = "com.katalon"
     minimize = false
 }
 

@@ -1,8 +1,8 @@
-import their.globalvariable.domain.Category
-import their.globalvariable.domain.Env
-import their.globalvariable.domain.IncludeSheets
-import their.globalvariable.domain.IncludeURLs
-import their.globalvariable.domain.SaveHTML
+import com.kazurayam.ks.globalvariable.sampledomain.Category
+import com.kazurayam.ks.globalvariable.sampledomain.Env
+import com.kazurayam.ks.globalvariable.sampledomain.IncludeSheets
+import com.kazurayam.ks.globalvariable.sampledomain.IncludeURLs
+import com.kazurayam.ks.globalvariable.sampledomain.SaveHTML
 
 import java.nio.file.Files
 import java.nio.file.Path
