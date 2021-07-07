@@ -4,9 +4,9 @@ import java.nio.file.Path
 import java.nio.file.Paths
 import java.util.stream.Collectors
 
+import com.kms.katalon.core.annotation.Keyword
 import com.kms.katalon.core.configuration.RunConfiguration
 
-import groovy.util.XmlSlurper
 import groovy.util.slurpersupport.GPathResult
 
 
@@ -25,20 +25,34 @@ public class ExecutionProfilesLoader {
 	ExecutionProfilesLoader(Path profilesDir) {
 		this.profilesDir = profilesDir
 		this.xmlSlurper = new XmlSlurper()
-
 		// important!
 		ExpandoGlobalVariable.clear()
 	}
 
+	/**
+	 * load an Execution Profile to add GlobalVariables dynamically and make them available to Test Case script
+	 * 
+	 * @param profileName
+	 * @return
+	 */
+	@Keyword
 	int loadProfile(String profileName) {
 		return this.loadProfiles( [profileName])
 	}
 
+	@Keyword
 	int loadProfiles(String... profileNames) {
 		List<String> args = profileNames as List<String>
 		return this.loadProfiles(args)
 	}
 
+	/**
+	 * load Execution Profiles to add GlobalVariables dynamically and make them available to Test Case script
+	 * 
+	 * @param profileNames
+	 * @return
+	 */
+	@Keyword
 	int loadProfiles(List<String> profileNames) {
 		if (this.onlyOnce && this.alreadyDone) {
 			throw new IllegalStateException("the property onlyOnce is set true, and loadProfiles method has already done once")
@@ -86,7 +100,7 @@ public class ExecutionProfilesLoader {
 	 */
 	Map<String, Object> digestProfile(Path profile) {
 		def keyValuePairs = [:]
-		GPathResult doc = xmlSlurper.parse(profile)
+		GPathResult doc = xmlSlurper.parse(profile.toFile())
 		doc.GlobalVariableEntity.each { entity ->
 			keyValuePairs.put(entity.name, entity.initValue)
 		}

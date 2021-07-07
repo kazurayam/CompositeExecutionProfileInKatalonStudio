@@ -3,6 +3,7 @@ package com.kazurayam.ks.globalvariable
 import static org.hamcrest.CoreMatchers.*
 import static org.junit.Assert.*
 
+import com.kazurayam.ks.globalvariable.ExecutionProfilesLoader
 import com.kazurayam.ks.globalvariable.ExpandoGlobalVariable as EGV
 import com.kms.katalon.core.configuration.RunConfiguration
 
@@ -53,6 +54,32 @@ public class ExpandoGlobalVariableTest {
 		assertEquals("expected", "./Include/fixture/Config.xlsx", GlobalVariable["CONFIG"])
 	}
 
+	/**
+	 * keySetOfAdditionalGlobalVariables() should return a Set<String> of GlobalVariable names which were added by
+	 * ExecutionProfilesLoader.loadProfiles().
+	 * Here we assume that the "demoProductionEnv" Execution Profile is loaded and hence a GlobalVaraible.URL1 should be present 
+	 */
+	@Test
+	void test_keySetOfAdditionalGlobalVariables() {
+		EGV.clear()
+		ExecutionProfilesLoader epl = new ExecutionProfilesLoader()
+		epl.loadProfile("demoProductionEnv")
+		Set<String> names = EGV.keySetOfAdditionalGlobalVariables()
+		assertTrue("expected 1 or more additional GlobalVariable(s) but not found", names.size() > 0)
+		assertTrue("expected GlobalVariable.URL1 but not found", names.contains('URL1'))
+	}
+	
+	@Test
+	void test_mapOfAdditionalGlobalVariablesAsString() {
+		EGV.clear()
+		ExecutionProfilesLoader epl = new ExecutionProfilesLoader()
+		epl.loadProfile("demoProductionEnv")
+		String json = EGV.mapOfAdditionalGlobalVariablesAsString()
+		println "[test_mapOfAdditionalGlobalVariablesAsString] json: ${json}"
+		assertTrue("expected \"URL1\" is contained in the json but not found:" + json, json.contains('URL1'))
+		
+	}
+	
 	/**
 	 * We will add a new GlobalVariable "NEW=VALUE" dynamically in the current context.
 	 */
@@ -171,27 +198,26 @@ public class ExpandoGlobalVariableTest {
 	}
 
 	/*
-	@Test
-	void test_write_read_JSON() {
-		EGV.clear()
-		// setup
-		String name = 'added_GLOBALVARIABLE'
-		Object value = "The Hill We Climb"
-		EGV.ensureGlobalVariable(name, value)
-		// when:
-		Writer writer = new OutputStreamWriter(new FileOutputStream(json.toFile()),"utf-8")
-		Set<String> names = ExpandoGlobalVariable.keySetOfGlobalVariables()
-		EGV.writeJSON(names, writer)
-		// then
-		assertTrue(json.toFile().length() > 0)
-
-		// OK, next
-		Reader reader = new InputStreamReader(new FileInputStream(json.toFile()),"utf-8")
-		Map<String, Object> loaded = EGV.readJSON(names, reader)
-		assertTrue(loaded.containsKey(name))
-		assertEquals(value, loaded.get(name))
-		//println "value read from file: name=${gvName}, value=${loaded.get(gvName)}"
-	}
+	 @Test
+	 void test_write_read_JSON() {
+	 EGV.clear()
+	 // setup
+	 String name = 'added_GLOBALVARIABLE'
+	 Object value = "The Hill We Climb"
+	 EGV.ensureGlobalVariable(name, value)
+	 // when:
+	 Writer writer = new OutputStreamWriter(new FileOutputStream(json.toFile()),"utf-8")
+	 Set<String> names = ExpandoGlobalVariable.keySetOfGlobalVariables()
+	 EGV.writeJSON(names, writer)
+	 // then
+	 assertTrue(json.toFile().length() > 0)
+	 // OK, next
+	 Reader reader = new InputStreamReader(new FileInputStream(json.toFile()),"utf-8")
+	 Map<String, Object> loaded = EGV.readJSON(names, reader)
+	 assertTrue(loaded.containsKey(name))
+	 assertEquals(value, loaded.get(name))
+	 //println "value read from file: name=${gvName}, value=${loaded.get(gvName)}"
+	 }
 	 */
 
 	@Test

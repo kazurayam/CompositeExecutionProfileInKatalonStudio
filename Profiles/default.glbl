@@ -39,4 +39,9 @@
       <initValue>false</initValue>
       <name>SAVE_HTML</name>
    </GlobalVariableEntity>
+   <GlobalVariableEntity>
+      <description></description>
+      <initValue>10</initValue>
+      <name>TIMEOUT</name>
+   </GlobalVariableEntity>
 </GlobalVariableEntities>
