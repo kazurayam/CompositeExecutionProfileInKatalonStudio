@@ -1,6 +1,9 @@
 Loading Execution Profile in Test Case by Keyword
 =======
 
+<p>@date July 2021</p>
+<p>@author kazurayam</p>
+
 ## Problem to solve
 
 I hope Katalon Studio to provide a built-in keyword `WebUI.loadExecutionProfile(String profileName)`. The keyword should enable me to load the specified Execution Profile dynamically in a Test Case.
@@ -137,22 +140,30 @@ Let me show you an implementation here.
 4. `Test Suites/demo2/postProcess` calls [`Test Cases/demo2/postProcess`](Scripts/demo2/postProcess/Script1625627914906.groovy). The Test Case compiles a HTML report, which looks like this:
 ![demo2_html](docs/images/README2/demo2_html.png)
 
-#### Appreciation
+#### Appreciation of demo2
 
 What do you think of this implementation? I think this is terribly complexed.
 
-A single Test Case [`Test Cases/demo1/takeScreenshotAndReport`](Scripts/demo1/takeScreenshotAndReport/Script1625628385149.groovy) could implement similar processing in a sigle script. On the other hand, the demo2 involves a Test Suite Collection, 3 Test Suite, 3 Test Cases. This lots of components. Why do I need them?
+A single Test Case script [`Test Cases/demo1/takeScreenshotAndReport`](Scripts/demo1/takeScreenshotAndReport/Script1625628385149.groovy) could implement similar processing. On the other hand, the demo2 involves a Test Suite Collection, 3 Test Suite, 3 Test Cases. This lots of components. Why do I need them?
 
-Test Suite Collection is the only way provided by Katalon Studio when I want to apply 2 different Execution Profiles (`demoProductionEnvironment` and `demoDevelopmentEnvironment`) to a single script (for taking screenshots of URLs). This is the reasone why I needed this complication.
+Test Suite Collection is the only way provided by Katalon Studio for me to apply 2 different Execution Profiles (`demoProductionEnvironment` and `demoDevelopmentEnvironment`) to a single script (for taking screenshots of URLs). This is the reasone why I needed this complication.
 
 ### demo3
 
-A Test Case script with Custom Keyword takes screenshots of a pair of URLs and compile a single report.
+So I have developed a custom keyword `com.kazurayam.ks.globalvariable.ExecutionProfilesLoader.loadProfile(String profileName)`. This enabled me simplify my cripts that takes screenshots of the 2 environements and compile a single HTML report.
 
+[Test Cases/demo3/batch](Scripts/demo3/batch/Script1625627870198.groovy) does the following stuff in a single script.
+- initialize the output directory
+- load Execution Profile `demoProductionEnvironment` to find the value of `GlobalVariable.URL1`; open the URL, take screenshot, save the image into a file.
+- load Exceution Profile `demoDevelopmentEnvironement` to find out the value of `GlobalVariable.URL1`; open the URL, take screenshot, save the image into a file.
+- compile a HTML report, like this: ![demo3_html](docs/images/README2/demo3_html.png)
 
+#### Appreciaton of demo3
 
+The [Test Cases/demo3/batch](Scripts/demo3/batch/Script1625627870198.groovy) is short and simple enough. Far easier to understand and maintain than the complicated codes of demo2.
 
+## Conclusion
 
-I struggle for months and finally developed my [VisualTestingInKatalonStudio](https://github.com/kazurayam/VisualTestingInKatalonStudio) project. It is a compilated Katalon Studio project. Yes, it is too much complicated!
+Once I developed and published  [VisualTestingInKatalonStudio](https://github.com/kazurayam/VisualTestingInKatalonStudio) project. I believe it is useful but is too much complicated. It's code structure is like demo2. It involves multiple Test Suite Collections, many Test Suites, a lot of Test cases. H'm...
 
-Why the [VisualTestingInKatalonStudio](https://github.com/kazurayam/VisualTestingInKatalonStudio) project has got so moch complicated? --- because we do not have the `WebUI.loadExecutionProfile(String profileName)` keyword or its equivalent!
+Now I have got an idea of simplifying that project using the `ExecutionProfilesLoader`. Yes, I believe it is possible to accomplish.
