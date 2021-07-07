@@ -96,26 +96,21 @@ You can read the API doc at
 
 Why do I want a Keyword to load a Execution Profile in a Test Case? 
 
-This question deserves a long description. I will write it here as a note for me. In fact it took me nearly 3 years to solve this problem.
-
-
-![2ExecutionProfiles](docs/images/README2/2ExecutionProfiles.png)
-
-
+This question deserves a long description. I will write it here as a note for me. In fact it took me 3 years to solve this problem.
 
 ### demo1
 
-A few years ago when I got started with Katalon Studio ver 5.x, I made a small project. I wanted to automate a task of taking a lot of screenshots of a web system. Also I learned a Katalon Studio feature [Execution Profile](https://docs.katalon.com/katalon-studio/docs/execution-profile-v54.html). I thought it would be a good idea to store URL strings of the target web pages in a Execution Profile so that I can reuse a set of test script for multiple environments (Production, Development, Staging, etc).
+A few years ago when I got started with Katalon Studio ver 5.x, I initiated a small project. I wanted to automate a task of taking a lot of screenshots of a web system. Also I learned a Katalon Studio feature [Execution Profile](https://docs.katalon.com/katalon-studio/docs/execution-profile-v54.html). I thought it would be a good idea to store URL strings of the target web pages in a Execution Profile so that I can reuse a set of test script for multiple environments (Production, Development, Staging, etc).
 
 1. I made 2 Execution Profiles: `Profiles/demoProductionEnvironment` and `Profiles/demoDevelopmentEnvironment`. Both defines a GlobalVariable named `URL1`. Each had valudes of `http://demoaut.katalon.com` and `http://demoaut-mimic.kazurayam.com`. ![2ExecutionProfiles](docs/images/README2/2ExecutionProfiles.png)
 
 2. I made a Test Case script [Test Cases/demo1/takeScreenshotAndReport](Scripts/demo1/takeScreenshotAndReport/Script1625628385149.groovy). This script does the following processing:
   - initialize a directory for outputs
   - open browser, navigate to `GlobalVariable.URL1`
-  - take screenshot and save it int the output directory
+  - take screenshot and save it into the output directory
   - compile a html with which you can view the screenshot in browser.
 
-3. When you run the script `demo1/takeScreenshotAndReport` while you choose the Execution profile `demo1ProductionEnvironment`, you will obtain a HTML report which shows the screenshot of `http://demoaut.katalon.com/`.
+3. When you run the script `demo1/takeScreenshotAndReport` while you choose the Execution profile `demo1ProductionEnvironment`, you will obtain a HTML report which shows the screenshot of `http://demoaut.katalon.com/` like this: ![demo1](docs/images/README2/demo1.png)
 
 4. When you run the script `demo1/takeScreenshotAndReport` while you choose the Execution profile `demo1DevelopmentEnvrironment`, you will obtain a HTML report which shows the screenshot of `http://demoaut-mimic.kazurayam.com/`.
 
@@ -125,13 +120,39 @@ A few years ago when I got started with Katalon Studio ver 5.x, I made a small p
 
 ### demo2
 
-The system had multiple environments. Let me say "Production Environment" and "Development Environement.
+The system had multiple environments: "Production Environment" and "Development Environement. I wanted to compare screenshots of web pages of these 2 environments to find out any unexpected differences.
 
+Let me show you an implementation here. 
 
-A Test Suite Collection takes screenshots of a pair of URLs and compile a single report.
+1. I made a Test Suite Collection `Test Suites/demo2/TSC`. You can run the demo2 by running the `TSC`. It includes 4 instructions to run child Test Suites.
+- `Test Suites/demo2/preProcess`
+- `Test Suites/demo2/processURL` with Execution Profile `demoProductionEnvironment` specified
+- `Test Suites/demo2/processURL` with Execution Profile `demoDevelopmentEnvrironment` specified
+- `Test Suites/demo2/postProcess` ![TSC](docs/images/README2/demo2_TSC.png)
+
+2. `Test Suites/demo2/preProcess` calls [`Test Cases/demo2/preProcess`](Scripts/demo2/preProcess/Script1625627914911.groovy). The Test Case does initializing the output directory
+
+4. `Test Suites/demo2/processURL` calls [`Test Cases/demo2/processURL`](Scripts/demo2/processURL/Script1625627914915.groovy). The Test Case opens the URL in browser, takes screeshot, save the image into file. The URL will be retrieved as the value of `GlobalVariable.URL1`. Therefore it was necessary to execute `Test Suites/demo2/processURL` twice while specifying 2 Exceution Profiles `demoProductionEnvironment` and `demoDevelopmentEnvironment` for each.
+
+4. `Test Suites/demo2/postProcess` calls [`Test Cases/demo2/postProcess`](Scripts/demo2/postProcess/Script1625627914906.groovy). The Test Case compiles a HTML report, which looks like this:
+![demo2_html](docs/images/README2/demo2_html.png)
+
+#### Appreciation
+
+What do you think of this implementation? I think this is terribly complexed.
+
+A single Test Case [`Test Cases/demo1/takeScreenshotAndReport`](Scripts/demo1/takeScreenshotAndReport/Script1625628385149.groovy) could implement similar processing in a sigle script. On the other hand, the demo2 involves a Test Suite Collection, 3 Test Suite, 3 Test Cases. This lots of components. Why do I need them?
+
+Test Suite Collection is the only way provided by Katalon Studio when I want to apply 2 different Execution Profiles (`demoProductionEnvironment` and `demoDevelopmentEnvironment`) to a single script (for taking screenshots of URLs). This is the reasone why I needed this complication.
 
 ### demo3
 
 A Test Case script with Custom Keyword takes screenshots of a pair of URLs and compile a single report.
 
 
+
+
+
+I struggle for months and finally developed my [VisualTestingInKatalonStudio](https://github.com/kazurayam/VisualTestingInKatalonStudio) project. It is a compilated Katalon Studio project. Yes, it is too much complicated!
+
+Why the [VisualTestingInKatalonStudio](https://github.com/kazurayam/VisualTestingInKatalonStudio) project has got so moch complicated? --- because we do not have the `WebUI.loadExecutionProfile(String profileName)` keyword or its equivalent!
