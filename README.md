@@ -20,3 +20,6 @@ In most cases this scenario is enough. However, I encountered some cases where I
 2. I want to prepare a lot of Execution Profiles, choose a smaller sub-set of them, and apply them for a single test run. For example, I prepare 200 Execution Profiles, and choose 8 of them, and apply 8 to a test case run. See the article ["Applying Multiple Execution Profiles for a single test run"](README3.md)
 
 
+## API doc
+
+- [ExecutionProfilesLoader Groovydoc](https://kazurayam.github.io/ExecutionProfilesLoader/api/index.html)
