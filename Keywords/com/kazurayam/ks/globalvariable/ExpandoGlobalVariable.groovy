@@ -20,6 +20,13 @@ import internal.GlobalVariable
 import java.util.regex.Pattern
 import java.util.regex.Matcher
 
+/**
+ * The container of entities of GlobalVariable dynamically added by ExecutionProfilesLoader.
+ * This provides quick methods to retrieve the pairs of GlobalVariable name and values;
+ * both of statically defined ones and dynamically added ones.
+ * 
+ * @author kazurayam
+ */
 public class ExpandoGlobalVariable {
 
 	// https://docs.groovy-lang.org/latest/html/documentation/core-metaprogramming.html#_properties

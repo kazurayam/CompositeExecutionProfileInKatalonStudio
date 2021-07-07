@@ -16,7 +16,9 @@ import org.xml.sax.InputSource
 import groovy.xml.XmlUtil
 
 /**
- * <pre>
+ * A wrapper for an Execution Profile in XML text to be a Groovy class.
+ */
+/*
  &lt;?xml version="1.0" encoding="UTF-8"?>
  &lt;GlobalVariableEntities>
  &lt;description>&lt;/description>
@@ -34,9 +36,6 @@ import groovy.xml.XmlUtil
  &lt;name>DEBUG_MODE&lt;/name>
  &lt;/GlobalVariableEntity>
  &lt;/GlobalVariableEntities>
- * </pre>
- * 
- * @author kazurayam
  */
 public class ExecutionProfile {
 

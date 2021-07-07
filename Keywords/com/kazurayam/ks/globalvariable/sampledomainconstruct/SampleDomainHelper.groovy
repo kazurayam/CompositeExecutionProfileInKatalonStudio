@@ -1,24 +1,26 @@
-package com.kazurayam.ks.globalvariable
+package com.kazurayam.ks.globalvariable.sampledomainconstruct
 
+import com.kazurayam.ks.globalvariable.ExecutionProfile.GlobalVariableEntities
 import com.kazurayam.ks.globalvariable.sampledomain.Category
 import com.kazurayam.ks.globalvariable.sampledomain.Env
 import com.kazurayam.ks.globalvariable.sampledomain.IncludeSheets
 import com.kazurayam.ks.globalvariable.sampledomain.IncludeURLs
 import com.kazurayam.ks.globalvariable.sampledomain.SaveHTML
+import com.kazurayam.ks.globalvariable.ExecutionProfile
 
+/**
+ * Factory method to instantiate an ExecutionProfile.GlobalVariableEntities
+ * with com.kazurayam.ks.globalvariable.sampledomain objects
+ *
+ * @param env
+ * @param category
+ * @param sheets
+ * @param urls
+ * @param saveHTML
+ * @return
+ */
 public class SampleDomainHelper {
 
-	/**
-	 * Factory method to instantiate an ExecutionProfile.GlobalVariableEntities 
-	 * with com.kazurayam.ks.globalvariable.sampledomain objects
-	 *
-	 * @param env
-	 * @param category
-	 * @param sheets
-	 * @param urls
-	 * @param saveHTML
-	 * @return
-	 */
 	static ExecutionProfile.GlobalVariableEntities newInstance(
 			Env env, Category category, IncludeSheets sheets, IncludeURLs urls, SaveHTML saveHTML) {
 		ExecutionProfile.GlobalVariableEntities gve = new ExecutionProfile.GlobalVariableEntities()

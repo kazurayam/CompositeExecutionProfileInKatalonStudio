@@ -10,7 +10,7 @@ Let me show you an example of what I desire.
 1. I will have the `default` Execution Profile empty.
 2. I will create an Execution Profile named `ProductionEnv`. It will contain a GlobalVariable named `URL` with value `http://demoaut.katalon.com/`.
 3. I will create another Execution Profile named `MimicEnv`. It will contain a GlobalVariable named `URL` with value `http://demoaut-mimic.kazurayam.com/`.
-4. I will write a Test Case named `mininal`. The code will be as follows:
+4. I will write a Test Case named `mininal` while selecting the `default` profile. The script code will be as follows:
 ```
 import com.kms.katalon.core.webui.keyword.WebUiBuiltInKeywords as WebUI
 import internal.GlobalVariable as GlobalVariable
@@ -26,7 +26,7 @@ println "GlobalVariable.URL=" + GlobalVariable.URL
 
 ![minimal_model](docs/images/README2/minimal_model_of_my_desire.png)
 
-I hope to see the following output in the Console when I execute the script:
+When I execute the script, I hope to see the following output in the Console:
 
 ```
 GlobalVariable.URL=null
@@ -38,13 +38,48 @@ GlobalVariable.URL=http://demoaut-mimic.kazurayam.com
 
 Please note that the value of `GlobalVariable.URL` is dynamically updated by calling a Keyword `WebUI.loadExecutionProfile(String profileName)` in the Test Case script.
 
-But in fact, The `minimal` script will not compile because the keyword `WebUI.loadExecutionProfile()` is not supported by Katalon Studio.
+But in fact, The `minimal` script will not even compile because the keyword `WebUI.loadExecutionProfile()` is not supported by Katalon Studio.
 
-
+Why do I need it? --- I will tell it later as it requires a very long description.
 
 ## Solution
 
-
+I have developed a set of Groovy classes that enables my Test Case scripts to load Execption Profiles or to add/update GlobalVariables dynamically runtime. A distributable jar is provided. Once you plugin the jar into your Katalon Studio project, you can use Custom Keywords.
 
 ## Description
 
+### Downloading the jar
+
+Visit [the Releases page](https://github.com/kazurayam/ExecutionProfilesLoader/releases), find the latest version of `ExecutionProfilesLoader-x.x.x.jar`, download it.
+
+You should place the jar into the `Drivers` directory of your Katalon Studio project. Stop and restart KS in order to let KS acknowlege the added jar.
+
+### How to use it
+
+I have already showed a minimalistic example above. 
+
+1. Create a Exceution Profile named `ProductionEnv` with a GlobalVariable named `URL` in String type with value of `http://demoaut.katlaon.com/`.
+
+2. Create a Test Case with any name; e.g, `minimal`. The script should be:
+
+```
+CustomKeywords."com.kazurayam.ks.globalvariable.ExecutionProfilesLoader.loadProfile"("ProductionEnv")
+println "GlobalVariable.URL=" + GlobalVariable.URL
+```
+
+Or you can also write
+```
+import com.kazurayam.ks.globalvariable.ExecutionProfilesLoader
+new ExecutionProfilesLoader().loadProfile"("ProductionEnv")
+println "GlobalVariable.URL=" + GlobalVariable.URL
+```
+
+3. Execute the test case while you specify "default" Execution Profile. You should find the following output in the Console.
+
+```
+GlobalVariable.URL=http://demoaut.katalon.com/
+```
+
+
+
+## Long description of the Problem to solve

@@ -1,9 +1,9 @@
 package com.kazurayam.ks.globalvariable.sampledomain
 
 import com.kazurayam.ks.globalvariable.ExecutionProfile.GlobalVariableEntity as GVE
+import com.kazurayam.ks.globalvariable.sampledomainconstruct.SerializableToGlobalVariableEntity
 
 import groovy.json.JsonOutput
-import com.kazurayam.ks.globalvariable.SerializableToGlobalVariableEntity
 
 enum IncludeURLs implements SerializableToGlobalVariableEntity {
 

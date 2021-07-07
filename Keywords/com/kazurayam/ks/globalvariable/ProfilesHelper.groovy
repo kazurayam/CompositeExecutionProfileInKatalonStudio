@@ -7,6 +7,11 @@ import java.util.stream.Collectors
 import groovy.util.XmlSlurper
 import groovy.util.slurpersupport.GPathResult
 
+/**
+ * Provides some utility methods that are repeatedly used by ExecutionProfilesLoader and other classes.
+ * 
+ * @author kazuarayam
+ */
 public class ProfilesHelper {
 
 	private ProfilesHelper() {}

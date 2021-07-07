@@ -9,7 +9,13 @@ import com.kms.katalon.core.configuration.RunConfiguration
 
 import groovy.util.slurpersupport.GPathResult
 
-
+/**
+ * Enables Test Case scripts to load Execution Profile(s) dynamically.
+ * ExecutionProfilesLoader modifies the GlobalVariable object using Groovy's Meta-programming technique.
+ * It can add new entries into the GlobalVariables, update the value of GlobalVariables, clear the added entries. 
+ * 
+ * @author kazurayam
+ */
 public class ExecutionProfilesLoader {
 
 	private Path profilesDir
