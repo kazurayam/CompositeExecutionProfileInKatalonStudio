@@ -87,7 +87,10 @@ println "GlobalVariable.URL=" + GlobalVariable.URL
 GlobalVariable.URL=http://demoaut.katalon.com/
 ```
 
+### GroovyDoc
 
+You can read the API doc at 
+- https://kazurayam.github.io/ExecutionProfilesLoader/api/index.html
 
 ## Long story
 
