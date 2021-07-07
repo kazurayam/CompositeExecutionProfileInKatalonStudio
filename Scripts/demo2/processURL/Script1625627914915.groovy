@@ -12,7 +12,7 @@ import internal.GlobalVariable
  * process URLs given as GlobalVariables defined in the Execution Profiles
  */
 Path projectDir = Paths.get(RunConfiguration.getProjectDir())
-Path workDir = projectDir.resolve("build").resolve("demo1")
+Path workDir = projectDir.resolve("build").resolve("demo2")
 Files.createDirectories(workDir)
 
 WebUI.openBrowser('')

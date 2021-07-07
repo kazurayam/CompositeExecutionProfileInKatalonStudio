@@ -94,4 +94,44 @@ You can read the API doc at
 
 ## Long story
 
-Why do I want to load a Execution Profile by a Keyword in a Test Case? This question deserves a long description. I will write it here as a note for me ... it took me nearly 3 years to solve this problem.
+Why do I want a Keyword to load a Execution Profile in a Test Case? 
+
+This question deserves a long description. I will write it here as a note for me. In fact it took me nearly 3 years to solve this problem.
+
+
+![2ExecutionProfiles](docs/images/README2/2ExecutionProfiles.png)
+
+
+
+### demo1
+
+A few years ago when I got started with Katalon Studio ver 5.x, I made a small project. I wanted to automate a task of taking a lot of screenshots of a web system. Also I learned a Katalon Studio feature [Execution Profile](https://docs.katalon.com/katalon-studio/docs/execution-profile-v54.html). I thought it would be a good idea to store URL strings of the target web pages in a Execution Profile so that I can reuse a set of test script for multiple environments (Production, Development, Staging, etc).
+
+1. I made 2 Execution Profiles: `Profiles/demoProductionEnvironment` and `Profiles/demoDevelopmentEnvironment`. Both defines a GlobalVariable named `URL1`. Each had valudes of `http://demoaut.katalon.com` and `http://demoaut-mimic.kazurayam.com`. ![2ExecutionProfiles](docs/images/README2/2ExecutionProfiles.png)
+
+2. I made a Test Case script [Test Cases/demo1/takeScreenshotAndReport](Scripts/demo1/takeScreenshotAndReport/Script1625628385149.groovy). This script does the following processing:
+  - initialize a directory for outputs
+  - open browser, navigate to `GlobalVariable.URL1`
+  - take screenshot and save it int the output directory
+  - compile a html with which you can view the screenshot in browser.
+
+3. When you run the script `demo1/takeScreenshotAndReport` while you choose the Execution profile `demo1ProductionEnvironment`, you will obtain a HTML report which shows the screenshot of `http://demoaut.katalon.com/`.
+
+4. When you run the script `demo1/takeScreenshotAndReport` while you choose the Execution profile `demo1DevelopmentEnvrironment`, you will obtain a HTML report which shows the screenshot of `http://demoaut-mimic.kazurayam.com/`.
+
+5. The script `demo1/takeScreenshotAndReport` is unable to take screenshots of 2 URLs and compile a single HTML report which showd 2 screenshots together.
+
+
+
+### demo2
+
+The system had multiple environments. Let me say "Production Environment" and "Development Environement.
+
+
+A Test Suite Collection takes screenshots of a pair of URLs and compile a single report.
+
+### demo3
+
+A Test Case script with Custom Keyword takes screenshots of a pair of URLs and compile a single report.
+
+

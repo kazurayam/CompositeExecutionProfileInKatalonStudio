@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <TestSuiteEntity>
    <description></description>
-   <name>postProcess</name>
+   <name>preProcess</name>
    <tag></tag>
    <isRerun>false</isRerun>
    <mailRecipient></mailRecipient>
@@ -10,11 +10,11 @@
    <pageLoadTimeoutDefault>true</pageLoadTimeoutDefault>
    <rerunFailedTestCasesOnly>false</rerunFailedTestCasesOnly>
    <rerunImmediately>false</rerunImmediately>
-   <testSuiteGuid>a66c2ca7-751c-4d1f-bd88-28df9614664a</testSuiteGuid>
+   <testSuiteGuid>cf418790-94e8-4b51-82f5-18ab7d55602f</testSuiteGuid>
    <testCaseLink>
-      <guid>d3dd69c7-8d7c-423f-90fb-507567c6132e</guid>
+      <guid>3ccab72e-4c27-4ce2-85f8-d702ae88aa6e</guid>
       <isReuseDriver>false</isReuseDriver>
       <isRun>true</isRun>
-      <testCaseId>Test Cases/demo1/postProcess</testCaseId>
+      <testCaseId>Test Cases/demo2/preProcess</testCaseId>
    </testCaseLink>
 </TestSuiteEntity>

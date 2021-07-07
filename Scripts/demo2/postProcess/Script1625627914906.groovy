@@ -12,7 +12,7 @@ import com.kms.katalon.core.configuration.RunConfiguration
  * post-process : compile a report in HTML where you can view pais of page screenshots
  */
 Path projectDir = Paths.get(RunConfiguration.getProjectDir())
-Path workDir = projectDir.resolve("build").resolve("demo1")
+Path workDir = projectDir.resolve("build").resolve("demo2")
 Reporter reporter = new Reporter(workDir)
 
 for (subdir in Files.list(workDir)) {

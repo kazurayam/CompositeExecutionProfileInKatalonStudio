@@ -34,18 +34,26 @@ class Reporter {
 		imagePairs.add(imagePair)
 	}
 
+	void add(Path lonesome) {
+		imagePairs.add(new ImagePair(lonesome))
+	}
+
 	void report(Path html) {
 		def writer = new StringWriter()
 		def markup = new MarkupBuilder(writer)
 		markup.html {
 			body {
 				imagePairs.eachWithIndex { imagePair, index ->
-					h1("pair #${index + 1}")
+					h1("#${index + 1}")
 					table {
 						thead {
 							tr {
-								th(titleLeft)
-								th(titleRight)
+								if (imagePair.getExpected() != null) {
+									th(titleLeft)
+								}
+								if (imagePair.getActual() != null) {
+									th(titleRight)
+								}
 							}
 						}
 						tbody {
@@ -53,13 +61,13 @@ class Reporter {
 								td {
 									if (imagePair.getExpected() != null) {
 										img(src: imgDir.relativize(imagePair.getExpected()).toString(),
-											alt: titleLeft, width:"500px")
+										alt: titleLeft, width:"500px")
 									}
 								}
 								td {
 									if (imagePair.getActual() != null) {
 										img(src: imgDir.relativize(imagePair.getActual()).toString(),
-											alt: titleRight, width:"500px")
+										alt: titleRight, width:"500px")
 									}
 								}
 							}
