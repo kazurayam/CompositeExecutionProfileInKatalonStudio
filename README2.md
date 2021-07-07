@@ -38,7 +38,7 @@ GlobalVariable.URL=http://demoaut-mimic.kazurayam.com
 
 Please note that the value of `GlobalVariable.URL` is dynamically updated by calling the `WebUI.loadExecutionProfile(String profileName)` Keyword in the Test Case script. You can call that Keyword multiple times in a Test Case. An Execution Profile may contain multiple GlobalVariables (name, value). All of these loaded GlobalVariables should be added/updated by the Keyword call.
 
-Similarly similar keywords `WS.loadExecutionProfile(String profileName)` and `Mobile.loadExecutionProfile(String profileName)` are also desired. These will do the same thing.
+I would desire similar keywords `WS.loadExecutionProfile(String profileName)` and `Mobile.loadExecutionProfile(String profileName)` as well. These will do the same thing.
 
 Why do I need it? --- I will tell it later as it requires a very long description.
 
@@ -60,23 +60,28 @@ You should place the jar into the `Drivers` directory of your Katalon Studio pro
 
 I have already showed a minimalistic example above. 
 
-1. Create a Exceution Profile named `ProductionEnv` with a GlobalVariable named `URL` in String type with value of `http://demoaut.katlaon.com/`.
+1. Make sure you have an Execution Profile named `default`, which does NOT contain a GlobalVariable named `URL`.
 
-2. Create a Test Case with any name; e.g, `minimal`. The script should be:
+2. Create an Exceution Profile named `ProductionEnv` with a GlobalVariable named `URL` of String type with value of `http://demoaut.katlaon.com/`.
+
+3. Create a Test Case with any name; e.g, `minimal`. The script should be:
 
 ```
 CustomKeywords."com.kazurayam.ks.globalvariable.ExecutionProfilesLoader.loadProfile"("ProductionEnv")
+
 println "GlobalVariable.URL=" + GlobalVariable.URL
 ```
 
-3. or you can also write
+4. or you can also write
 ```
-import com.kazurayam.ks.globalvariable.ExecutionProfilesLoader
-new ExecutionProfilesLoader().loadProfile"("ProductionEnv")
+import com.kazurayam.ks.globalvariable.
+
+new ExecutionProfilesLoader().loadProfile("ProductionEnv")
+
 println "GlobalVariable.URL=" + GlobalVariable.URL
 ```
 
-4. Execute the test case while you specify "default" Execution Profile. You should find the following output in the Console. The value `http://demoaut.katalon.com/` is loaded from the `ProductionEnv` Execution Profile by the Custom keyword.
+5. Run the "minimal" Test Case while you choose the "default" Execution Profile. You should find the following output in the Console. The value `http://demoaut.katalon.com/` is loaded from the `ProductionEnv` Execution Profile by the Custom keyword.
 
 ```
 GlobalVariable.URL=http://demoaut.katalon.com/
@@ -87,6 +92,3 @@ GlobalVariable.URL=http://demoaut.katalon.com/
 ## Long story
 
 Why do I want to load a Execution Profile by a Keyword in a Test Case? This question deserves a long description. I will write it here as a note for me ... it took me nearly 3 years to solve this problem.
-
-
-
