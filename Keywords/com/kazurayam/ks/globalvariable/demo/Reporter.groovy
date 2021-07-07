@@ -51,12 +51,16 @@ class Reporter {
 						tbody {
 							tr {
 								td {
-									img(src: imgDir.relativize(imagePair.getExpected()).toString(),
-									alt: titleLeft, width:"500px")
+									if (imagePair.getExpected() != null) {
+										img(src: imgDir.relativize(imagePair.getExpected()).toString(),
+											alt: titleLeft, width:"500px")
+									}
 								}
 								td {
-									img(src: imgDir.relativize(imagePair.getActual()).toString(),
-									alt: titleRight, width:"500px")
+									if (imagePair.getActual() != null) {
+										img(src: imgDir.relativize(imagePair.getActual()).toString(),
+											alt: titleRight, width:"500px")
+									}
 								}
 							}
 						}

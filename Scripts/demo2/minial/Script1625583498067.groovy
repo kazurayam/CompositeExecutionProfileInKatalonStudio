@@ -9,7 +9,7 @@ println "before loading:"
 println "additional GlobalVariables: " + ExpandoGlobalVariable.mapOfAdditionalGlobalVariablesAsString()
 
 // do load an Execution Profile dynamically
-ExecutionProfilesLoader.loadProfile("demoProductionEnv")
+new ExecutionProfilesLoader().loadProfile("demoProductionEnv")
 
 println "after loading demoProductionEnv:"
 println "additional GlobalVariables: " + ExpandoGlobalVariable.mapOfAdditionalGlobalVariablesAsString()
