@@ -132,6 +132,20 @@ if (location.href.indexOf('is-external=true') == -1) {
  into the internal.GlobalVarialbe runtime.</div></dd>
 <dt><span class="strong"><a href="com/kazurayam/ks/globalvariable/ExpandoGlobalVariable.html#addGlobalVariables(Map<String, Object>)" title="Method in ExpandoGlobalVariable">addGlobalVariables(Map&lt;String, Object&gt;)</a></span> - Method in <a href="com/kazurayam/ks/globalvariable/ExpandoGlobalVariable.html">ExpandoGlobalVariable</a>
 </dt><dd> <div class="block">@param entries</div></dd>
+<dt><span class="strong"><a href="com/kazurayam/ks/globalvariable/ExpandoGlobalVariable.html#additionalGlobalVariablesAsMap()" title="Method in ExpandoGlobalVariable">additionalGlobalVariablesAsMap()</a></span> - Method in <a href="com/kazurayam/ks/globalvariable/ExpandoGlobalVariable.html">ExpandoGlobalVariable</a>
+</dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="com/kazurayam/ks/globalvariable/ExpandoGlobalVariable.html#additionalGlobalVariablesAsString()" title="Method in ExpandoGlobalVariable">additionalGlobalVariablesAsString()</a></span> - Method in <a href="com/kazurayam/ks/globalvariable/ExpandoGlobalVariable.html">ExpandoGlobalVariable</a>
+</dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="com/kazurayam/ks/globalvariable/ExpandoGlobalVariable.html#additionalGlobalVariablesKeySet()" title="Method in ExpandoGlobalVariable">additionalGlobalVariablesKeySet()</a></span> - Method in <a href="com/kazurayam/ks/globalvariable/ExpandoGlobalVariable.html">ExpandoGlobalVariable</a>
+</dt><dd> <div class="block">inspect the 'internal.GlobalVariable' object to find the GlobalVariables contained,
+ return the list of their names.</div></dd>
+<dt><span class="strong"><a href="com/kazurayam/ks/globalvariable/ExpandoGlobalVariable.html#allGlobalVariablesAsMap()" title="Method in ExpandoGlobalVariable">allGlobalVariablesAsMap()</a></span> - Method in <a href="com/kazurayam/ks/globalvariable/ExpandoGlobalVariable.html">ExpandoGlobalVariable</a>
+</dt><dd> <div class="block">transform the GlobalVariable <name, vale> pairs as a Map.</div></dd>
+<dt><span class="strong"><a href="com/kazurayam/ks/globalvariable/ExpandoGlobalVariable.html#allGlobalVariablesAsString()" title="Method in ExpandoGlobalVariable">allGlobalVariablesAsString()</a></span> - Method in <a href="com/kazurayam/ks/globalvariable/ExpandoGlobalVariable.html">ExpandoGlobalVariable</a>
+</dt><dd> <div class="block">pretty-printed JSON text of Map returned by mapOfGlobalVariables()</div></dd>
+<dt><span class="strong"><a href="com/kazurayam/ks/globalvariable/ExpandoGlobalVariable.html#allGlobalVariablesKeySet()" title="Method in ExpandoGlobalVariable">allGlobalVariablesKeySet()</a></span> - Method in <a href="com/kazurayam/ks/globalvariable/ExpandoGlobalVariable.html">ExpandoGlobalVariable</a>
+</dt><dd> <div class="block">inspect the 'internal.GlobalVariable' object to find the GlobalVariables contained,
+ return the list of their names.</div></dd>
 <dt><span class="strong"><a href="com/kazurayam/ks/globalvariable/ExecutionProfilesLoader.html#alreadyDone" title="Field in ExecutionProfilesLoader">alreadyDone</a></span> - Field in <a href="com/kazurayam/ks/globalvariable/ExecutionProfilesLoader.html">ExecutionProfilesLoader</a>
 </dt><dd> <div class="block"></div></dd>
 </dl>
@@ -153,7 +167,8 @@ if (location.href.indexOf('is-external=true') == -1) {
 <dt><span class="strong"><a href="com/kazurayam/ks/globalvariable/ExecutionProfilesLoader.html#clear()" title="Method in ExecutionProfilesLoader">clear()</a></span> - Method in <a href="com/kazurayam/ks/globalvariable/ExecutionProfilesLoader.html">ExecutionProfilesLoader</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="com/kazurayam/ks/globalvariable/ExpandoGlobalVariable.html#clear()" title="Method in ExpandoGlobalVariable">clear()</a></span> - Method in <a href="com/kazurayam/ks/globalvariable/ExpandoGlobalVariable.html">ExpandoGlobalVariable</a>
-</dt><dd> <div class="block"></div></dd>
+</dt><dd> <div class="block">Clear properties added to GlobalVariables by addGlobalVariable() method.
+ </div></dd>
 </dl>
 
     
@@ -205,7 +220,7 @@ if (location.href.indexOf('is-external=true') == -1) {
 <dt><span class="strong"><a href="com/kazurayam/ks/globalvariable/ExecutionProfilesLoader.html#ExecutionProfilesLoader(java.nio.file.Path)" title="Constructor in ExecutionProfilesLoader">ExecutionProfilesLoader(Path)</a></span> - Constructor in <a href="com/kazurayam/ks/globalvariable/ExecutionProfilesLoader.html">ExecutionProfilesLoader</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="com/kazurayam/ks/globalvariable/ExpandoGlobalVariable.html" title="Class in com.kazurayam.ks.globalvariable">ExpandoGlobalVariable</a></span> - Class in <a href="./com/kazurayam/ks/globalvariable/package-summary.html">com.kazurayam.ks.globalvariable</a>
-</dt><dd><div class="block">The container of entities of GlobalVariable dynamically added by ExecutionProfilesLoader.
+</dt><dd><div class="block">The container of properties of GlobalVariable dynamically added by ExecutionProfilesLoader.
  </div></dd>
 </dl>
 
@@ -221,15 +236,9 @@ if (location.href.indexOf('is-external=true') == -1) {
 <h2 class="title">G</h2>
 <dl>
 
-<dt><span class="strong"><a href="com/kazurayam/ks/globalvariable/ExpandoGlobalVariable.html#getAccessorName(java.lang.String)" title="Method in ExpandoGlobalVariable">getAccessorName(String)</a></span> - Method in <a href="com/kazurayam/ks/globalvariable/ExpandoGlobalVariable.html">ExpandoGlobalVariable</a>
-</dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="com/kazurayam/ks/globalvariable/ExecutionProfile.html#getContent()" title="Method in ExecutionProfile">getContent()</a></span> - Method in <a href="com/kazurayam/ks/globalvariable/ExecutionProfile.html">ExecutionProfile</a>
 </dt><dd> <div class="block"></div></dd>
-<dt><span class="strong"><a href="com/kazurayam/ks/globalvariable/ExpandoGlobalVariable.html#getGetterName(java.lang.String)" title="Method in ExpandoGlobalVariable">getGetterName(String)</a></span> - Method in <a href="com/kazurayam/ks/globalvariable/ExpandoGlobalVariable.html">ExpandoGlobalVariable</a>
-</dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="com/kazurayam/ks/globalvariable/ExpandoGlobalVariable.html#getGlobalVariableValue(java.lang.String)" title="Method in ExpandoGlobalVariable">getGlobalVariableValue(String)</a></span> - Method in <a href="com/kazurayam/ks/globalvariable/ExpandoGlobalVariable.html">ExpandoGlobalVariable</a>
-</dt><dd> <div class="block"></div></dd>
-<dt><span class="strong"><a href="com/kazurayam/ks/globalvariable/ExpandoGlobalVariable.html#getSetterName(java.lang.String)" title="Method in ExpandoGlobalVariable">getSetterName(String)</a></span> - Method in <a href="com/kazurayam/ks/globalvariable/ExpandoGlobalVariable.html">ExpandoGlobalVariable</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="com/kazurayam/ks/globalvariable/GlobalVariablesLoader.html" title="Class in com.kazurayam.ks.globalvariable">GlobalVariablesLoader</a></span> - Class in <a href="./com/kazurayam/ks/globalvariable/package-summary.html">com.kazurayam.ks.globalvariable</a>
 </dt><dd><div class="block">An adapter to ExecutionProfilesLoader class.
@@ -268,15 +277,6 @@ if (location.href.indexOf('is-external=true') == -1) {
 <h2 class="title">K</h2>
 <dl>
 
-<dt><span class="strong"><a href="com/kazurayam/ks/globalvariable/ExpandoGlobalVariable.html#keySetOfAdditionalGlobalVariables()" title="Method in ExpandoGlobalVariable">keySetOfAdditionalGlobalVariables()</a></span> - Method in <a href="com/kazurayam/ks/globalvariable/ExpandoGlobalVariable.html">ExpandoGlobalVariable</a>
-</dt><dd> <div class="block">inspect the 'internal.GlobalVariable' object to find the GlobalVariables contained,
- return the list of their names.</div></dd>
-<dt><span class="strong"><a href="com/kazurayam/ks/globalvariable/ExpandoGlobalVariable.html#keySetOfGlobalVariables()" title="Method in ExpandoGlobalVariable">keySetOfGlobalVariables()</a></span> - Method in <a href="com/kazurayam/ks/globalvariable/ExpandoGlobalVariable.html">ExpandoGlobalVariable</a>
-</dt><dd> <div class="block">inspect the 'internal.GlobalVariable' object to find the GlobalVariables contained,
- return the list of their names.</div></dd>
-<dt><span class="strong"><a href="com/kazurayam/ks/globalvariable/ExpandoGlobalVariable.html#keySetOfStaticGlobalVariables()" title="Method in ExpandoGlobalVariable">keySetOfStaticGlobalVariables()</a></span> - Method in <a href="com/kazurayam/ks/globalvariable/ExpandoGlobalVariable.html">ExpandoGlobalVariable</a>
-</dt><dd> <div class="block">inspect the 'internal.GlobalVariable' object to find the GlobalVariables contained,
- return the list of their names.</div></dd>
 </dl>
 
     
@@ -299,18 +299,6 @@ if (location.href.indexOf('is-external=true') == -1) {
 <h2 class="title">M</h2>
 <dl>
 
-<dt><span class="strong"><a href="com/kazurayam/ks/globalvariable/ExpandoGlobalVariable.html#mapOfAdditionalGlobalVariables()" title="Method in ExpandoGlobalVariable">mapOfAdditionalGlobalVariables()</a></span> - Method in <a href="com/kazurayam/ks/globalvariable/ExpandoGlobalVariable.html">ExpandoGlobalVariable</a>
-</dt><dd> <div class="block"></div></dd>
-<dt><span class="strong"><a href="com/kazurayam/ks/globalvariable/ExpandoGlobalVariable.html#mapOfAdditionalGlobalVariablesAsString()" title="Method in ExpandoGlobalVariable">mapOfAdditionalGlobalVariablesAsString()</a></span> - Method in <a href="com/kazurayam/ks/globalvariable/ExpandoGlobalVariable.html">ExpandoGlobalVariable</a>
-</dt><dd> <div class="block"></div></dd>
-<dt><span class="strong"><a href="com/kazurayam/ks/globalvariable/ExpandoGlobalVariable.html#mapOfGlobalVariables()" title="Method in ExpandoGlobalVariable">mapOfGlobalVariables()</a></span> - Method in <a href="com/kazurayam/ks/globalvariable/ExpandoGlobalVariable.html">ExpandoGlobalVariable</a>
-</dt><dd> <div class="block">transform the GlobalVariable <name, vale> pairs as a Map.</div></dd>
-<dt><span class="strong"><a href="com/kazurayam/ks/globalvariable/ExpandoGlobalVariable.html#mapOfGlobalVariablesAsString()" title="Method in ExpandoGlobalVariable">mapOfGlobalVariablesAsString()</a></span> - Method in <a href="com/kazurayam/ks/globalvariable/ExpandoGlobalVariable.html">ExpandoGlobalVariable</a>
-</dt><dd> <div class="block">pretty-printed JSON text of Map returned by mapOfGlobalVariables()</div></dd>
-<dt><span class="strong"><a href="com/kazurayam/ks/globalvariable/ExpandoGlobalVariable.html#mapOfStaticGlobalVariables()" title="Method in ExpandoGlobalVariable">mapOfStaticGlobalVariables()</a></span> - Method in <a href="com/kazurayam/ks/globalvariable/ExpandoGlobalVariable.html">ExpandoGlobalVariable</a>
-</dt><dd> <div class="block"></div></dd>
-<dt><span class="strong"><a href="com/kazurayam/ks/globalvariable/ExpandoGlobalVariable.html#mapOfStaticGlobalVariablesAsString()" title="Method in ExpandoGlobalVariable">mapOfStaticGlobalVariablesAsString()</a></span> - Method in <a href="com/kazurayam/ks/globalvariable/ExpandoGlobalVariable.html">ExpandoGlobalVariable</a>
-</dt><dd> <div class="block"></div></dd>
 </dl>
 
     
@@ -370,6 +358,13 @@ if (location.href.indexOf('is-external=true') == -1) {
 <dt><span class="strong"><a href="com/kazurayam/ks/globalvariable/ProfilesHelper.html#selectProfiles(java.nio.file.Path, java.lang.String)" title="Method in ProfilesHelper">selectProfiles(Path, String)</a></span> - Method in <a href="com/kazurayam/ks/globalvariable/ProfilesHelper.html">ProfilesHelper</a>
 </dt><dd> <div class="block">scan the Profiles directory and find files
  of which name matches the pattern '&lt;prefix&g;tXXXX.glbl'</div></dd>
+<dt><span class="strong"><a href="com/kazurayam/ks/globalvariable/ExpandoGlobalVariable.html#staticGlobalVariablesAsMap()" title="Method in ExpandoGlobalVariable">staticGlobalVariablesAsMap()</a></span> - Method in <a href="com/kazurayam/ks/globalvariable/ExpandoGlobalVariable.html">ExpandoGlobalVariable</a>
+</dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="com/kazurayam/ks/globalvariable/ExpandoGlobalVariable.html#staticGlobalVariablesAsString()" title="Method in ExpandoGlobalVariable">staticGlobalVariablesAsString()</a></span> - Method in <a href="com/kazurayam/ks/globalvariable/ExpandoGlobalVariable.html">ExpandoGlobalVariable</a>
+</dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="com/kazurayam/ks/globalvariable/ExpandoGlobalVariable.html#staticGlobalVariablesKeySet()" title="Method in ExpandoGlobalVariable">staticGlobalVariablesKeySet()</a></span> - Method in <a href="com/kazurayam/ks/globalvariable/ExpandoGlobalVariable.html">ExpandoGlobalVariable</a>
+</dt><dd> <div class="block">inspect the 'internal.GlobalVariable' object to find the GlobalVariables contained,
+ return the list of their names.</div></dd>
 </dl>
 
     

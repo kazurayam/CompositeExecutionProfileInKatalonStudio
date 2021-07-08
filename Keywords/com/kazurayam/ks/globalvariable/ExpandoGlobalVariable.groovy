@@ -47,26 +47,38 @@ public class ExpandoGlobalVariable {
 	 * @param value
 	 */
 	static int addGlobalVariable(String name, Object value) {
-		// characters in the name must be valid for a Groovy variable name
+		// the characters in the name must be valid as a Groovy variable name
 		validateVariableName(name)
 
-		// obtain the ExpandoMetaClass of the internal.GlobalVariable class
-		MetaClass mc = GlobalVariable.metaClass
+		// check if the "name" is declared as a property of internal.GlobalVariable object statically or not
+		if (staticGlobalVariablesKeySet().contains(name)) {
+			// Yes, the internal.GlobalVariable object has "name" already.
+			// No need to add the name. Just update the value
+			GlobalVariable[name] = value
 
-		// register the Getter method for the name
-		String getterName = getGetterName(name)
-		mc.'static'."${getterName}" = { -> return additionalProperties[name] }
+			return 0
 
-		// register the Setter method for the name
-		String setterName = getSetterName(name)
-		mc.'static'."${setterName}" = { newValue ->
-			additionalProperties[name] = newValue
+		} else {
+			// No, the "name" is not present. Let's add a new property using Groovy's ExpandoMetaClass
+
+			// obtain the ExpandoMetaClass of the internal.GlobalVariable class
+			MetaClass mc = GlobalVariable.metaClass
+
+			// register the Getter method for the name
+			String getterName = getGetterName(name)
+			mc.'static'."${getterName}" = { -> return additionalProperties[name] }
+
+			// register the Setter method for the name
+			String setterName = getSetterName(name)
+			mc.'static'."${setterName}" = { newValue ->
+				additionalProperties[name] = newValue
+			}
+
+			// store the value into the storage
+			additionalProperties.put(name, value)
+
+			return 1
 		}
-
-		// store the value into the storage
-		additionalProperties.put(name, value)
-
-		return 1
 	}
 
 
@@ -329,7 +341,7 @@ public class ExpandoGlobalVariable {
 		writer.flush()
 	}
 
-	
+
 	static String toJSON() {
 		StringWriter sw = new StringWriter()
 		Set<String> names = allGlobalVariablesKeySet()

@@ -65,28 +65,45 @@ public class ExpandoGlobalVariableTest {
 	}
 
 	/**
-	 * additionalGlobalVariablesKeySet() should return a Set<String> of GlobalVariable names which were added by
+	 * allGlobalVariablesKeySet() should return a Set<String> of GlobalVariable names which were added by
 	 * ExecutionProfilesLoader.loadProfiles().
 	 * Here we assume that the "demoProductionEnvironment" Execution Profile is loaded and hence a GlobalVaraible.URL1 should be present 
 	 */
 	@Test
-	void test_additionalGlobalVariablesKeySet() {
+	void test_allGlobalVariablesKeySet() {
 		EGV.clear()
 		ExecutionProfilesLoader epl = new ExecutionProfilesLoader()
 		epl.loadProfile("demoProductionEnvironment")
-		Set<String> names = EGV.additionalGlobalVariablesKeySet()
-		assertTrue("expected 1 or more additional GlobalVariable(s) but not found", names.size() > 0)
-		assertTrue("expected GlobalVariable.URL1 but not found", names.contains('URL1'))
+		Set<String> names = EGV.allGlobalVariablesKeySet()
+		assertTrue("expected 1 or more additional GlobalVariable(s) but not found. names=${names}", names.size() > 0)
+		assertTrue("expected GlobalVariable.URL1 but not found. names=${names}", names.contains('URL1'))
+	}
+
+	@Test
+	void test_allGlobalVariablesAsString() {
+		EGV.clear()
+		ExecutionProfilesLoader epl = new ExecutionProfilesLoader()
+		epl.loadProfile("demoProductionEnvironment")
+		String json = EGV.allGlobalVariablesAsString()
+		assertTrue("expected \"URL1\" is contained in the json but not found. json=${json}", json.contains('URL1'))
+	}
+
+	@Test
+	void test_additionalGlobalVariablesKeySet() {
+		EGV.clear()
+		EGV.addGlobalVariable("test_additionalGlobalVariablesKeySet_fixture", "foo")
+		Set<String> names = EGV.allGlobalVariablesKeySet()
+		assertTrue("expected 1 or more additional GlobalVariable(s) but not found. names=${names}", names.size() > 0)
 	}
 
 	@Test
 	void test_additionalGlobalVariablesAsString() {
 		EGV.clear()
-		ExecutionProfilesLoader epl = new ExecutionProfilesLoader()
-		epl.loadProfile("demoProductionEnvironment")
-		String json = EGV.additionalGlobalVariablesAsString()
-		println "[test_mapOfAdditionalGlobalVariablesAsString] json: ${json}"
-		assertTrue("expected \"URL1\" is contained in the json but not found:" + json, json.contains('URL1'))
+		String methodName = "test_additionalGlobalVariablesAsString_fixture"
+		EGV.addGlobalVariable(methodName, "bar")
+		String json = EGV.allGlobalVariablesAsString()
+		assertTrue("expected ${methodName} is contained in the json but not found. json=${json}",
+			json.contains(methodName))
 	}
 
 
