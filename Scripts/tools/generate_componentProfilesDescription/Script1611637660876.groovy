@@ -7,7 +7,7 @@ import org.apache.commons.io.FileUtils
 import com.kazurayam.ks.globalvariable.ProfilesHelper as PH
 import com.kms.katalon.core.configuration.RunConfiguration
 
-import groovy.xml.slurpersupport.GPathResult
+import groovy.util.slurpersupport.GPathResult
 
 /**
  *

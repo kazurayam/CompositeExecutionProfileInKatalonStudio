@@ -10,7 +10,7 @@ import java.nio.file.Paths
 
 import com.kazurayam.ks.globalvariable.ExecutionProfile
 import com.kazurayam.ks.globalvariable.ProfilesHelper as PH
-import com.kazurayam.ks.globalvariable.SampleDomainHelper
+import com.kazurayam.ks.globalvariable.sampledomainconstruct.SampleDomainHelper
 import com.kms.katalon.core.configuration.RunConfiguration
 import org.apache.commons.io.FileUtils
 

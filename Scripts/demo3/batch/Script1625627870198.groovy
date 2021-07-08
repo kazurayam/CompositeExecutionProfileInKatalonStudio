@@ -34,14 +34,14 @@ int max = 1;
 for (int i = 1; i <= max; i++) {
 	
 	CustomKeywords."com.kazurayam.ks.globalvariable.ExecutionProfilesLoader.loadProfile"("demoProductionEnvironment")
-	println("demoProductionEnv: " + ExpandoGlobalVariable.mapOfAdditionalGlobalVariablesAsString())
+	println("demoProductionEnv: " + ExpandoGlobalVariable.additionalGlobalVariablesAsString())
 	
 	URL leftURL = new URL(GlobalVariable["URL${i}"])
 	Path leftFile = workDir.resolve(leftURL.getHost().toString().replace(".", "_") + ".png")
 	shootAndSave(leftURL, leftFile)
 
 	CustomKeywords."com.kazurayam.ks.globalvariable.ExecutionProfilesLoader.loadProfile"("demoDevelopEnvironment")
-	println("demoMimicEnv: " + ExpandoGlobalVariable.mapOfAdditionalGlobalVariablesAsString())
+	println("demoMimicEnv: " + ExpandoGlobalVariable.additionalGlobalVariablesAsString())
 	
 	URL rightURL = new URL(GlobalVariable["URL${i}"])
 	Path rightFile = workDir.resolve(rightURL.getHost().toString().replace(".", "_") + ".png")

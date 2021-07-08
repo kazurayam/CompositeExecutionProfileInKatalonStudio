@@ -36,6 +36,6 @@ public class ProfilesHelper {
 
 	static GPathResult parseProfile(Path profile) {
 		XmlSlurper slurper = new XmlSlurper()
-		return slurper.parse(profile)
+		return slurper.parse(profile.toFile())
 	}
 }

@@ -21,7 +21,7 @@ import java.util.regex.Pattern
 import java.util.regex.Matcher
 
 /**
- * The container of entities of GlobalVariable dynamically added by ExecutionProfilesLoader.
+ * The container of properties of GlobalVariable dynamically added by ExecutionProfilesLoader.
  * This provides quick methods to retrieve the pairs of GlobalVariable name and values;
  * both of statically defined ones and dynamically added ones.
  * 
@@ -33,134 +33,6 @@ public class ExpandoGlobalVariable {
 	static final Map<String, Object> additionalProperties = Collections.synchronizedMap([:])
 
 	private ExpandoGlobalVariable() {}
-
-	/**
-	 * inspect the 'internal.GlobalVariable' object to find the GlobalVariables contained,
-	 * return the list of their names.
-	 * 
-	 * The list will include 2 types of GlobalVariables.
-	 * 
-	 * 1. GlobalVariables statically defined in the Execution Profile which was applied 
-	 *    to the Test Case run. In this category there are 2 types of GlobalVariable:
-	 *    
-	 *    a) GlobalVariables defined in the Profile actually applied to the test case execution.
-	 *    b) GlobalVariables defined in the "default" Profile.
-	 *    c) GlobalVariables defined in any of Profiles which are NOT applied to the test case execution.
-	 *    
-	 *    The a) and b) type of GlobalVariable will have some meaningful value.
-	 *    But the c) type will always have 'null' value.
-	 * 
-	 * 2. GlobalVariables dynamically added into the ExpandoGlobalVariable by calling 
-	 *    ExpandoGlobalVariable.addGlobalVariable(name,value) or equivalently
-	 *    ExecutionProfilesLoader.loadProfile(name)
-	 */
-	static SortedSet<String> keySetOfGlobalVariables() {
-		Set<String> names = keySetOfStaticGlobalVariables()
-		List<String> result = names.stream()
-				.filter { n ->
-					! additionalProperties.containsKey(n)
-				}
-				.collect(Collectors.toList())
-		result.addAll(keySetOfAdditionalGlobalVariables())
-		SortedSet<String> sorted = new TreeSet()
-		sorted.addAll(result)
-		return sorted
-	}
-
-	/**
-	 * transform the GlobalVariable <name, vale> pairs as a Map. 
-	 */
-	static Map<String, Object> mapOfGlobalVariables() {
-		SortedSet<String> names = keySetOfGlobalVariables()
-		Map<String, Object> map = new HashMap<String, Object>()
-		for (name in names) {
-			map.put(name, GlobalVariable[name])
-		}
-		return map
-	}
-
-	/**
-	 * pretty-printed JSON text of Map returned by mapOfGlobalVariables()
-	 * 
-	 * @return
-	 */
-	static String mapOfGlobalVariablesAsString() {
-		Gson gson = new GsonBuilder().setPrettyPrinting().create()
-		gson.toJson(mapOfGlobalVariables())
-	}
-
-	/**
-	 * inspect the 'internal.GlobalVariable' object to find the GlobalVariables contained,
-	 * return the list of their names.
-	 * 
-	 * The list will include only the GlobalVariables statically defined in the Execution Profile which was applied 
-	 *    to this time of Test Case run.
-	 * 
-	 * The list will NOT include the GlobalVariables dynamically added by calling 
-	 *    ExpandoGlobalVariable.addGlobalVariable(name,value)
-	 * @return
-	 */
-	static SortedSet<String> keySetOfStaticGlobalVariables() {
-		// getDelaredFields() return fields both of static and additional
-		Set<Field> fields = GlobalVariable.class.getDeclaredFields() as Set<Field>
-		Set<String> result = fields.stream()
-				.filter { f ->
-					isPublic(f.modifiers) &&
-							isStatic(f.modifiers) &&
-							! isTransient(f.modifiers)
-				}
-				.map { f -> f.getName() }
-				.collect(Collectors.toSet())
-		SortedSet<String> sorted = new TreeSet()
-		sorted.addAll(result)
-		return sorted
-	}
-
-	static Map<String, Object> mapOfStaticGlobalVariables() {
-		SortedSet<String> names = keySetOfStaticGlobalVariables()
-		Map<String, Object> map = new HashMap<String, Object>()
-		for (name in names) {
-			map.put(name, GlobalVariable[name])
-		}
-		return map
-	}
-
-	static String mapOfStaticGlobalVariablesAsString() {
-		Gson gson = new GsonBuilder().setPrettyPrinting().create()
-		gson.toJson(mapOfStaticGlobalVariables())
-	}
-
-	/**
-	 * inspect the 'internal.GlobalVariable' object to find the GlobalVariables contained,
-	 * return the list of their names.
-	 *
-	 * The list will include only GlobalVariables that are added into the ExpandoGlobalVariable by calling
-	 *    ExpandoGlobalVariable.addGlobalVariable(name,value) or equivalently
-	 *    ExecutionProfilesLoader.loadProfile(name).
-	 * 
-	 * The list will NOT include the GlobalVariables statically defined in the Execution Profile which was applied
-	 *    to the Test Case run.
-	 */
-	static SortedSet<String> keySetOfAdditionalGlobalVariables() {
-		SortedSet<String> sorted = new TreeSet<String>()
-		sorted.addAll(additionalProperties.keySet())
-		return sorted
-	}
-
-	static Map<String, Object> mapOfAdditionalGlobalVariables() {
-		SortedSet<String> names = keySetOfAdditionalGlobalVariables()
-		Map<String, Object> map = new HashMap<String, Object>()
-		for (name in names) {
-			map.put(name, GlobalVariable[name])
-		}
-		return map
-	}
-
-	static String mapOfAdditionalGlobalVariablesAsString() {
-		Gson gson = new GsonBuilder().setPrettyPrinting().create()
-		gson.toJson(mapOfAdditionalGlobalVariables())
-	}
-
 
 	/**
 	 * insert a public static property of type java.lang.Object
@@ -197,15 +69,17 @@ public class ExpandoGlobalVariable {
 		return 1
 	}
 
-	static String getGetterName(String name) {
+
+	private static String getGetterName(String name) {
 		return 'get' + getAccessorName(name)
 	}
 
-	static String getSetterName(String name) {
+	private static String getSetterName(String name) {
 		return 'set' + getAccessorName(name)
 	}
 
-	static String getAccessorName(String name) {
+
+	private static String getAccessorName(String name) {
 		return ((CharSequence)name).capitalize()
 	}
 
@@ -215,13 +89,14 @@ public class ExpandoGlobalVariable {
 	 * 1) should not starts with digits [0-9]
 	 * 2) should not starts with punctuations [$_]
 	 * 3) if the 1st character is upper case, then the second character MUST NOT be lower case
-	 * 
+	 *
 	 * @param name
 	 * @throws IllegalArgumentException
 	 */
-	static Pattern PTTN_LEADING_DIGITS = Pattern.compile('^[0-9]')
-	static Pattern PTTN_LEADING_PUNCTUATIONS = Pattern.compile('^[$_]')
-	static Pattern PTTN_UPPER_LOWER    = Pattern.compile('^[A-Z][a-z]')
+	private static Pattern PTTN_LEADING_DIGITS = Pattern.compile('^[0-9]')
+	private static Pattern PTTN_LEADING_PUNCTUATIONS = Pattern.compile('^[$_]')
+	private static Pattern PTTN_UPPER_LOWER    = Pattern.compile('^[A-Z][a-z]')
+
 
 	static void validateVariableName(String name) {
 		Objects.requireNonNull(name)
@@ -236,8 +111,9 @@ public class ExpandoGlobalVariable {
 		}
 	}
 
+
 	/**
-	 * 
+	 *
 	 * @param entries
 	 * @return the number of entries which have been dynamically added as GlobalVariable
 	 */
@@ -249,28 +125,6 @@ public class ExpandoGlobalVariable {
 		return count
 	}
 
-	static void clear() {
-		additionalProperties.clear()
-	}
-
-	/**
-	 * @return true if GlobalVarialbe.name is defined either in 2 places
-	 * 1. statically predefined in the Execution Profile
-	 * 2. dynamically added by ExpandoGlobalVariable.addGlobalVariable(name, value) call
-	 */
-	static boolean isGlobalVariablePresent(String name) {
-		return keySetOfGlobalVariables().contains(name)
-	}
-
-	static Object getGlobalVariableValue(String name) {
-		if (keySetOfAdditionalGlobalVariables().contains(name)) {
-			return additionalProperties[name]
-		} else if (keySetOfStaticGlobalVariables().contains(name)) {
-			return GlobalVariable[name]
-		} else {
-			return null
-		}
-	}
 
 	/**
 	 * If GlobaleVariable.name is present, set the value into it.
@@ -286,6 +140,168 @@ public class ExpandoGlobalVariable {
 			addGlobalVariable(name, value)
 		}
 	}
+
+
+	/**
+	 * Clear properties added to GlobalVariables by addGlobalVariable() method.
+	 * The static properties are untouched.
+	 */
+	static void clear() {
+		additionalProperties.clear()
+	}
+
+
+	/**
+	 * @return true if GlobalVarialbe.name is defined either in 2 places
+	 * 1. statically predefined in the Execution Profile
+	 * 2. dynamically added by ExpandoGlobalVariable.addGlobalVariable(name, value) call
+	 */
+	static boolean isGlobalVariablePresent(String name) {
+		return allGlobalVariablesKeySet().contains(name)
+	}
+
+	static Object getGlobalVariableValue(String name) {
+		if (additionalGlobalVariablesKeySet().contains(name)) {
+			return additionalProperties[name]
+		} else if (staticGlobalVariablesKeySet().contains(name)) {
+			return GlobalVariable[name]
+		} else {
+			return null
+		}
+	}
+
+
+	/**
+	 * inspect the 'internal.GlobalVariable' object to find the GlobalVariables contained,
+	 * return the list of their names.
+	 *
+	 * The list will include only GlobalVariables that are added into the ExpandoGlobalVariable by calling
+	 *    ExpandoGlobalVariable.addGlobalVariable(name,value) or equivalently
+	 *    ExecutionProfilesLoader.loadProfile(name).
+	 *
+	 * The list will NOT include the GlobalVariables statically defined in the Execution Profile which was applied
+	 *    to the Test Case run.
+	 */
+	static SortedSet<String> additionalGlobalVariablesKeySet() {
+		SortedSet<String> sorted = new TreeSet<String>()
+		sorted.addAll(additionalProperties.keySet())
+		return sorted
+	}
+
+
+	static Map<String, Object> additionalGlobalVariablesAsMap() {
+		SortedSet<String> names = additionalGlobalVariablesKeySet()
+		Map<String, Object> map = new HashMap<String, Object>()
+		for (name in names) {
+			map.put(name, GlobalVariable[name])
+		}
+		return map
+	}
+
+
+	static String additionalGlobalVariablesAsString() {
+		Gson gson = new GsonBuilder().setPrettyPrinting().create()
+		gson.toJson(additionalGlobalVariablesAsMap())
+	}
+
+
+	/**
+	 * inspect the 'internal.GlobalVariable' object to find the GlobalVariables contained,
+	 * return the list of their names.
+	 *
+	 * The list will include 2 types of GlobalVariables.
+	 *
+	 * 1. GlobalVariables statically defined in the Execution Profile which was applied
+	 *    to the Test Case run. In this category there are 2 types of GlobalVariable:
+	 *
+	 *    a) GlobalVariables defined in the Profile actually applied to the test case execution.
+	 *    b) GlobalVariables defined in the "default" Profile.
+	 *    c) GlobalVariables defined in any of Profiles which are NOT applied to the test case execution.
+	 *
+	 *    The a) and b) type of GlobalVariable will have some meaningful value.
+	 *    But the c) type will always have 'null' value.
+	 *
+	 * 2. GlobalVariables dynamically added into the ExpandoGlobalVariable by calling
+	 *    ExpandoGlobalVariable.addGlobalVariable(name,value) or equivalently
+	 *    ExecutionProfilesLoader.loadProfile(name)
+	 */
+	static SortedSet<String> allGlobalVariablesKeySet() {
+		SortedSet<String> sorted = new TreeSet()
+		sorted.addAll(staticGlobalVariablesKeySet())
+		sorted.addAll(additionalGlobalVariablesKeySet())
+		return sorted
+	}
+
+	/**
+	 * transform the GlobalVariable <name, vale> pairs as a Map. 
+	 */
+	static Map<String, Object> allGlobalVariablesAsMap() {
+		SortedSet<String> names = allGlobalVariablesKeySet()
+		Map<String, Object> map = new HashMap<String, Object>()
+		for (name in names) {
+			map.put(name, GlobalVariable[name])
+		}
+		return map
+	}
+
+
+	/**
+	 * pretty-printed JSON text of Map returned by mapOfGlobalVariables()
+	 * 
+	 * @return
+	 */
+	static String allGlobalVariablesAsString() {
+		Gson gson = new GsonBuilder().setPrettyPrinting().create()
+		gson.toJson(allGlobalVariablesAsMap())
+	}
+
+
+	/**
+	 * inspect the 'internal.GlobalVariable' object to find the GlobalVariables contained,
+	 * return the list of their names.
+	 *
+	 * The list will include only the GlobalVariables statically defined in the Execution Profile which was applied
+	 *    to this time of Test Case run.
+	 *
+	 * The list will NOT include the GlobalVariables dynamically added by calling
+	 *    ExpandoGlobalVariable.addGlobalVariable(name,value)
+	 * @return
+	 */
+	static SortedSet<String> staticGlobalVariablesKeySet() {
+		// getDeclaredFields() return fields both of static and additional
+		Set<Field> fields = GlobalVariable.class.getDeclaredFields() as Set<Field>
+		Set<String> result = fields.stream()
+				.filter { f ->
+					isPublic(f.modifiers) &&
+							isStatic(f.modifiers) &&
+							! isTransient(f.modifiers)
+				}
+				.map { f -> f.getName() }
+				.collect(Collectors.toSet())
+		SortedSet<String> sorted = new TreeSet()
+		sorted.addAll(result)
+		return sorted
+	}
+
+
+	static Map<String, Object> staticGlobalVariablesAsMap() {
+		SortedSet<String> names = staticGlobalVariablesKeySet()
+		Map<String, Object> map = new HashMap<String, Object>()
+		for (name in names) {
+			map.put(name, GlobalVariable[name])
+		}
+		return map
+	}
+
+
+	static String staticGlobalVariablesAsString() {
+		Gson gson = new GsonBuilder().setPrettyPrinting().create()
+		gson.toJson(staticGlobalVariablesAsMap())
+	}
+
+
+
+
 
 	/**
 	 * Create a JSON text of specified GlobalVariable and value pairs,
@@ -313,35 +329,12 @@ public class ExpandoGlobalVariable {
 		writer.flush()
 	}
 
+	
 	static String toJSON() {
 		StringWriter sw = new StringWriter()
-		Set<String> names = keySetOfGlobalVariables()
+		Set<String> names = allGlobalVariablesKeySet()
 		writeJSON(names, sw)
 		return sw.toString()
 	}
 
-	/*
-	 static Map<String, Object> readJSON(Set<String> names, Reader reader) {
-	 Objects.requireNonNull(names, "names must not be null")
-	 Objects.requireNonNull(reader, "reader must not be null")
-	 Map<String, Object> result = new HashMap<String, Object>()
-	 JsonParser jsonParser = new JsonParser()
-	 JsonElement jsonTree = jsonParser.parse(reader)
-	 if (jsonTree.isJsonObject()) {
-	 JsonObject jo = jsonTree.getAsJsonObject()
-	 for (name in names) {
-	 JsonElement je = jo.get(name)
-	 println "name: ${name}, je: ${je.toString()}"
-	 if (je != null) {
-	 result.put(name, je.getAsString())
-	 } else {
-	 // just ignore it
-	 }
-	 }
-	 } else {
-	 // if the input file is not a well-formed JSON text (e.g., empty string), just return an empty Map
-	 }
-	 return result
-	 }
-	 */
 }

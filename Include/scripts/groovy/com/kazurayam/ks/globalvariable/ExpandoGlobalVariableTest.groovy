@@ -1,21 +1,19 @@
 package com.kazurayam.ks.globalvariable
 
-import static org.hamcrest.CoreMatchers.*
 import static org.junit.Assert.*
-
-import com.kazurayam.ks.globalvariable.ExecutionProfilesLoader
-import com.kazurayam.ks.globalvariable.ExpandoGlobalVariable as EGV
-import com.kms.katalon.core.configuration.RunConfiguration
-
-import org.junit.BeforeClass
-import org.junit.Ignore
-import org.junit.Test
-import org.junit.runner.RunWith
-import org.junit.runners.JUnit4
 
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
+
+import org.junit.BeforeClass
+import org.junit.Test
+import org.junit.runner.RunWith
+import org.junit.runners.JUnit4
+
+import com.kazurayam.ks.globalvariable.ExpandoGlobalVariable as EGV
+import com.kms.katalon.core.configuration.RunConfiguration
+
 import internal.GlobalVariable
 
 @RunWith(JUnit4.class)
@@ -25,7 +23,7 @@ import internal.GlobalVariable
 public class ExpandoGlobalVariableTest {
 
 	private static Path json
-	private static String FILENAME = "ExpandedExecutionProfile.json"
+	private static String FILENAME = "ExpandoGlobalVariableTest.json"
 
 	@BeforeClass
 	static void setupClass() {
@@ -40,14 +38,14 @@ public class ExpandoGlobalVariableTest {
 	}
 
 	/**
-	 * keySetOfGlobalVaraibles() should return a Set<String> of GlobalVariable names
+	 * allGlobalVaraiblesKeySet() should return a Set<String> of GlobalVariable names
 	 * defined in the current context.
 	 * Here we assume that the "default" Execution Profile is selected where CONFIG="./Include/fixture/Config.xlsx" is defined
 	 */
 	@Test
-	void test_keySetOfGlobalVariables() {
+	void test_allGlobalVariablesKeySet_withoutAdditive() {
 		EGV.clear()
-		Set<String> names = EGV.keySetOfGlobalVariables()
+		Set<String> names = EGV.allGlobalVariablesKeySet()
 		//names.each { String name -> println name }
 		assertTrue("expected 1 or more GlobalVaraiable(s) defined, but not found", names.size() > 0)
 		assertTrue("expected GlobalVariable.CONFIG but not found", names.contains('CONFIG'))
@@ -55,41 +53,42 @@ public class ExpandoGlobalVariableTest {
 	}
 
 	/**
-	 * keySetOfAdditionalGlobalVariables() should return a Set<String> of GlobalVariable names which were added by
-	 * ExecutionProfilesLoader.loadProfiles().
-	 * Here we assume that the "demoProductionEnv" Execution Profile is loaded and hence a GlobalVaraible.URL1 should be present 
+	 * We will add a new GlobalVariable "NEW=VALUE" dynamically in the current context.
 	 */
 	@Test
-	void test_keySetOfAdditionalGlobalVariables() {
+	void test_allGlobalVariablesKeySet_withAdditive() {
+		EGV.clear()
+		EGV.addGlobalVariable("NEW", "VALUE")
+		Set<String> names = EGV.allGlobalVariablesKeySet()
+		assertTrue("names does not contain NEW", names.contains("NEW"))
+		assertTrue(names.size() >= 2)
+	}
+
+	/**
+	 * additionalGlobalVariablesKeySet() should return a Set<String> of GlobalVariable names which were added by
+	 * ExecutionProfilesLoader.loadProfiles().
+	 * Here we assume that the "demoProductionEnvironment" Execution Profile is loaded and hence a GlobalVaraible.URL1 should be present 
+	 */
+	@Test
+	void test_additionalGlobalVariablesKeySet() {
 		EGV.clear()
 		ExecutionProfilesLoader epl = new ExecutionProfilesLoader()
 		epl.loadProfile("demoProductionEnvironment")
-		Set<String> names = EGV.keySetOfAdditionalGlobalVariables()
+		Set<String> names = EGV.additionalGlobalVariablesKeySet()
 		assertTrue("expected 1 or more additional GlobalVariable(s) but not found", names.size() > 0)
 		assertTrue("expected GlobalVariable.URL1 but not found", names.contains('URL1'))
 	}
 
 	@Test
-	void test_mapOfAdditionalGlobalVariablesAsString() {
+	void test_additionalGlobalVariablesAsString() {
 		EGV.clear()
 		ExecutionProfilesLoader epl = new ExecutionProfilesLoader()
 		epl.loadProfile("demoProductionEnvironment")
-		String json = EGV.mapOfAdditionalGlobalVariablesAsString()
+		String json = EGV.additionalGlobalVariablesAsString()
 		println "[test_mapOfAdditionalGlobalVariablesAsString] json: ${json}"
 		assertTrue("expected \"URL1\" is contained in the json but not found:" + json, json.contains('URL1'))
 	}
 
-	/**
-	 * We will add a new GlobalVariable "NEW=VALUE" dynamically in the current context.
-	 */
-	@Test
-	void test_keySetOfGlobalVariables_withAdditive() {
-		EGV.clear()
-		EGV.addGlobalVariable("NEW", "VALUE")
-		Set<String> names = EGV.keySetOfGlobalVariables()
-		assertTrue("names does not contain NEW", names.contains("NEW"))
-		assertTrue(names.size() >= 2)
-	}
 
 	@Test
 	void test_isGlobalVariablePresent_negative() {
@@ -135,7 +134,7 @@ public class ExpandoGlobalVariableTest {
 	 * assert that a GlobalVariable.GETTABLE is created on the fly
 	 */
 	@Test
-	void test_addedGlobalVariable_shouldImplementGetter() {
+	void test_addGlobalVariable_shouldImplementGetter() {
 		EGV.clear()
 		//
 		EGV.addGlobalVariable("foo", "foo")
@@ -171,7 +170,7 @@ public class ExpandoGlobalVariableTest {
 	 * assert that a GlobalVariable.SETTABLE is created on the fly
 	 */
 	@Test
-	void test_addedGlobalVariable_shouldImplementSetter() {
+	void test_addGlobalVariable_shouldImplementSetter() {
 		EGV.clear()
 		EGV.addGlobalVariable("SETTABLE", "not yet modified")
 		GlobalVariable.SETTABLE = "Hello, world"
@@ -179,22 +178,7 @@ public class ExpandoGlobalVariableTest {
 		assertEquals("Hello, world", GlobalVariable["SETTABLE"])
 	}
 
-	
-	/**
-	 * https://github.com/kazurayam/ExecutionProfilesLoader/issues/1
-	 * EGV.clear() makes the static GlobalVariables wiped out. Is it OK?
-	 */
-	@Test
-	void test_clear() {
-		EGV.addGlobalVariable("test_clear_fixture", "yah!")
-		Map<String, Object> staticGvBeforeClear = EGV.mapOfStaticGlobalVariables()
-		Map<String, Object> additionalGvBeforeClear = EGV.mapOfAdditionalGlobalVariables()
-		EGV.clear()
-		Map<String, Object> staticGvAfterClear = EGV.mapOfAdditionalGlobalVariables()
-		Map<String, Object> additionalGvAfterClear = EGV.mapOfAdditionalGlobalVariables()
-		assertEquals(staticGvBeforeClear.size(), staticGvAfterClear.size())
-		assertTrue(additionalGvBeforeClear.size() - 1 >= additionalGvAfterClear.size())
-	}
+
 	@Test
 	void test_basic_operations() {
 		EGV.clear()
@@ -240,5 +224,25 @@ public class ExpandoGlobalVariableTest {
 		String name = 'Dynamically_Added_Entry1'
 		String expected = name
 		assertEquals(expected, ((CharSequence)name).capitalize())
+	}
+
+	/**
+	 * https://github.com/kazurayam/ExecutionProfilesLoader/issues/1
+	 */
+	@Test
+	void test_clear() {
+		EGV.clear()
+		Set<String> staticGvBeforeAdd = EGV.staticGlobalVariablesKeySet()
+		Set<String> additionalGvBeforeAdd = EGV.additionalGlobalVariablesKeySet()
+		EGV.addGlobalVariable("test_clear_fixture", "yah!")
+		Set<String> staticGvAfterAdd = EGV.staticGlobalVariablesKeySet()
+		Set<String> additionalGvAfterAdd = EGV.additionalGlobalVariablesKeySet()
+		EGV.clear()
+		Set<String> staticGvAfterClear = EGV.staticGlobalVariablesKeySet()
+		Set<String> additionalGvAfterClear = EGV.additionalGlobalVariablesKeySet()
+		assertEquals(staticGvBeforeAdd.size(), staticGvAfterAdd.size())
+		assertEquals(staticGvAfterAdd.size(), staticGvAfterClear.size())
+		assertEquals(additionalGvBeforeAdd.size() + 1, additionalGvAfterAdd.size())
+		assertEquals(additionalGvAfterClear.size(), 0)
 	}
 }

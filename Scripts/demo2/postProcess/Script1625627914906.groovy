@@ -27,8 +27,8 @@ reporter.report(report)
 
 
 
-Map<String, Object> additionalGlobalVariables = ExpandoGlobalVariable.mapOfAdditionalGlobalVariables()
+Map<String, Object> additionalGlobalVariables = ExpandoGlobalVariable.additionalGlobalVariablesAsMap()
 println("additional GlobalVariables: " + additionalGlobalVariables.toString())
 
-Map<String, Object> staticGlobalVariables = ExpandoGlobalVariable.mapOfStaticGlobalVariables()
+Map<String, Object> staticGlobalVariables = ExpandoGlobalVariable.staticGlobalVariablesAsMap()
 println("static GlobalVariables: " + staticGlobalVariables.toString())
