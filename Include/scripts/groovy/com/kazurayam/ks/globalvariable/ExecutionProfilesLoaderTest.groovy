@@ -3,6 +3,7 @@ package com.kazurayam.ks.globalvariable
 import static org.junit.Assert.*
 
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
@@ -115,5 +116,21 @@ public class ExecutionProfilesLoaderTest {
 		assertEquals(7, count)
 		String json = ExpandoGlobalVariable.toJSON()
 		println "[test_loadProfiles_List] " + json
+	}
+
+	@Ignore
+	@Test
+	void test_clear() {
+		assertTrue("expected the value loaded from the default profile but was \"${GlobalVariable.CONFIG}\"",
+				GlobalVariable.CONFIG == "./Include/fixture/Config.xlsx")
+		ExecutionProfilesLoader epl = new ExecutionProfilesLoader()
+		Map<String, Object> entries = [
+			"CONFIG": "foo"
+		]
+		epl.loadEntries(entries)
+		assertTrue("expected the updated value but...", GlobalVariable.CONFIG == "foo")
+		epl.clear()
+		assertTrue("expected the value loaded from the default profile again but was \"${GlobalVariable.CONFIG}\"",
+				GlobalVariable.CONFIG == "./Include/fixture/Config.xlsx")
 	}
 }

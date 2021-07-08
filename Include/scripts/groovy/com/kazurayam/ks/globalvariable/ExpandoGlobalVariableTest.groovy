@@ -63,23 +63,22 @@ public class ExpandoGlobalVariableTest {
 	void test_keySetOfAdditionalGlobalVariables() {
 		EGV.clear()
 		ExecutionProfilesLoader epl = new ExecutionProfilesLoader()
-		epl.loadProfile("demoProductionEnv")
+		epl.loadProfile("demoProductionEnvironment")
 		Set<String> names = EGV.keySetOfAdditionalGlobalVariables()
 		assertTrue("expected 1 or more additional GlobalVariable(s) but not found", names.size() > 0)
 		assertTrue("expected GlobalVariable.URL1 but not found", names.contains('URL1'))
 	}
-	
+
 	@Test
 	void test_mapOfAdditionalGlobalVariablesAsString() {
 		EGV.clear()
 		ExecutionProfilesLoader epl = new ExecutionProfilesLoader()
-		epl.loadProfile("demoProductionEnv")
+		epl.loadProfile("demoProductionEnvironment")
 		String json = EGV.mapOfAdditionalGlobalVariablesAsString()
 		println "[test_mapOfAdditionalGlobalVariablesAsString] json: ${json}"
 		assertTrue("expected \"URL1\" is contained in the json but not found:" + json, json.contains('URL1'))
-		
 	}
-	
+
 	/**
 	 * We will add a new GlobalVariable "NEW=VALUE" dynamically in the current context.
 	 */
@@ -180,6 +179,22 @@ public class ExpandoGlobalVariableTest {
 		assertEquals("Hello, world", GlobalVariable["SETTABLE"])
 	}
 
+	
+	/**
+	 * https://github.com/kazurayam/ExecutionProfilesLoader/issues/1
+	 * EGV.clear() makes the static GlobalVariables wiped out. Is it OK?
+	 */
+	@Test
+	void test_clear() {
+		EGV.addGlobalVariable("test_clear_fixture", "yah!")
+		Map<String, Object> staticGvBeforeClear = EGV.mapOfStaticGlobalVariables()
+		Map<String, Object> additionalGvBeforeClear = EGV.mapOfAdditionalGlobalVariables()
+		EGV.clear()
+		Map<String, Object> staticGvAfterClear = EGV.mapOfAdditionalGlobalVariables()
+		Map<String, Object> additionalGvAfterClear = EGV.mapOfAdditionalGlobalVariables()
+		assertEquals(staticGvBeforeClear.size(), staticGvAfterClear.size())
+		assertTrue(additionalGvBeforeClear.size() - 1 >= additionalGvAfterClear.size())
+	}
 	@Test
 	void test_basic_operations() {
 		EGV.clear()
