@@ -164,44 +164,44 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="altColor">
                             <td class="colFirst"><code>static&nbsp;int</strong></code></td>
-                            <td class="colLast"><code><strong><a href="#addGlobalVariable(java.lang.String, java.lang.Object)">addGlobalVariable</a></strong>(java.lang.String name, java.lang.Object value)</code><br>insert a public static property of type java.lang.Object
- into the internal.GlobalVarialbe runtime.</td>
+                            <td class="colLast"><code><strong><a href="#addProperties(Map<String, Object>)">addProperties</a></strong>(java.util.Map&lt;java.lang.String, java.lang.Object&gt; entries)</code><br>@param entries</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code>static&nbsp;int</strong></code></td>
-                            <td class="colLast"><code><strong><a href="#addGlobalVariables(Map<String, Object>)">addGlobalVariables</a></strong>(java.util.Map&lt;java.lang.String, java.lang.Object&gt; entries)</code><br>@param entries</td>
+                            <td class="colLast"><code><strong><a href="#addProperty(java.lang.String, java.lang.Object)">addProperty</a></strong>(java.lang.String name, java.lang.Object value)</code><br>insert a public static property of type java.lang.Object
+ into the internal.GlobalVarialbe runtime.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code>static&nbsp;java.util.Map&lt;java.lang.String, java.lang.Object&gt;</strong></code></td>
-                            <td class="colLast"><code><strong><a href="#additionalGlobalVariablesAsMap()">additionalGlobalVariablesAsMap</a></strong>()</code><br></td>
+                            <td class="colLast"><code><strong><a href="#additionalPropertiesAsMap()">additionalPropertiesAsMap</a></strong>()</code><br></td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code>static&nbsp;java.lang.String</strong></code></td>
-                            <td class="colLast"><code><strong><a href="#additionalGlobalVariablesAsString()">additionalGlobalVariablesAsString</a></strong>()</code><br></td>
+                            <td class="colLast"><code><strong><a href="#additionalPropertiesAsString()">additionalPropertiesAsString</a></strong>()</code><br></td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code>static&nbsp;java.util.SortedSet&lt;java.lang.String&gt;</strong></code></td>
-                            <td class="colLast"><code><strong><a href="#additionalGlobalVariablesKeySet()">additionalGlobalVariablesKeySet</a></strong>()</code><br>inspect the 'internal.GlobalVariable' object to find the GlobalVariables contained,
+                            <td class="colLast"><code><strong><a href="#additionalPropertiesKeySet()">additionalPropertiesKeySet</a></strong>()</code><br>inspect the 'internal.GlobalVariable' object to find the GlobalVariables contained,
  return the list of their names.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code>static&nbsp;java.util.Map&lt;java.lang.String, java.lang.Object&gt;</strong></code></td>
-                            <td class="colLast"><code><strong><a href="#allGlobalVariablesAsMap()">allGlobalVariablesAsMap</a></strong>()</code><br>transform the GlobalVariable <name, vale> pairs as a Map.</td>
+                            <td class="colLast"><code><strong><a href="#allPropertiesAsMap()">allPropertiesAsMap</a></strong>()</code><br>transform the GlobalVariable <name, vale> pairs as a Map.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code>static&nbsp;java.lang.String</strong></code></td>
-                            <td class="colLast"><code><strong><a href="#allGlobalVariablesAsString()">allGlobalVariablesAsString</a></strong>()</code><br>pretty-printed JSON text of Map returned by mapOfGlobalVariables()</td>
+                            <td class="colLast"><code><strong><a href="#allPropertiesAsString()">allPropertiesAsString</a></strong>()</code><br>pretty-printed JSON text of Map returned by mapOfGlobalVariables()</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code>static&nbsp;java.util.SortedSet&lt;java.lang.String&gt;</strong></code></td>
-                            <td class="colLast"><code><strong><a href="#allGlobalVariablesKeySet()">allGlobalVariablesKeySet</a></strong>()</code><br>inspect the 'internal.GlobalVariable' object to find the GlobalVariables contained,
+                            <td class="colLast"><code><strong><a href="#allPropertiesKeySet()">allPropertiesKeySet</a></strong>()</code><br>inspect the 'internal.GlobalVariable' object to find the GlobalVariables contained,
  return the list of their names.</td>
                         </tr>
                         
@@ -213,35 +213,35 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code>static&nbsp;void</strong></code></td>
-                            <td class="colLast"><code><strong><a href="#ensureGlobalVariable(java.lang.String, java.lang.Object)">ensureGlobalVariable</a></strong>(java.lang.String name, java.lang.Object value)</code><br>If GlobaleVariable.name is present, set the value into it.
+                            <td class="colLast"><code><strong><a href="#ensureProperty(java.lang.String, java.lang.Object)">ensureProperty</a></strong>(java.lang.String name, java.lang.Object value)</code><br>If GlobaleVariable.name is present, set the value into it.
  </td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code>static&nbsp;java.lang.Object</strong></code></td>
-                            <td class="colLast"><code><strong><a href="#getGlobalVariableValue(java.lang.String)">getGlobalVariableValue</a></strong>(java.lang.String name)</code><br></td>
+                            <td class="colLast"><code><strong><a href="#getPropertyValue(java.lang.String)">getPropertyValue</a></strong>(java.lang.String name)</code><br></td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code>static&nbsp;boolean</strong></code></td>
-                            <td class="colLast"><code><strong><a href="#isGlobalVariablePresent(java.lang.String)">isGlobalVariablePresent</a></strong>(java.lang.String name)</code><br>@return true if GlobalVarialbe.name is defined either in 2 places
+                            <td class="colLast"><code><strong><a href="#isPropertyPresent(java.lang.String)">isPropertyPresent</a></strong>(java.lang.String name)</code><br>@return true if GlobalVarialbe.name is defined either in 2 places
  1. statically predefined in the Execution Profile
  2. dynamically added by ExpandoGlobalVariable.addGlobalVariable(name, value) call</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code>static&nbsp;java.util.Map&lt;java.lang.String, java.lang.Object&gt;</strong></code></td>
-                            <td class="colLast"><code><strong><a href="#staticGlobalVariablesAsMap()">staticGlobalVariablesAsMap</a></strong>()</code><br></td>
+                            <td class="colLast"><code><strong><a href="#staticPropertiesAsMap()">staticPropertiesAsMap</a></strong>()</code><br></td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code>static&nbsp;java.lang.String</strong></code></td>
-                            <td class="colLast"><code><strong><a href="#staticGlobalVariablesAsString()">staticGlobalVariablesAsString</a></strong>()</code><br></td>
+                            <td class="colLast"><code><strong><a href="#staticPropertiesAsString()">staticPropertiesAsString</a></strong>()</code><br></td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code>static&nbsp;java.util.SortedSet&lt;java.lang.String&gt;</strong></code></td>
-                            <td class="colLast"><code><strong><a href="#staticGlobalVariablesKeySet()">staticGlobalVariablesKeySet</a></strong>()</code><br>inspect the 'internal.GlobalVariable' object to find the GlobalVariables contained,
+                            <td class="colLast"><code><strong><a href="#staticPropertiesKeySet()">staticPropertiesKeySet</a></strong>()</code><br>inspect the 'internal.GlobalVariable' object to find the GlobalVariables contained,
  return the list of their names.</td>
                         </tr>
                         
@@ -252,7 +252,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="altColor">
                             <td class="colFirst"><code>static&nbsp;void</strong></code></td>
-                            <td class="colLast"><code><strong><a href="#validateVariableName(java.lang.String)">validateVariableName</a></strong>(java.lang.String name)</code><br></td>
+                            <td class="colLast"><code><strong><a href="#validatePropertyName(java.lang.String)">validatePropertyName</a></strong>(java.lang.String name)</code><br></td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -329,14 +329,23 @@ if (location.href.indexOf('is-external=true') == -1) {
                 </a>
                     <h3>Method Detail</h3>
                     
-                        <a name="addGlobalVariable(java.lang.String, java.lang.Object)"><!-- --></a>
+                        <a name="addProperties(Map<String, Object>)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;int <strong>addGlobalVariable</strong>(java.lang.String name, java.lang.Object value)</h4>
+                                <h4>static&nbsp;int <strong>addProperties</strong>(java.util.Map&lt;java.lang.String, java.lang.Object&gt; entries)</h4>
+                                <p>
+	 <DL><DT><B>Returns:</B></DT><DD>the number of entries which have been dynamically added as GlobalVariable</DD></DL><DL><DT><B>Parameters:</B></DT><DD>entries</DD></DL></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="addProperty(java.lang.String, java.lang.Object)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>static&nbsp;int <strong>addProperty</strong>(java.lang.String name, java.lang.Object value)</h4>
                                 <p> insert a public static property of type java.lang.Object
  into the internal.GlobalVarialbe runtime.
 
- e.g, GVH.addGlobalVariable('my_new_variable', 'foo') makes
+ e.g, GVH.addProperty('my_new_variable', 'foo') makes
  1) internal.GlobalVariable.my_new_variable to be present and to have value 'foo'
  2) internal.GlobalVariable.getMy_new_variale() to return 'foo'
  3) internal.GlobalVariable.setMy_new_variable('bar') to set 'bar' as the value
@@ -344,40 +353,31 @@ if (location.href.indexOf('is-external=true') == -1) {
                             </li>
                         </ul>
                     
-                        <a name="addGlobalVariables(Map<String, Object>)"><!-- --></a>
+                        <a name="additionalPropertiesAsMap()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;int <strong>addGlobalVariables</strong>(java.util.Map&lt;java.lang.String, java.lang.Object&gt; entries)</h4>
-                                <p>
-	 <DL><DT><B>Returns:</B></DT><DD>the number of entries which have been dynamically added as GlobalVariable</DD></DL><DL><DT><B>Parameters:</B></DT><DD>entries</DD></DL></p>
-                            </li>
-                        </ul>
-                    
-                        <a name="additionalGlobalVariablesAsMap()"><!-- --></a>
-                        <ul class="blockListLast">
-                            <li class="blockList">
-                                <h4>static&nbsp;java.util.Map&lt;java.lang.String, java.lang.Object&gt; <strong>additionalGlobalVariablesAsMap</strong>()</h4>
+                                <h4>static&nbsp;java.util.Map&lt;java.lang.String, java.lang.Object&gt; <strong>additionalPropertiesAsMap</strong>()</h4>
                                 <p></p>
                             </li>
                         </ul>
                     
-                        <a name="additionalGlobalVariablesAsString()"><!-- --></a>
+                        <a name="additionalPropertiesAsString()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;java.lang.String <strong>additionalGlobalVariablesAsString</strong>()</h4>
+                                <h4>static&nbsp;java.lang.String <strong>additionalPropertiesAsString</strong>()</h4>
                                 <p></p>
                             </li>
                         </ul>
                     
-                        <a name="additionalGlobalVariablesKeySet()"><!-- --></a>
+                        <a name="additionalPropertiesKeySet()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;java.util.SortedSet&lt;java.lang.String&gt; <strong>additionalGlobalVariablesKeySet</strong>()</h4>
+                                <h4>static&nbsp;java.util.SortedSet&lt;java.lang.String&gt; <strong>additionalPropertiesKeySet</strong>()</h4>
                                 <p> inspect the 'internal.GlobalVariable' object to find the GlobalVariables contained,
  return the list of their names.
 
  The list will include only GlobalVariables that are added into the ExpandoGlobalVariable by calling
-    ExpandoGlobalVariable.addGlobalVariable(name,value) or equivalently
+    ExpandoGlobalVariable.addProperty(name,value) or equivalently
     ExecutionProfilesLoader.loadProfile(name).
 
  The list will NOT include the GlobalVariables statically defined in the Execution Profile which was applied
@@ -386,27 +386,27 @@ if (location.href.indexOf('is-external=true') == -1) {
                             </li>
                         </ul>
                     
-                        <a name="allGlobalVariablesAsMap()"><!-- --></a>
+                        <a name="allPropertiesAsMap()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;java.util.Map&lt;java.lang.String, java.lang.Object&gt; <strong>allGlobalVariablesAsMap</strong>()</h4>
+                                <h4>static&nbsp;java.util.Map&lt;java.lang.String, java.lang.Object&gt; <strong>allPropertiesAsMap</strong>()</h4>
                                 <p> transform the GlobalVariable <name, vale> pairs as a Map. 
 	 </p>
                             </li>
                         </ul>
                     
-                        <a name="allGlobalVariablesAsString()"><!-- --></a>
+                        <a name="allPropertiesAsString()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;java.lang.String <strong>allGlobalVariablesAsString</strong>()</h4>
+                                <h4>static&nbsp;java.lang.String <strong>allPropertiesAsString</strong>()</h4>
                                 <p> pretty-printed JSON text of Map returned by mapOfGlobalVariables() <DL><DT><B>Returns:</B></DT><DD></DD></DL></p>
                             </li>
                         </ul>
                     
-                        <a name="allGlobalVariablesKeySet()"><!-- --></a>
+                        <a name="allPropertiesKeySet()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;java.util.SortedSet&lt;java.lang.String&gt; <strong>allGlobalVariablesKeySet</strong>()</h4>
+                                <h4>static&nbsp;java.util.SortedSet&lt;java.lang.String&gt; <strong>allPropertiesKeySet</strong>()</h4>
                                 <p> inspect the 'internal.GlobalVariable' object to find the GlobalVariables contained,
  return the list of their names.
 
@@ -423,7 +423,7 @@ if (location.href.indexOf('is-external=true') == -1) {
     But the c) type will always have 'null' value.
 
  2. GlobalVariables dynamically added into the ExpandoGlobalVariable by calling
-    ExpandoGlobalVariable.addGlobalVariable(name,value) or equivalently
+    ExpandoGlobalVariable.addProperty(name,value) or equivalently
     ExecutionProfilesLoader.loadProfile(name)
 	 </p>
                             </li>
@@ -439,28 +439,28 @@ if (location.href.indexOf('is-external=true') == -1) {
                             </li>
                         </ul>
                     
-                        <a name="ensureGlobalVariable(java.lang.String, java.lang.Object)"><!-- --></a>
+                        <a name="ensureProperty(java.lang.String, java.lang.Object)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;void <strong>ensureGlobalVariable</strong>(java.lang.String name, java.lang.Object value)</h4>
+                                <h4>static&nbsp;void <strong>ensureProperty</strong>(java.lang.String name, java.lang.Object value)</h4>
                                 <p> If GlobaleVariable.name is present, set the value into it.
  Otherwise create GlobalVariable.name dynamically and set the value into it.
 	 <DL><DT><B>Parameters:</B></DT><DD>name</DD><DD>value</DD></DL></p>
                             </li>
                         </ul>
                     
-                        <a name="getGlobalVariableValue(java.lang.String)"><!-- --></a>
+                        <a name="getPropertyValue(java.lang.String)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;java.lang.Object <strong>getGlobalVariableValue</strong>(java.lang.String name)</h4>
+                                <h4>static&nbsp;java.lang.Object <strong>getPropertyValue</strong>(java.lang.String name)</h4>
                                 <p></p>
                             </li>
                         </ul>
                     
-                        <a name="isGlobalVariablePresent(java.lang.String)"><!-- --></a>
+                        <a name="isPropertyPresent(java.lang.String)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;boolean <strong>isGlobalVariablePresent</strong>(java.lang.String name)</h4>
+                                <h4>static&nbsp;boolean <strong>isPropertyPresent</strong>(java.lang.String name)</h4>
                                 <p>
 	 <DL><DT><B>Returns:</B></DT><DD>true if GlobalVarialbe.name is defined either in 2 places
  1. statically predefined in the Execution Profile
@@ -468,26 +468,26 @@ if (location.href.indexOf('is-external=true') == -1) {
                             </li>
                         </ul>
                     
-                        <a name="staticGlobalVariablesAsMap()"><!-- --></a>
+                        <a name="staticPropertiesAsMap()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;java.util.Map&lt;java.lang.String, java.lang.Object&gt; <strong>staticGlobalVariablesAsMap</strong>()</h4>
+                                <h4>static&nbsp;java.util.Map&lt;java.lang.String, java.lang.Object&gt; <strong>staticPropertiesAsMap</strong>()</h4>
                                 <p></p>
                             </li>
                         </ul>
                     
-                        <a name="staticGlobalVariablesAsString()"><!-- --></a>
+                        <a name="staticPropertiesAsString()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;java.lang.String <strong>staticGlobalVariablesAsString</strong>()</h4>
+                                <h4>static&nbsp;java.lang.String <strong>staticPropertiesAsString</strong>()</h4>
                                 <p></p>
                             </li>
                         </ul>
                     
-                        <a name="staticGlobalVariablesKeySet()"><!-- --></a>
+                        <a name="staticPropertiesKeySet()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;java.util.SortedSet&lt;java.lang.String&gt; <strong>staticGlobalVariablesKeySet</strong>()</h4>
+                                <h4>static&nbsp;java.util.SortedSet&lt;java.lang.String&gt; <strong>staticPropertiesKeySet</strong>()</h4>
                                 <p> inspect the 'internal.GlobalVariable' object to find the GlobalVariables contained,
  return the list of their names.
 
@@ -507,10 +507,10 @@ if (location.href.indexOf('is-external=true') == -1) {
                             </li>
                         </ul>
                     
-                        <a name="validateVariableName(java.lang.String)"><!-- --></a>
+                        <a name="validatePropertyName(java.lang.String)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;void <strong>validateVariableName</strong>(java.lang.String name)</h4>
+                                <h4>static&nbsp;void <strong>validatePropertyName</strong>(java.lang.String name)</h4>
                                 <p></p>
                             </li>
                         </ul>
