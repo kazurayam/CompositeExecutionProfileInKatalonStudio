@@ -38,7 +38,7 @@ public class ExpandoGlobalVariable {
 	 * insert a public static property of type java.lang.Object
 	 * into the internal.GlobalVarialbe runtime.
 	 *
-	 * e.g, GVH.addGlobalVariable('my_new_variable', 'foo') makes
+	 * e.g, GVH.addProperty('my_new_variable', 'foo') makes
 	 * 1) internal.GlobalVariable.my_new_variable to be present and to have value 'foo'
 	 * 2) internal.GlobalVariable.getMy_new_variale() to return 'foo'
 	 * 3) internal.GlobalVariable.setMy_new_variable('bar') to set 'bar' as the value
@@ -46,12 +46,10 @@ public class ExpandoGlobalVariable {
 	 * @param name
 	 * @param value
 	 */
-	static int addGlobalVariable(String name, Object value) {
-		// the characters in the name must be valid as a Groovy variable name
-		validateVariableName(name)
+	static int addProperty(String name, Object value) {
 
 		// check if the "name" is declared as a property of internal.GlobalVariable object statically or not
-		if (staticGlobalVariablesKeySet().contains(name)) {
+		if (staticPropertiesKeySet().contains(name)) {
 			// Yes, the internal.GlobalVariable object has "name" already.
 			// No need to add the name. Just update the value
 			GlobalVariable[name] = value
@@ -60,6 +58,9 @@ public class ExpandoGlobalVariable {
 
 		} else {
 			// No, the "name" is not present. Let's add a new property using Groovy's ExpandoMetaClass
+
+			// the characters in the name must be valid as a Groovy variable name
+			validatePropertyName(name)
 
 			// obtain the ExpandoMetaClass of the internal.GlobalVariable class
 			MetaClass mc = GlobalVariable.metaClass
@@ -110,7 +111,7 @@ public class ExpandoGlobalVariable {
 	private static Pattern PTTN_UPPER_LOWER    = Pattern.compile('^[A-Z][a-z]')
 
 
-	static void validateVariableName(String name) {
+	static void validatePropertyName(String name) {
 		Objects.requireNonNull(name)
 		if (PTTN_LEADING_DIGITS.matcher(name).find()) {
 			throw new IllegalArgumentException("name=${name} must not start with digits")
@@ -129,10 +130,10 @@ public class ExpandoGlobalVariable {
 	 * @param entries
 	 * @return the number of entries which have been dynamically added as GlobalVariable
 	 */
-	static int addGlobalVariables(Map<String, Object> entries) {
+	static int addProperties(Map<String, Object> entries) {
 		int count = 0
 		entries.each { entry ->
-			count += addGlobalVariable(entry.key, entry.value)
+			count += addProperty(entry.key, entry.value)
 		}
 		return count
 	}
@@ -145,11 +146,11 @@ public class ExpandoGlobalVariable {
 	 * @param name
 	 * @param value
 	 */
-	static void ensureGlobalVariable(String name, Object value) {
-		if (isGlobalVariablePresent(name)) {
-			addGlobalVariable(name, value)   // will overwrite the previous value
+	static void ensureProperty(String name, Object value) {
+		if (isPropertyPresent(name)) {
+			addProperty(name, value)   // will overwrite the previous value
 		} else {
-			addGlobalVariable(name, value)
+			addProperty(name, value)
 		}
 	}
 
@@ -168,14 +169,14 @@ public class ExpandoGlobalVariable {
 	 * 1. statically predefined in the Execution Profile
 	 * 2. dynamically added by ExpandoGlobalVariable.addGlobalVariable(name, value) call
 	 */
-	static boolean isGlobalVariablePresent(String name) {
-		return allGlobalVariablesKeySet().contains(name)
+	static boolean isPropertyPresent(String name) {
+		return allPropertiesKeySet().contains(name)
 	}
 
-	static Object getGlobalVariableValue(String name) {
-		if (additionalGlobalVariablesKeySet().contains(name)) {
+	static Object getPropertyValue(String name) {
+		if (additionalPropertiesKeySet().contains(name)) {
 			return additionalProperties[name]
-		} else if (staticGlobalVariablesKeySet().contains(name)) {
+		} else if (staticPropertiesKeySet().contains(name)) {
 			return GlobalVariable[name]
 		} else {
 			return null
@@ -188,21 +189,21 @@ public class ExpandoGlobalVariable {
 	 * return the list of their names.
 	 *
 	 * The list will include only GlobalVariables that are added into the ExpandoGlobalVariable by calling
-	 *    ExpandoGlobalVariable.addGlobalVariable(name,value) or equivalently
+	 *    ExpandoGlobalVariable.addProperty(name,value) or equivalently
 	 *    ExecutionProfilesLoader.loadProfile(name).
 	 *
 	 * The list will NOT include the GlobalVariables statically defined in the Execution Profile which was applied
 	 *    to the Test Case run.
 	 */
-	static SortedSet<String> additionalGlobalVariablesKeySet() {
+	static SortedSet<String> additionalPropertiesKeySet() {
 		SortedSet<String> sorted = new TreeSet<String>()
 		sorted.addAll(additionalProperties.keySet())
 		return sorted
 	}
 
 
-	static Map<String, Object> additionalGlobalVariablesAsMap() {
-		SortedSet<String> names = additionalGlobalVariablesKeySet()
+	static Map<String, Object> additionalPropertiesAsMap() {
+		SortedSet<String> names = additionalPropertiesKeySet()
 		Map<String, Object> map = new HashMap<String, Object>()
 		for (name in names) {
 			map.put(name, GlobalVariable[name])
@@ -211,9 +212,9 @@ public class ExpandoGlobalVariable {
 	}
 
 
-	static String additionalGlobalVariablesAsString() {
+	static String additionalPropertiesAsString() {
 		Gson gson = new GsonBuilder().setPrettyPrinting().create()
-		gson.toJson(additionalGlobalVariablesAsMap())
+		gson.toJson(additionalPropertiesAsMap())
 	}
 
 
@@ -234,21 +235,21 @@ public class ExpandoGlobalVariable {
 	 *    But the c) type will always have 'null' value.
 	 *
 	 * 2. GlobalVariables dynamically added into the ExpandoGlobalVariable by calling
-	 *    ExpandoGlobalVariable.addGlobalVariable(name,value) or equivalently
+	 *    ExpandoGlobalVariable.addProperty(name,value) or equivalently
 	 *    ExecutionProfilesLoader.loadProfile(name)
 	 */
-	static SortedSet<String> allGlobalVariablesKeySet() {
+	static SortedSet<String> allPropertiesKeySet() {
 		SortedSet<String> sorted = new TreeSet()
-		sorted.addAll(staticGlobalVariablesKeySet())
-		sorted.addAll(additionalGlobalVariablesKeySet())
+		sorted.addAll(staticPropertiesKeySet())
+		sorted.addAll(additionalPropertiesKeySet())
 		return sorted
 	}
 
 	/**
 	 * transform the GlobalVariable <name, vale> pairs as a Map. 
 	 */
-	static Map<String, Object> allGlobalVariablesAsMap() {
-		SortedSet<String> names = allGlobalVariablesKeySet()
+	static Map<String, Object> allPropertiesAsMap() {
+		SortedSet<String> names = allPropertiesKeySet()
 		Map<String, Object> map = new HashMap<String, Object>()
 		for (name in names) {
 			map.put(name, GlobalVariable[name])
@@ -262,9 +263,9 @@ public class ExpandoGlobalVariable {
 	 * 
 	 * @return
 	 */
-	static String allGlobalVariablesAsString() {
+	static String allPropertiesAsString() {
 		Gson gson = new GsonBuilder().setPrettyPrinting().create()
-		gson.toJson(allGlobalVariablesAsMap())
+		gson.toJson(allPropertiesAsMap())
 	}
 
 
@@ -279,7 +280,7 @@ public class ExpandoGlobalVariable {
 	 *    ExpandoGlobalVariable.addGlobalVariable(name,value)
 	 * @return
 	 */
-	static SortedSet<String> staticGlobalVariablesKeySet() {
+	static SortedSet<String> staticPropertiesKeySet() {
 		// getDeclaredFields() return fields both of static and additional
 		Set<Field> fields = GlobalVariable.class.getDeclaredFields() as Set<Field>
 		Set<String> result = fields.stream()
@@ -296,8 +297,8 @@ public class ExpandoGlobalVariable {
 	}
 
 
-	static Map<String, Object> staticGlobalVariablesAsMap() {
-		SortedSet<String> names = staticGlobalVariablesKeySet()
+	static Map<String, Object> staticPropertiesAsMap() {
+		SortedSet<String> names = staticPropertiesKeySet()
 		Map<String, Object> map = new HashMap<String, Object>()
 		for (name in names) {
 			map.put(name, GlobalVariable[name])
@@ -306,9 +307,9 @@ public class ExpandoGlobalVariable {
 	}
 
 
-	static String staticGlobalVariablesAsString() {
+	static String staticPropertiesAsString() {
 		Gson gson = new GsonBuilder().setPrettyPrinting().create()
-		gson.toJson(staticGlobalVariablesAsMap())
+		gson.toJson(staticPropertiesAsMap())
 	}
 
 
@@ -327,8 +328,8 @@ public class ExpandoGlobalVariable {
 		Objects.requireNonNull(writer, "writer must not be null")
 		SortedMap buffer = new TreeMap<String, Object>()
 		for (name in nameList) {
-			if (isGlobalVariablePresent(name)) {
-				buffer.put(name, getGlobalVariableValue(name))
+			if (isPropertyPresent(name)) {
+				buffer.put(name, getPropertyValue(name))
 			} else {
 				;
 			}
@@ -344,7 +345,7 @@ public class ExpandoGlobalVariable {
 
 	static String toJSON() {
 		StringWriter sw = new StringWriter()
-		Set<String> names = allGlobalVariablesKeySet()
+		Set<String> names = allPropertiesKeySet()
 		writeJSON(names, sw)
 		return sw.toString()
 	}

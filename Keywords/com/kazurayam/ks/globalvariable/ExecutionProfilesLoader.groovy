@@ -72,7 +72,7 @@ public class ExecutionProfilesLoader {
 			loadedGlobalVariables.entrySet().each({ entry ->
 				String name = entry.key.toString()
 				Object value = evaluateGroovyLiteral(entry.value.toString())
-				ExpandoGlobalVariable.addGlobalVariable(name, value)
+				ExpandoGlobalVariable.addProperty(name, value)
 				count += 1
 			})
 		}
@@ -145,7 +145,7 @@ public class ExecutionProfilesLoader {
 	static int loadEntries(Map<String, Object> globalVariableEntries) {
 		int count = 0
 		globalVariableEntries.entrySet().each({ entry ->
-			ExpandoGlobalVariable.addGlobalVariable(entry.key, entry.value)
+			ExpandoGlobalVariable.addProperty(entry.key, entry.value)
 			count += 1
 		})
 		return count
