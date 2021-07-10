@@ -44,4 +44,9 @@
       <initValue>10</initValue>
       <name>TIMEOUT</name>
    </GlobalVariableEntity>
+   <GlobalVariableEntity>
+      <description></description>
+      <initValue>'demoaut.katalon.com'</initValue>
+      <name>Hostname</name>
+   </GlobalVariableEntity>
 </GlobalVariableEntities>
