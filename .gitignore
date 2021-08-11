@@ -1,7 +1,17 @@
 .DS_Store
+# Mac
+.DS_Store
 
+# Gradle
 .gradle
 
+# Ignore Gradle GUI config
+gradle-app.setting
+
+# Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
+!gradle-wrapper.jar
+
+# Katalon Studio
 bin
 
 Reports
@@ -11,7 +21,6 @@ Libs
 output
 
 !output/.gitkeep
-build
 
 .classpath
 
@@ -20,3 +29,12 @@ build
 .settings/
 
 settings/
+
+# Gradle
+.cache/
+
+build/
+
+null/
+generated-src/
+
