@@ -11,6 +11,8 @@ import java.nio.file.Paths
 import com.kazurayam.ks.globalvariable.ProfilesHelper as PH
 import com.kms.katalon.core.configuration.RunConfiguration
 
+assert RunConfiguration.getProjectDir() != null
+
 StringBuilder sb = new StringBuilder()
 sb.append("import com.kazurayam.ks.globalvariable.GlobalVariablesLoader\n")
 sb.append("\n")

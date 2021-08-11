@@ -5,6 +5,8 @@ import java.nio.file.Paths
 import com.kazurayam.ks.globalvariable.ProfilesHelper as PH
 import com.kms.katalon.core.configuration.RunConfiguration
 
+assert RunConfiguration.getProjectDir() != null
+
 /**
  * This code generates the source code of 'Test Cases/main/loadExecutionProfiles' script
  * based on the current contents of the Profiles directory.

@@ -4,6 +4,8 @@ import java.nio.file.Paths
 
 import com.kms.katalon.core.configuration.RunConfiguration
 
+assert RunConfiguration.getProjectDir() != null
+
 /*
  * pre-process : create a directory for storing output files 
  */

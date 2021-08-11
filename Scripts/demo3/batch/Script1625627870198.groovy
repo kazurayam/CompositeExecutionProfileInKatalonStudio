@@ -11,6 +11,8 @@ import com.kms.katalon.core.webui.keyword.WebUiBuiltInKeywords as WebUI
 
 import internal.GlobalVariable
 
+assert RunConfiguration.getProjectDir() != null
+
 /*
  * pre-processing
  */

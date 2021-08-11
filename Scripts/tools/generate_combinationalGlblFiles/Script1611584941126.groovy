@@ -4,7 +4,10 @@ import java.nio.file.Paths
 
 import com.kazurayam.ks.globalvariable.ProfilesHelper as PH
 import com.kms.katalon.core.configuration.RunConfiguration
-import org.apache.commons.io.FileUtils 
+import org.apache.commons.io.FileUtils
+
+assert RunConfiguration.getProjectDir() != null
+
 /**
  *
  */

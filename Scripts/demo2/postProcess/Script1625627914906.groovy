@@ -8,6 +8,8 @@ import com.kazurayam.ks.globalvariable.demo.ImagePair
 import com.kazurayam.ks.globalvariable.demo.Reporter
 import com.kms.katalon.core.configuration.RunConfiguration
 
+assert RunConfiguration.getProjectDir() != null
+
 /*
  * post-process : compile a report in HTML where you can view pais of page screenshots
  */

@@ -46,6 +46,8 @@ String newProfileName(
 }
  */
 
+assert RunConfiguration.getProjectDir() != null
+
 Path projectDir = Paths.get(RunConfiguration.getProjectDir())
 Path gensrcDir = projectDir.resolve('generated-src')
 Path profilesDir = gensrcDir.resolve("Profiles")

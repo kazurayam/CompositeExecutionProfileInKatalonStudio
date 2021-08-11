@@ -9,6 +9,8 @@ import com.kms.katalon.core.configuration.RunConfiguration
 
 import groovy.util.slurpersupport.GPathResult
 
+assert RunConfiguration.getProjectDir() != null
+
 /**
  *
  */

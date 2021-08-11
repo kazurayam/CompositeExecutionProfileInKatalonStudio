@@ -27,6 +27,7 @@ public class ExpandoGlobalVariableTest {
 
 	@BeforeClass
 	static void setupClass() {
+        assert RunConfiguration.getProjectDir() != null
 		Path projectDir = Paths.get(RunConfiguration.getProjectDir())
 		Path testOutputDir = projectDir.resolve("build/tmp/testOutput")
 		Path pkgDir = testOutputDir.resolve("com.kazurayam.visualtesting")

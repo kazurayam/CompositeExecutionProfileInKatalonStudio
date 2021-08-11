@@ -20,6 +20,7 @@ public class ProfilesHelperTest {
 
 	@Before
 	void setup() {
+        assert RunConfiguration.getProjectDir() != null
 		Path projectDir = Paths.get(RunConfiguration.getProjectDir())
 		profilesDir = projectDir.resolve('Profiles')
 	}
