@@ -64,7 +64,7 @@ task publishGroovydoc(type: Copy) {
 groovydoc.finalizedBy publishGroovydoc
 
 task groovydocJar(type: Jar) {
-    archiveClassifier = 'groovydoc'
+    archiveClassifier = 'javadoc'
     from groovydoc
 }
 
