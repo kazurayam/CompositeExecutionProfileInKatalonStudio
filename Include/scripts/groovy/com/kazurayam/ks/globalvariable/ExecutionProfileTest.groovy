@@ -44,7 +44,7 @@ public class ExecutionProfileTest {
 		assertEquals("\'./Include/fixture/Config.xlsx\'", gve.initValue())
 		assertEquals("CONFIG", gve.name())
 	}
-	
+
 	@Test
 	void test_save() {
 		ExecutionProfile ep = ExecutionProfile.newInstance(xml)

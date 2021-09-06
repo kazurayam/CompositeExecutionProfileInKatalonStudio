@@ -7,6 +7,7 @@ import java.nio.file.Path
 import java.nio.file.Paths
 
 import org.junit.BeforeClass
+import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
@@ -27,7 +28,7 @@ public class ExpandoGlobalVariableTest {
 
 	@BeforeClass
 	static void setupClass() {
-        assert RunConfiguration.getProjectDir() != null
+		assert RunConfiguration.getProjectDir() != null
 		Path projectDir = Paths.get(RunConfiguration.getProjectDir())
 		Path testOutputDir = projectDir.resolve("build/tmp/testOutput")
 		Path pkgDir = testOutputDir.resolve("com.kazurayam.visualtesting")
@@ -136,12 +137,12 @@ public class ExpandoGlobalVariableTest {
 	}
 
 	@Test
-	void test_validatePropertyName_1stUpperLetter_2ndLowerLetter() {
+	void test_validatePropertyName_1stUpperLetter_2ndLowerLetter_should_be_accepted() {
 		try	{
 			EGV.validatePropertyName('Aa')
-			fail("name=Hostname; 1st upper case letter followed by lower case letter should be accepted")
+			fail("name=Hostname; 1st upper case letter followed by lower case letter should not be accepted")
 		} catch (IllegalArgumentException ex) {
-			;
+			;	
 		}
 	}
 
@@ -162,6 +163,28 @@ public class ExpandoGlobalVariableTest {
 		assertEquals("setFoo", EGV.getSetterName("foo"))
 		assertEquals("setFoo", EGV.getSetterName("Foo"))
 		assertEquals("setFOO", EGV.getSetterName("FOO"))
+	}
+
+	/**
+	 * property "Username" will be rejected
+	 */
+	@Ignore
+	@Test
+	void test_addProperty_Username() {
+		EGV.clear()
+		//
+		EGV.addProperty("password", "password")
+		assertEquals("password", GlobalVariable.getPassword())		// this statement passes
+		assertEquals("password", GlobalVariable.password)			// this statement passes as well
+		//
+		EGV.addProperty("Username", "Username")
+		assertEquals("Username", GlobalVariable.getUsername())		// this statement passes
+		assertEquals("Username", GlobalVariable.Username)			// this statement throws an Exception
+		/*
+		 * groovy.lang.MissingPropertyException: No such property: Username for class: internal.GlobalVariable
+		 *   at com.kazurayam.ks.globalvariable.ExpandoGlobalVariableTest.test_addProperty_Username(ExpandoGlobalVariableTest.groovy:177)
+		 *   at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+		 */
 	}
 
 	/**
@@ -187,18 +210,42 @@ public class ExpandoGlobalVariableTest {
 		assertEquals("foo_bar_1", GlobalVariable.foo_bar_1)
 		assertEquals("foo_bar_1", GlobalVariable["foo_bar_1"])
 		//
-		//EGV.addGlobalVariable("Foo_Bar_1", "Foo_Bar_1")
-		//assertEquals("Foo_Bar_1", GlobalVariable.Foo_Bar_1)
-		//assertEquals("Foo_Bar_1", GlobalVariable["Foo_Bar_1"])
-		//
-		//EGV.addGlobalVariable('$foo', '$foo')
+		//EGV.addProperty('$foo', '$foo')
 		//assertEquals('$foo', GlobalVariable.$foo)
 		//assertEquals('$foo', GlobalVariable['$foo'])
 		//
-		//EGV.addGlobalVariable("_foo", "_foo")
+		//EGV.addProperty("_foo", "_foo")
 		//assertEquals("_foo", GlobalVariable._foo)
 		//assertEquals("_foo", GlobalVariable["_foo"])
 	}
+	
+
+	/**
+	 * property "Username123" will be rejected
+	 */
+	@Ignore
+	@Test
+	void test_addProperty_too_similar_names_should_be_avoided_case1() {
+		EGV.addProperty("Username123", "foo")
+		try {
+			EGV.addProperty("username123", "bar")
+			fail("adding too similar name should be avoided")
+		} catch (Exception e) {
+			; // as expected
+		}
+	}
+
+	@Test
+	void test_addProperty_too_similar_names_should_be_avoided_case2() {
+		EGV.addProperty("password123", "foo")
+		try {
+			EGV.addProperty("Password123", "bar")
+			fail("adding too similar name should be avoided")
+		} catch (Exception e) {
+			; // as expected
+		}
+	}
+
 
 	/**
 	 * assert that a GlobalVariable.SETTABLE is created on the fly

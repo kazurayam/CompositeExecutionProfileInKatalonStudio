@@ -273,11 +273,13 @@ public class ExpandoGlobalVariable {
 	 * inspect the 'internal.GlobalVariable' object to find the GlobalVariables contained,
 	 * return the list of their names.
 	 *
-	 * The list will include only the GlobalVariables statically defined in the Execution Profile which was applied
-	 *    to this time of Test Case run.
-	 *
-	 * The list will NOT include the GlobalVariables dynamically added by calling
+	 * The list will include the fields declared in the internal.GlobalVariable class with modifiers
+	 * `public static`. Have a look at the source of Libs/internal/GlobalVariables.groovy. In there,
+	 * you will find the names of all of GlobalVariables declared in all Execution Profiles prepared.
+	 * 
+	 * The list will NOT include the properties dynamically added by calling
 	 *    ExpandoGlobalVariable.addGlobalVariable(name,value)
+	 *    
 	 * @return
 	 */
 	static SortedSet<String> staticPropertiesKeySet() {
