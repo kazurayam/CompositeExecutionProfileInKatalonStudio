@@ -1,5 +1,6 @@
 package com.kazurayam.ks.globalvariable
 
+import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
 import java.util.stream.Collectors
@@ -24,8 +25,20 @@ public class ExecutionProfilesLoader {
 	public Boolean onlyOnce = false
 	public Boolean alreadyDone = false
 
+	private static Path resolveProfilesDir() {
+		Path p
+		if (RunConfiguration != null 
+				&& RunConfiguration.getProjectDir() != null 
+				&& RunConfiguration.getProjectDir() != 'null') {
+			p = Paths.get(RunConfiguration.getProjectDir()).resolve("Profiles")
+		} else {
+			p = Paths.get(".").resolve("Profiles")
+		}
+		return p
+	}
+	
 	ExecutionProfilesLoader() {
-		this(Paths.get(RunConfiguration.getProjectDir()).resolve("Profiles"))
+		this(resolveProfilesDir())
 	}
 
 	ExecutionProfilesLoader(Path profilesDir) {
@@ -105,6 +118,10 @@ public class ExecutionProfilesLoader {
 	 * @return
 	 */
 	Map<String, Object> digestProfile(Path profile) {
+		Objects.requireNonNull(profile)
+		if (!Files.exists(profile)) {
+			throw new FileNotFoundException("${profile.toString()} is not found")
+		}
 		def keyValuePairs = [:]
 		GPathResult doc = xmlSlurper.parse(profile.toFile())
 		doc.GlobalVariableEntity.each { entity ->

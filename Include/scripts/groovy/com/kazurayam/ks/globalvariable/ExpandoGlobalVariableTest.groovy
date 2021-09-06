@@ -28,8 +28,12 @@ public class ExpandoGlobalVariableTest {
 
 	@BeforeClass
 	static void setupClass() {
-		assert RunConfiguration.getProjectDir() != null
-		Path projectDir = Paths.get(RunConfiguration.getProjectDir())
+		Path projectDir
+		if (RunConfiguration != null && RunConfiguration.getProjectDir() != null) {
+			projectDir = Paths.get(RunConfiguration.getProjectDir())
+		} else {
+			projectDir = '.'
+		}
 		Path testOutputDir = projectDir.resolve("build/tmp/testOutput")
 		Path pkgDir = testOutputDir.resolve("com.kazurayam.visualtesting")
 		Path classDir = pkgDir.resolve(ExpandoGlobalVariableTest.class.getSimpleName())
@@ -41,11 +45,13 @@ public class ExpandoGlobalVariableTest {
 
 	@Test
 	void test_addProperty_with_default_profile_for_predefined_Hostname_property() {
-		String profile = RunConfiguration.getExecutionProfile()
-		assertEquals("we assume that the default profile is applied to execute this test", "default", profile)
-		String newValue = "demoaut-mimic.kazurayam.com"
-		EGV.addProperty('Hostname', newValue)
-		assertEquals("EGV.getPropertyValue() should return ${newValue}", newValue, EGV.getPropertyValue("Hostname"))
+		if (RunConfiguration != null && RunConfiguration.getExecutionProfile() != null) {
+			String profile = RunConfiguration.getExecutionProfile()
+			assertEquals("we assume that the default profile is applied to execute this test", "default", profile)
+			String newValue = "demoaut-mimic.kazurayam.com"
+			EGV.addProperty('Hostname', newValue)
+			assertEquals("EGV.getPropertyValue() should return ${newValue}", newValue, EGV.getPropertyValue("Hostname"))
+		}
 	}
 
 	/**
@@ -142,7 +148,7 @@ public class ExpandoGlobalVariableTest {
 			EGV.validatePropertyName('Aa')
 			fail("name=Hostname; 1st upper case letter followed by lower case letter should not be accepted")
 		} catch (IllegalArgumentException ex) {
-			;	
+			;
 		}
 	}
 
@@ -218,7 +224,7 @@ public class ExpandoGlobalVariableTest {
 		//assertEquals("_foo", GlobalVariable._foo)
 		//assertEquals("_foo", GlobalVariable["_foo"])
 	}
-	
+
 
 	/**
 	 * property "Username123" will be rejected

@@ -6,7 +6,7 @@ plugins {
 
 group = 'com.kazurayam'
 archivesBaseName = 'ExecutionProfilesLoader'
-version = '1.2.3-SNAPSHOT'
+version = '1.2.3'
 
 ext.isReleaseVersion = ! version.endsWith("SNAPSHOT")
 
