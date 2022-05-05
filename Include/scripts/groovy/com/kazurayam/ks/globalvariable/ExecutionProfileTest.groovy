@@ -7,7 +7,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 
-import com.kazurayam.ks.globalvariable.ExecutionProfile.GlobalVariableEntities
+import com.kazurayam.ks.globalvariable.GlobalVariableEntities
 
 
 @RunWith(JUnit4.class)
@@ -37,9 +37,9 @@ public class ExecutionProfileTest {
 		assertEquals("default", gves.name())
 		assertEquals("T", gves.tag())
 		assertEquals(true, gves.defaultProfile())
-		List<ExecutionProfile.GlobalVariableEntity> list = gves.entities()
+		List<GlobalVariableEntity> list = gves.entities()
 		assertEquals(1, list.size())
-		ExecutionProfile.GlobalVariableEntity gve = list.get(0)
+		GlobalVariableEntity gve = list.get(0)
 		assertEquals("bar", gve.description())
 		assertEquals("\'./Include/fixture/Config.xlsx\'", gve.initValue())
 		assertEquals("CONFIG", gve.name())
@@ -52,5 +52,13 @@ public class ExecutionProfileTest {
 		ep.save(sw)
 		assertEquals(xml, sw.toString())  // This assertion is fragile, would be easily broken
 		println sw.toString()
+	}
+
+	@Test
+	void test_contains() {
+		ExecutionProfile ep = ExecutionProfile.newInstance(xml)
+		assertTrue(ep.contains("CONFIG"))
+		//
+		assertFalse(ep.contains("FOO"))
 	}
 }

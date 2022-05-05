@@ -17,7 +17,7 @@ import groovy.util.slurpersupport.GPathResult
  * 
  * @author kazurayam
  */
-public class ExecutionProfilesLoader {
+public final class ExecutionProfilesLoader {
 
 	private Path profilesDir
 	private XmlSlurper xmlSlurper
@@ -27,16 +27,16 @@ public class ExecutionProfilesLoader {
 
 	private static Path resolveProfilesDir() {
 		Path p
-		if (RunConfiguration != null 
-				&& RunConfiguration.getProjectDir() != null 
-				&& RunConfiguration.getProjectDir() != 'null') {
+		if (RunConfiguration != null
+		&& RunConfiguration.getProjectDir() != null
+		&& RunConfiguration.getProjectDir() != 'null') {
 			p = Paths.get(RunConfiguration.getProjectDir()).resolve("Profiles")
 		} else {
 			p = Paths.get(".").resolve("Profiles")
 		}
 		return p
 	}
-	
+
 	ExecutionProfilesLoader() {
 		this(resolveProfilesDir())
 	}
@@ -47,6 +47,7 @@ public class ExecutionProfilesLoader {
 		// important!
 		ExpandoGlobalVariable.clear()
 	}
+
 
 	/**
 	 * load an Execution Profile to add GlobalVariables dynamically and make them available to Test Case script

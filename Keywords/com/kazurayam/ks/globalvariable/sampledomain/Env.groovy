@@ -1,6 +1,6 @@
 package com.kazurayam.ks.globalvariable.sampledomain
 
-import com.kazurayam.ks.globalvariable.ExecutionProfile.GlobalVariableEntity as GVE
+import com.kazurayam.ks.globalvariable.GlobalVariableEntity as GVE
 import com.kazurayam.ks.globalvariable.sampledomainconstruct.SerializableToGlobalVariableEntity
 
 enum Env implements SerializableToGlobalVariableEntity {

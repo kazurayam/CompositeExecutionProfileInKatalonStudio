@@ -66,6 +66,7 @@ public class ExpandoGlobalVariableTest {
 		//names.each { String name -> println name }
 		assertTrue("expected 1 or more GlobalVaraiable(s) defined, but not found", names.size() > 0)
 		assertTrue("expected GlobalVariable.CONFIG but not found", names.contains('CONFIG'))
+		// the following test will fail when this test case is executed outside Katalon Test case = in a gradle build, as all of GlobalVariables are left unloaded
 		assertEquals("expected", "./Include/fixture/Config.xlsx", GlobalVariable["CONFIG"])
 	}
 

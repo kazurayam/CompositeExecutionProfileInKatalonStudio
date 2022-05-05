@@ -16,17 +16,20 @@
       <isReuseDriver>false</isReuseDriver>
       <isRun>true</isRun>
       <testCaseId>Test Cases/junittest/com.kazurayam.ks.globalvariable/ExpandoGlobalVariableTestRunner</testCaseId>
+      <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
    </testCaseLink>
    <testCaseLink>
       <guid>abb5865b-6d32-4e1c-9f4a-0287c90a2b5f</guid>
       <isReuseDriver>false</isReuseDriver>
       <isRun>true</isRun>
       <testCaseId>Test Cases/junittest/com.kazurayam.ks.globalvariable/ExecutionProfilesLoaderTestRunner</testCaseId>
+      <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
    </testCaseLink>
    <testCaseLink>
       <guid>fa80f602-dcc0-4b43-8d32-af47c1f744ff</guid>
       <isReuseDriver>false</isReuseDriver>
       <isRun>true</isRun>
-      <testCaseId>Test Cases/junittest/com.kazurayam.ks.globalvariable/ProfilesHelperTest</testCaseId>
+      <testCaseId>Test Cases/junittest/com.kazurayam.ks.globalvariable/ProfilesHelperTestRunner</testCaseId>
+      <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
    </testCaseLink>
 </TestSuiteEntity>

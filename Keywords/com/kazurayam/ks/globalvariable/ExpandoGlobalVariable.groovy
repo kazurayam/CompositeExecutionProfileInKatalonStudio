@@ -27,7 +27,7 @@ import java.util.regex.Matcher
  * 
  * @author kazurayam
  */
-public class ExpandoGlobalVariable {
+public final class ExpandoGlobalVariable {
 
 	// https://docs.groovy-lang.org/latest/html/documentation/core-metaprogramming.html#_properties
 	static final Map<String, Object> additionalProperties = Collections.synchronizedMap([:])

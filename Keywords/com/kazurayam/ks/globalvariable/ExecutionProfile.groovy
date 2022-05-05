@@ -37,7 +37,7 @@ import groovy.xml.XmlUtil
  &lt;/GlobalVariableEntity>
  &lt;/GlobalVariableEntities>
  */
-public class ExecutionProfile {
+public final class ExecutionProfile {
 
 	GlobalVariableEntities entities
 
@@ -47,6 +47,10 @@ public class ExecutionProfile {
 
 	GlobalVariableEntities getContent() {
 		return entities
+	}
+
+	boolean contains(String globalVariableName) {
+		return entities.contains(globalVariableName)
 	}
 
 	void save(File file) {
@@ -64,7 +68,8 @@ public class ExecutionProfile {
 	static ExecutionProfile newInstance(File xmlFile) {
 		DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder builder = builderFactory.newDocumentBuilder();
-		InputSource is = new InputSource(xmlFile)
+		InputStreamReader reader = new InputStreamReader(new FileInputStream(xmlFile), "UTF-8")
+		InputSource is = new InputSource(reader)
 		Document xmlDocument = builder.parse(is)
 		GlobalVariableEntities entities = build(xmlDocument)
 		return new ExecutionProfile(entities)
@@ -97,111 +102,5 @@ public class ExecutionProfile {
 			result.addEntity(entity)
 		}
 		return result
-	}
-
-	static class GlobalVariableEntities {
-		private String description
-		private String name
-		private String tag
-		private Boolean defaultProfile
-		private List<GlobalVariableEntity> entities
-		GlobalVariableEntities() {
-			this.description = ""
-			this.name = ""
-			this.tag = ""
-			this.defaultProfile = false
-			this.entities = new ArrayList<GlobalVariableEntity>()
-		}
-		GlobalVariableEntities description(String description) {
-			this.description = description ?: ""
-			return this
-		}
-		GlobalVariableEntities name(String name) {
-			this.name = name ?: ""
-			return this
-		}
-		GlobalVariableEntities tag(String tag) {
-			this.tag = tag ?: ""
-			return this
-		}
-		GlobalVariableEntities defaultProfile(Boolean defaultProfile) {
-			this.defaultProfile = defaultProfile
-			return this
-		}
-		GlobalVariableEntities addEntity(GlobalVariableEntity entity) {
-			this.entities.add(entity)
-			return this
-		}
-		String description() {
-			return description
-		}
-		String name() {
-			return name
-		}
-		String tag() {
-			return tag
-		}
-		Boolean defaultProfile() {
-			return defaultProfile
-		}
-		List<GlobalVariableEntity> entities() {
-			return new ArrayList<GlobalVariableEntity>(entities)
-		}
-		@Override
-		String toString() {
-			StringBuilder sb = new StringBuilder()
-			sb.append("<GlobalVariableEntities>")
-			sb.append("<description>${description}</description>")
-			sb.append("<name>${name}</name>")
-			sb.append("<tag>${tag}</tag>")
-			sb.append("<defaultProfile>${defaultProfile}</defaultProfile>")
-			entities.each { entity ->
-				sb.append(entity.toString())
-			}
-			sb.append("</GlobalVariableEntities>")
-			return sb.toString()
-		}
-	}
-
-	static class GlobalVariableEntity {
-		private String description
-		private String initValue
-		private String name
-		GlobalVariableEntity() {
-			this.description = ""
-			this.initValue = ""
-			this.name = ""
-		}
-		GlobalVariableEntity description(String description) {
-			this.description = description ?: ""
-			return this
-		}
-		GlobalVariableEntity initValue(String initValue) {
-			this.initValue = initValue ?: ""
-			return this
-		}
-		GlobalVariableEntity name(String name) {
-			this.name = name ?: ""
-			return this
-		}
-		String description() {
-			return description
-		}
-		String initValue() {
-			return initValue
-		}
-		String name() {
-			return name
-		}
-		@Override
-		String toString() {
-			StringBuilder sb = new StringBuilder()
-			sb.append("<GlobalVariableEntity>")
-			sb.append("<description>${description}</description>")
-			sb.append("<initValue>${initValue}</initValue>")
-			sb.append("<name>${name}</name>")
-			sb.append("</GlobalVariableEntity>")
-			return sb.toString()
-		}
 	}
 }

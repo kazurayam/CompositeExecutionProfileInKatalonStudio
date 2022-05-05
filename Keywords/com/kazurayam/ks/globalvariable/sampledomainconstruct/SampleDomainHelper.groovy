@@ -1,12 +1,11 @@
 package com.kazurayam.ks.globalvariable.sampledomainconstruct
 
-import com.kazurayam.ks.globalvariable.ExecutionProfile.GlobalVariableEntities
+import com.kazurayam.ks.globalvariable.GlobalVariableEntities
 import com.kazurayam.ks.globalvariable.sampledomain.Category
 import com.kazurayam.ks.globalvariable.sampledomain.Env
 import com.kazurayam.ks.globalvariable.sampledomain.IncludeSheets
 import com.kazurayam.ks.globalvariable.sampledomain.IncludeURLs
 import com.kazurayam.ks.globalvariable.sampledomain.SaveHTML
-import com.kazurayam.ks.globalvariable.ExecutionProfile
 
 /**
  * Factory method to instantiate an ExecutionProfile.GlobalVariableEntities
@@ -21,9 +20,9 @@ import com.kazurayam.ks.globalvariable.ExecutionProfile
  */
 public class SampleDomainHelper {
 
-	static ExecutionProfile.GlobalVariableEntities newInstance(
+	static GlobalVariableEntities newInstance(
 			Env env, Category category, IncludeSheets sheets, IncludeURLs urls, SaveHTML saveHTML) {
-		ExecutionProfile.GlobalVariableEntities gve = new ExecutionProfile.GlobalVariableEntities()
+		GlobalVariableEntities gve = new GlobalVariableEntities()
 		gve.defaultProfile(false)
 		gve.addEntity(env.toGlobalVariableEntity())
 		gve.addEntity(category.toGlobalVariableEntity())
