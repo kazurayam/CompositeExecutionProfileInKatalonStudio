@@ -91,8 +91,8 @@ public final class ExecutionProfile {
 
 
 	private GlobalVariableEntities entities
-	
-	
+
+
 
 	/**
 	 * sole constructor
@@ -109,8 +109,8 @@ public final class ExecutionProfile {
 	GlobalVariableEntities getContent() {
 		return entities
 	}
-	
-	
+
+
 	/**
 	 * returns true if a GlobalVariable.XXX is contained in this Profile,
 	 * returns false if not found
@@ -119,10 +119,17 @@ public final class ExecutionProfile {
 		return entities.contains(globalVariableName)
 	}
 
+	/**
+	 * write the XML content into the file specified 
+	 */
 	void save(File file) {
 		XmlUtil.serialize(entities.toString(), new FileOutputStream(file))
 	}
 
+	/**
+	 * write the XML content into the writer.
+	 * This is useful to write the content into a String for logging messages.
+	 */
 	void save(Writer writer) {
 		XmlUtil.serialize(entities.toString(), writer)
 	}

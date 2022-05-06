@@ -7,9 +7,6 @@ import java.util.stream.Collectors
 import java.util.regex.Pattern
 import java.util.regex.Matcher
 
-import groovy.util.XmlSlurper
-import groovy.util.slurpersupport.GPathResult
-
 import com.kazurayam.ks.globalvariable.xml.GlobalVariableEntities
 import com.kazurayam.ks.globalvariable.xml.GlobalVariableEntity
 import com.kms.katalon.core.annotation.Keyword
@@ -18,22 +15,38 @@ import com.kms.katalon.core.configuration.RunConfiguration
 /**
  * Provides some utility methods that are repeatedly used by ExecutionProfilesLoader and other classes.
  * 
- * @author kazuarayam
+ * @author kazurayam
  */
-public class ProfilesHelper {
+public final class ProfilesHelper {
 
-	static final Path projectDir = Paths.get(RunConfiguration.getProjectDir())
+	static final Path profilesDir_ = Paths.get(RunConfiguration.getProjectDir()).resolve("Profiles")
+
+	/**
+	 * For example, given with a Path of "./Profiles/test_A.glbl", then returns a String of "test_A"
+	 */
+	static String toProfileName(Path profilePath) {
+		Objects.requireNonNull(profilePath)
+		String fileName = profilePath.getFileName().toString()
+		return fileName.substring(0, fileName.indexOf(".glbl"))
+	}
 
 	/**
 	 * list all Profiles in the Profiles directory,
-	 * returns a lisst of Path objects
+	 * returns a list of Path objects of "*.glbl" files
 	 */
 	@Keyword
-	static List<Path> selectAllProfiles() {
-		Path profilesDir = projectDir.resolve("Profiles")
-		return selectAllProfiles(profilesDir)
+	static List<String> listAllProfiles() {
+		return listAllProfilePaths().stream()
+				.map({ Path profilePath -> toProfileName(profilePath)})
+				.collect(Collectors.toList())
 	}
-	static List<Path> selectAllProfiles(Path profilesDir) {
+
+	static List<Path> listAllProfilePaths() {
+		return listAllProfilePaths(profilesDir_)
+	}
+
+	static List<Path> listAllProfilePaths(Path profilesDir) {
+		Objects.requireNonNull(profilesDir)
 		List<Path> glblPaths =
 				Files.list(profilesDir)
 				.filter({ Path p -> !Files.isDirectory(p) })
@@ -44,160 +57,108 @@ public class ProfilesHelper {
 	}
 
 	/**
-	 * For example, given with a Path of "./Profiles/test_A.glbl", then returns a String of "test_A"
+	 * list Profiles of which name matches with the pattern
+	 * 
+	 * @param pattern as Regular Expression
 	 */
-	static String toProfileName(Path profilePath) {
-		String fileName = profilePath.getFileName().toString()
-		return fileName.substring(0, fileName.indexOf(".glbl"))
+	@Keyword
+	static List<String> listProfiles(String profileNamePattern) {
+		Objects.requireNonNull(profileNamePattern)
+		return listProfilePaths(profileNamePattern).stream()
+				.map({ Path profilePath -> toProfileName(profilePath)})
+				.collect(Collectors.toList())
+	}
+
+	static List<Path> listProfilePaths(String profileNamePattern) {
+		Objects.requireNonNull(profileNamePattern)
+		return listProfilePaths(profilesDir_, profileNamePattern)
 	}
 
 	/**
 	 * scan the Profiles directory and find files
-	 * of which name matches the pattern '&lt;prefix&g;tXXXX.glbl'
+	 * of which name matches the pattern '&lt;pattern&g;tXXXX.glbl'
+	 *
+	 * The pattern is interpreted as a Regular Expression.
 	 *
 	 * @param profilesDir
-	 * @param prefix
-	 * @return Set<String>
+	 * @param pattern
+	 * @return List<Path>
 	 */
-	static SortedSet<String> selectProfiles(String prefix) {
-		return selectProfiles(projectDir, prefix)
+	static List<Path> listProfilePaths(Path profilesDir, String pattern) {
+		Objects.requireNonNull(profilesDir)
+		Objects.requireNonNull(pattern)
+		final Pattern ptn = Pattern.compile(pattern)
+		List<Path> filtered =
+				Files.list(profilesDir)
+				.filter({ p ->
+					String profileName = ProfilesHelper.toProfileName(p);
+					Matcher m = ptn.matcher(profileName)
+					return m.matches()
+				})
+				.collect(Collectors.toList())
+		return filtered
 	}
 
-	static SortedSet<String> selectProfiles(Path profilesDir, String prefix) {
-		Set<String> entries = Files.list(profilesDir)
-				.filter { p -> p.getFileName().toString().startsWith(prefix) }
-				.map { p -> p.getFileName().toString().replaceAll('.glbl', '') }
-				.collect(Collectors.toSet())
-		SortedSet<String> sorted = new TreeSet()
-		sorted.addAll(entries)
-		return sorted
-	}
 
 	/**
-	 * given with a Path of Profile, returns the parsed XML content as GPathResult
-	 * 
+	 * Make the list of GlobalVariableWithProfile objects of of all GlobalVariables contained in all Profiles
+	 * The returned List is used as the base of "lookupGlobalVariable" methods.
 	 */
-	static GPathResult parseProfile(Path profile) {
-		XmlSlurper slurper = new XmlSlurper()
-		return slurper.parse(profile.toFile())
-	}
-
-
-	static List<String> listAllGlobalVariables() {
-		List<Path> glbls = selectAllProfiles()
-		List<GlobalVariableProfilePair> pairs = new ArrayList<>()
+	private static List<GlobalVariableInProfile> getAllGlobalVariableInProfile(Path profilesDir) {
+		Objects.requireNonNull(profilesDir)
+		List<Path> glbls = listAllProfilePaths()
+		List<GlobalVariableInProfile> gvwpList = new ArrayList<>()
 		for (Path profile in glbls) {
 			ExecutionProfile ep = ExecutionProfile.newInstance(profile)
 			GlobalVariableEntities gves = ep.getContent()
 			for (GlobalVariableEntity gve in gves.entities()) {
-				GlobalVariableProfilePair pair = new GlobalVariableProfilePair(gve, profile)
-				pairs.add(pair)
+				GlobalVariableInProfile gvwp = new GlobalVariableInProfile(gve, profile)
+				gvwpList.add(gvwp)
 			}
 		}
-		Collections.sort(pairs)
-		List<String> result = new ArrayList<>()
-		for (GlobalVariableProfilePair pair in pairs) {
-			result.add(pair.toString())
-		}
-		return result;
+		Collections.sort(gvwpList)
+		return gvwpList
 	}
-
 
 	/**
-	 *
-	 * @param globalVariableNamePattern
-	 * @return
+	 * 
 	 */
+	static List<GlobalVariableInProfile> listGlobalVariableInProfile(Path profilesDir, String globalVariableNamePattern) {
+		Objects.requireNonNull(profilesDir)
+		Objects.requireNonNull(globalVariableNamePattern)
+		Pattern pattern = Pattern.compile(globalVariableNamePattern)
+		List<GlobalVariableInProfile> filtered =
+				getAllGlobalVariableInProfile(profilesDir).stream()
+				.filter({ GlobalVariableInProfile gvip ->
+					pattern.matcher(gvip.getGlobalVariableEntity().name()).matches()
+				})
+				.collect(Collectors.toList())
+		return filtered
+	}
+
+
 	@Keyword
-	static List<Paths> lookupProfilesContainingGlobalVariable(String globalVariableName) {
-		List<Path> result = new ArrayList<>()
-		for (Path glbl in this.selectAllProfiles()) {
-			ExecutionProfile ep = ExecutionProfile.newInstance(glbl)
-			if (ep.contains(globalVariableName)) {
-				result.add(glbl)
-			}
-		}
-		return result
+	static List<String> listGlobalVariableInProfileAsString(String globalVariableNamePattern) {
+		Objects.requireNonNull(globalVariableNamePattern)
+		List<GlobalVariableInProfile> filtered = listGlobalVariableInProfile(profilesDir_, globalVariableNamePattern)
+		return toString(filtered)
 	}
 
 	@Keyword
-	static List<String> lookupProfileNamesContainingGlobalVariable(String globalVariableName) {
-		List<Path> profiles = lookupProfilesContainingGlobalVariable(globalVariableName)
-		List<String> result = []
-		for (Path profile in profiles) {
-			String fn = profile.getFileName().toString()
-			String profileName = fn.substring(0, fn.indexOf(".glbl"))
-			result.add(profileName)
-		}
-		return result
+	static List<String> listAllGlobalVariableInProfileAsString() {
+		return toString(listGlobalVariableInProfile(profilesDir_, ".*"))
+	}
+
+
+
+	static List<String> toString(List<GlobalVariableInProfile> gvipList) {
+		Objects.requireNonNull(gvipList)
+		return gvipList.stream()
+				.map({ GlobalVariableInProfile gvip ->
+					gvip.toString()
+				})
+				.collect(Collectors.toList())
 	}
 
 	private ProfilesHelper() {}
-
-
-	/**
-	 * Pair of a GlobalVariable and its containing Profile
-	 * 
-	 * @author kazurayam
-	 *
-	 */
-	static class GlobalVariableProfilePair implements Comparable<GlobalVariableProfilePair> {
-
-		GlobalVariableEntity gve
-		Path profile
-
-		GlobalVariableProfilePair(GlobalVariableEntity gve, Path profile) {
-			this.gve = gve
-			this.profile = profile
-		}
-
-		GlobalVariableEntity getGlobalVariableEntity() {
-			return this.gve
-		}
-
-		Path getProfile() {
-			return this.profile
-		}
-
-		String getProfileName() {
-			String fileName = this.profile.getFileName().toString()
-			return fileName.substring(0, fileName.indexOf(".glbl"))
-		}
-
-		@Override
-		boolean equals(Object obj) {
-			if (! (obj instanceof GlobalVariableProfilePair)) {
-				return false
-			}
-			GlobalVariableProfilePair other = (GlobalVariableProfilePair)obj
-			return this.getGlobalVariableEntity() == other.getGlobalVariableEntity() &&
-					this.getProfile() == other.getProfile()
-		}
-
-		@Override
-		int hashCode() {
-			int hash = 7;
-			hash = 31 * hash + this.getGlobalVariableEntity().hashCode();
-			hash = 31 * hash + this.getProfile().hashCode();
-			return hash;
-		}
-
-		@Override
-		int compareTo(GlobalVariableProfilePair other) {
-			int nameCompResult = this.getGlobalVariableEntity().name().compareTo(other.getGlobalVariableEntity().name())
-			if (nameCompResult == 0) {
-				int profileCompResult = this.getProfile().compareTo(other.getProfile())
-				return profileCompResult
-			} else {
-				return nameCompResult
-			}
-		}
-
-		@Override
-		String toString() {
-			return this.getGlobalVariableEntity().name() +
-					" " + this.getProfileName() +
-					" " + this.getGlobalVariableEntity().initValue()
-		}
-	}
 }

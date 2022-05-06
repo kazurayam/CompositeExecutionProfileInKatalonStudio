@@ -27,57 +27,38 @@ public class ProfilesHelperTest {
 	}
 
 	@Test
-	void test_selectProfiles_main_category() {
-		Set<String> entries = ProfilesHelper.selectProfiles(profilesDir, 'main_category')
-		assertEquals(4, entries.size())
-		assertEquals('main_category0', entries[0])
+	void test_toProfileName() {
+		Path glbl = profilesDir.resolve("test_A.glbl")
+		String profileName = ProfilesHelper.toProfileName(glbl);
+		assertEquals("test_A", profileName);
 	}
-
+	
 	@Test
-	void test_selectProfiles_main_env() {
-		Set<String> entries = ProfilesHelper.selectProfiles(profilesDir, 'main_env')
-		assertEquals(3, entries.size())
-		assertEquals('main_envDevelopment', entries[0])
-		assertEquals('main_envProduction', entries[1])
-		assertEquals('main_envStaging', entries[2])
+	void test_listProfiles() {
+		List<String> profiles = ProfilesHelper.listAllProfiles()
+		assertEquals(21, profiles.size())
 	}
-
+	
 	@Test
-	void test_selectAllProfiles() {
-		List<String> profileNames = ProfilesHelper.selectAllProfiles();
-		for (String name in profileNames) {
-			println "[test_allProfileNames] name=" + name
-		}
-		assertEquals(21, profileNames.size())
+	void test_listProfilesFilteredByPattern() {
+		assertEquals(1, ProfilesHelper.listProfiles("default").size());
+		assertEquals(2, ProfilesHelper.listProfiles("demo.*").size());
+		assertEquals(15, ProfilesHelper.listProfiles("main\\w+").size());
+		assertEquals(3, ProfilesHelper.listProfiles("test_[ABC]").size());
 	}
-
+	
+	
 	@Test
-	void test_lookupProfilesContainingGlobalVariable() {
-		String gvName = "URL1"
-		List<Path> containers = ProfilesHelper.lookupProfilesContainingGlobalVariable(gvName)
-		for (Path container in containers) {
-			println "[test_lookupProfilesContainingGlobalVariable] GlobalVariable.${gvName} is declared in Profile '${container}'"
-		}
-		assertEquals(2, containers.size())
+	void test_listAllGlobalVariableInProfileAsString() {
+		List<String> list = ProfilesHelper.listAllGlobalVariableInProfileAsString()
+		list.stream().forEach {s -> println "[test_listAllGlobalVariableInProfileAsString] " + s}
+		assertEquals(33, list.size())
 	}
-
-
+	
 	@Test
-	void test_lookupProfileNamesContainingGlobalVariable() {
-		String gvName = "URL1"
-		List<String> containers = ProfilesHelper.lookupProfileNamesContainingGlobalVariable(gvName)
-		for (String container in containers) {
-			println "[test_lookupProfileNamesContainingGlobalVariable] GlobalVariable.${gvName} is declared in Profile '${container}'"
-		}
-		assertEquals(2, containers.size())
-	}
-
-	@Test
-	void test_listAllGlobalVariables() {
-		List<String> allGveWithProfileName = ProfilesHelper.listAllGlobalVariables()
-		for (String str in allGveWithProfileName) {
-			println "[test_listAllGlobalVariables] " + str
-		}
-		assertEquals(33, allGveWithProfileName.size())
+	void test_listGlobalVariableInProfileAsStringFilteredByPattern() {
+		List<String> list = ProfilesHelper.listGlobalVariableInProfileAsString("URL.*")
+		list.stream().forEach {s -> println "[test_listGlobalVariableInProfileAsStringFilteredByPattern] " + s}
+		assertEquals(2, list.size())
 	}
 }
