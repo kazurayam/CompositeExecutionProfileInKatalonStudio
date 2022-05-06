@@ -1,4 +1,4 @@
-package com.kazurayam.ks.globalvariable.demo
+package glbl.demo
 
 import java.awt.image.RenderedImage;
 import java.nio.file.Path;

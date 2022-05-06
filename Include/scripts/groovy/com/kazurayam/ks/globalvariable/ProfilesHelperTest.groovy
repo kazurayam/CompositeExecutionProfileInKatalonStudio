@@ -71,7 +71,7 @@ public class ProfilesHelperTest {
 		}
 		assertEquals(2, containers.size())
 	}
-	
+
 	@Test
 	void test_listAllGlobalVariables() {
 		List<String> allGveWithProfileName = ProfilesHelper.listAllGlobalVariables()

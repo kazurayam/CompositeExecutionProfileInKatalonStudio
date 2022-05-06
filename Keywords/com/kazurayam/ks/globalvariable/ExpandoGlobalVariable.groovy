@@ -21,7 +21,8 @@ import java.util.regex.Pattern
 import java.util.regex.Matcher
 
 /**
- * The container of properties of GlobalVariable dynamically added by ExecutionProfilesLoader.
+ * The container of properties of a GlobalVariable dynamically added by ExecutionProfilesLoader.
+ * 
  * This provides quick methods to retrieve the pairs of GlobalVariable name and values;
  * both of statically defined ones and dynamically added ones.
  * 

@@ -13,6 +13,10 @@ import javax.xml.xpath.XPathConstants
 import javax.xml.xpath.XPathExpressionException
 import javax.xml.xpath.XPathFactory
 import org.xml.sax.InputSource
+
+import com.kazurayam.ks.globalvariable.xml.GlobalVariableEntities
+import com.kazurayam.ks.globalvariable.xml.GlobalVariableEntity
+
 import groovy.xml.XmlUtil
 
 /**
@@ -38,28 +42,6 @@ import groovy.xml.XmlUtil
  &lt;/GlobalVariableEntities>
  */
 public final class ExecutionProfile {
-
-	GlobalVariableEntities entities
-
-	ExecutionProfile(GlobalVariableEntities entities) {
-		this.entities = entities
-	}
-
-	GlobalVariableEntities getContent() {
-		return entities
-	}
-
-	boolean contains(String globalVariableName) {
-		return entities.contains(globalVariableName)
-	}
-
-	void save(File file) {
-		XmlUtil.serialize(entities.toString(), new FileOutputStream(file))
-	}
-
-	void save(Writer writer) {
-		XmlUtil.serialize(entities.toString(), writer)
-	}
 
 	static ExecutionProfile newInstance(Path xml) {
 		return newInstance(xml.toFile())
@@ -102,5 +84,46 @@ public final class ExecutionProfile {
 			result.addEntity(entity)
 		}
 		return result
+	}
+
+
+
+
+
+	private GlobalVariableEntities entities
+	
+	
+
+	/**
+	 * sole constructor
+	 * 
+	 * @param entities
+	 */
+	ExecutionProfile(GlobalVariableEntities entities) {
+		this.entities = entities
+	}
+
+	/**
+	 * returns the content of Profile as an instance of GlobalVariableEntities
+	 */
+	GlobalVariableEntities getContent() {
+		return entities
+	}
+	
+	
+	/**
+	 * returns true if a GlobalVariable.XXX is contained in this Profile,
+	 * returns false if not found
+	 */
+	boolean contains(String globalVariableName) {
+		return entities.contains(globalVariableName)
+	}
+
+	void save(File file) {
+		XmlUtil.serialize(entities.toString(), new FileOutputStream(file))
+	}
+
+	void save(Writer writer) {
+		XmlUtil.serialize(entities.toString(), writer)
 	}
 }

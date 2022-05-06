@@ -1,4 +1,4 @@
-package com.kazurayam.ks.globalvariable.demo
+package glbl.demo
 
 import java.nio.file.Path
 
@@ -13,9 +13,9 @@ public class ImagePair {
 	}
 
 	ImagePair(Path lonesome) {
-		this.expected = lonesome	
+		this.expected = lonesome
 	}
-	
+
 	Path getExpected() {
 		return this.expected
 	}

@@ -1,7 +1,8 @@
-package com.kazurayam.ks.globalvariable.sampledomain
+package glbl.sampledomain
 
-import com.kazurayam.ks.globalvariable.GlobalVariableEntity as GVE
-import com.kazurayam.ks.globalvariable.sampledomainconstruct.SerializableToGlobalVariableEntity
+import com.kazurayam.ks.globalvariable.xml.GlobalVariableEntity as GVE
+import com.kazurayam.ks.globalvariable.xml.GlobalVariableEntity
+import glbl.sampledomainconstruct.SerializableToGlobalVariableEntity
 
 enum SaveHTML implements SerializableToGlobalVariableEntity {
 

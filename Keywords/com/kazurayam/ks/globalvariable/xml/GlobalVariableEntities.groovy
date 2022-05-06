@@ -1,4 +1,4 @@
-package com.kazurayam.ks.globalvariable
+package com.kazurayam.ks.globalvariable.xml
 
 public final class GlobalVariableEntities {
 

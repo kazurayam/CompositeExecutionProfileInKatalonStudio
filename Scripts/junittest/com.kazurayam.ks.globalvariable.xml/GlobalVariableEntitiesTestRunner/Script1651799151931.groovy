@@ -1,5 +1,5 @@
 import static com.kazurayam.junit4ks.JUnitCustomKeywords.runWithJUnitRunner
 
-import com.kazurayam.ks.globalvariable.GlobalVariableEntitiesTest
+import com.kazurayam.ks.globalvariable.xml.GlobalVariableEntitiesTest
 
 runWithJUnitRunner(GlobalVariableEntitiesTest.class)

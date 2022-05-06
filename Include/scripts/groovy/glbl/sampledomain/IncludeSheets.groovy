@@ -1,7 +1,7 @@
-package com.kazurayam.ks.globalvariable.sampledomain
+package glbl.sampledomain
 
-import com.kazurayam.ks.globalvariable.GlobalVariableEntity as GVE
-import com.kazurayam.ks.globalvariable.sampledomainconstruct.SerializableToGlobalVariableEntity
+import com.kazurayam.ks.globalvariable.xml.GlobalVariableEntity
+import glbl.sampledomainconstruct.SerializableToGlobalVariableEntity
 
 import groovy.json.JsonOutput
 
@@ -27,8 +27,10 @@ enum IncludeSheets implements SerializableToGlobalVariableEntity {
 	IncludeSheets(List<String> sheets) {
 		this.sheets = sheets
 	}
-	GVE toGlobalVariableEntity() {
-		GVE gve = new GVE()
+	
+	@Override
+	GlobalVariableEntity toGlobalVariableEntity() {
+		GlobalVariableEntity gve = new GlobalVariableEntity()
 		gve.description("")
 		gve.initValue(this.getSheetsAsJson())
 		gve.name("INCLUDE_SHEETS")

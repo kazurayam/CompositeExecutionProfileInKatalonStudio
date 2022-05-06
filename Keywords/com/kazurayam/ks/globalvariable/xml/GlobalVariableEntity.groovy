@@ -1,9 +1,11 @@
-package com.kazurayam.ks.globalvariable
+package com.kazurayam.ks.globalvariable.xml
 
 public final class GlobalVariableEntity {
+	
 	private String description
 	private String initValue
 	private String name
+	
 	GlobalVariableEntity() {
 		this.description = ""
 		this.initValue = ""
@@ -27,11 +29,11 @@ public final class GlobalVariableEntity {
 	String initValue() {
 		return initValue
 	}
-	
+
 	String name() {
 		return name
 	}
-	
+
 	@Override
 	String toString() {
 		StringBuilder sb = new StringBuilder()
@@ -42,7 +44,7 @@ public final class GlobalVariableEntity {
 		sb.append("</GlobalVariableEntity>")
 		return sb.toString()
 	}
-	
+
 	@Override
 	boolean equals(Object obj) {
 		if (!(obj instanceof GlobalVariableEntity)) {
@@ -50,10 +52,10 @@ public final class GlobalVariableEntity {
 		}
 		GlobalVariableEntity other = (GlobalVariableEntity)obj
 		return this.name() == other.name() &&
-			this.initValue() == other.initValue() &&
-			this.description() == other.description()
+				this.initValue() == other.initValue() &&
+				this.description() == other.description()
 	}
-	
+
 	@Override
 	int hashCode() {
 		return this.name().hashCode()

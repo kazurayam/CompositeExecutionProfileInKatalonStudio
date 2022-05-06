@@ -1,11 +1,11 @@
-package com.kazurayam.ks.globalvariable.sampledomainconstruct
+package glbl.sampledomainconstruct
 
-import com.kazurayam.ks.globalvariable.GlobalVariableEntities
-import com.kazurayam.ks.globalvariable.sampledomain.Category
-import com.kazurayam.ks.globalvariable.sampledomain.Env
-import com.kazurayam.ks.globalvariable.sampledomain.IncludeSheets
-import com.kazurayam.ks.globalvariable.sampledomain.IncludeURLs
-import com.kazurayam.ks.globalvariable.sampledomain.SaveHTML
+import com.kazurayam.ks.globalvariable.xml.GlobalVariableEntities
+import glbl.sampledomain.Category
+import glbl.sampledomain.Env
+import glbl.sampledomain.IncludeSheets
+import glbl.sampledomain.IncludeURLs
+import glbl.sampledomain.SaveHTML
 
 /**
  * Factory method to instantiate an ExecutionProfile.GlobalVariableEntities

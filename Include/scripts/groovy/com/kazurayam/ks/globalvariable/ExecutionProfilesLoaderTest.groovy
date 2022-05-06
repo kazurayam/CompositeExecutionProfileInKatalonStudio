@@ -118,7 +118,7 @@ public class ExecutionProfilesLoaderTest {
 		println "[test_loadProfiles_List] " + json
 	}
 
-	
+
 	@Ignore
 	@Test
 	void test_clear() {

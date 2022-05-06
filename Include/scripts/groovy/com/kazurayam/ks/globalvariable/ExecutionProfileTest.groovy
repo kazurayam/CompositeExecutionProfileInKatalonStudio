@@ -7,7 +7,8 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 
-import com.kazurayam.ks.globalvariable.GlobalVariableEntities
+import com.kazurayam.ks.globalvariable.xml.GlobalVariableEntities
+import com.kazurayam.ks.globalvariable.xml.GlobalVariableEntity
 
 
 @RunWith(JUnit4.class)
