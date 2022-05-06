@@ -160,5 +160,5 @@ public final class ProfilesHelper {
 				.collect(Collectors.toList())
 	}
 
-	private ProfilesHelper() {}
+	ProfilesHelper() {}
 }

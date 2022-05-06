@@ -26,12 +26,6 @@ public class ProfilesHelperTest {
 		profilesDir = projectDir.resolve('Profiles')
 	}
 
-	@Test
-	void test_toProfileName() {
-		Path glbl = profilesDir.resolve("test_A.glbl")
-		String profileName = ProfilesHelper.toProfileName(glbl);
-		assertEquals("test_A", profileName);
-	}
 	
 	@Test
 	void test_listProfiles() {
@@ -61,4 +55,12 @@ public class ProfilesHelperTest {
 		list.stream().forEach {s -> println "[test_listGlobalVariableInProfileAsStringFilteredByPattern] " + s}
 		assertEquals(2, list.size())
 	}
+
+	@Test
+	void test_toProfileName() {
+		Path glbl = profilesDir.resolve("test_A.glbl")
+		String profileName = ProfilesHelper.toProfileName(glbl);
+		assertEquals("test_A", profileName);
+	}
+
 }
