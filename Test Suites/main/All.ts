@@ -29,14 +29,14 @@
       <guid>e8fadaf2-5a4c-43d7-a3fb-596480f9c18e</guid>
       <isReuseDriver>false</isReuseDriver>
       <isRun>true</isRun>
-      <testCaseId>Test Cases/main/1_listing/3_listAllGlobalVariableInProfile</testCaseId>
+      <testCaseId>Test Cases/main/1_listing/3_listAllGlobalVariable</testCaseId>
       <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
    </testCaseLink>
    <testCaseLink>
       <guid>9af9a775-67bc-4931-8308-893bb0c982c5</guid>
       <isReuseDriver>false</isReuseDriver>
       <isRun>true</isRun>
-      <testCaseId>Test Cases/main/1_listing/4_listGlobalVariableInProfile</testCaseId>
+      <testCaseId>Test Cases/main/1_listing/4_listGlobalVariable</testCaseId>
       <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
    </testCaseLink>
 </TestSuiteEntity>

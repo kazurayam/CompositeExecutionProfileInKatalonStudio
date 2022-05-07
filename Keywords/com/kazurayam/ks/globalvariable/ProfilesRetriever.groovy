@@ -17,7 +17,7 @@ import com.kms.katalon.core.configuration.RunConfiguration
  * 
  * @author kazurayam
  */
-public final class ProfilesHelper {
+public final class ProfilesRetriever {
 
 	static final Path profilesDir_ = Paths.get(RunConfiguration.getProjectDir()).resolve("Profiles")
 
@@ -29,7 +29,7 @@ public final class ProfilesHelper {
 	@Keyword
 	static List<String> listAllProfiles() {
 		return listAllProfilePaths().stream()
-				.map({ Path profilePath -> ProfilesHelper.toProfileName(profilePath)})
+				.map({ Path profilePath -> ProfilesRetriever.toProfileName(profilePath)})
 				.collect(Collectors.toList())
 	}
 
@@ -42,7 +42,7 @@ public final class ProfilesHelper {
 	static List<String> listProfiles(String profileNamePattern) {
 		Objects.requireNonNull(profileNamePattern)
 		return listProfilePaths(profileNamePattern).stream()
-				.map({ Path profilePath -> ProfilesHelper.toProfileName(profilePath)})
+				.map({ Path profilePath -> ProfilesRetriever.toProfileName(profilePath)})
 				.collect(Collectors.toList())
 	}
 
@@ -77,10 +77,11 @@ public final class ProfilesHelper {
 		final Pattern ptn = Pattern.compile(pattern)
 		List<Path> filtered =
 				Files.list(profilesDir)
-				.filter({ p -> 
-					p.getFileName().toString().endsWith(".glbl") })
 				.filter({ p ->
-					String profileName = ProfilesHelper.toProfileName(p);
+					p.getFileName().toString().endsWith(".glbl")
+				})
+				.filter({ p ->
+					String profileName = ProfilesRetriever.toProfileName(p);
 					Matcher m = ptn.matcher(profileName)
 					return m.matches()
 				})
@@ -92,15 +93,23 @@ public final class ProfilesHelper {
 	// ----------------------------------------------------------------
 
 	@Keyword
-	static List<String> listAllGlobalVariableInProfile() {
+	static List<String> listAllGlobalVariable() {
 		return toString(listAllGVIP(profilesDir_))
 	}
 
 
 	@Keyword
-	static List<String> listGlobalVariableInProfile(String globalVariableNamePattern) {
+	static List<String> listGlobalVariable(String globalVariableNamePattern) {
 		Objects.requireNonNull(globalVariableNamePattern)
-		List<GlobalVariableInProfile> filtered = listGVIP(profilesDir_, globalVariableNamePattern)
+		List<GlobalVariableInProfile> filtered = listGVIP(profilesDir_, globalVariableNamePattern, ".*")
+		return toString(filtered)
+	}
+
+	@Keyword
+	static List<String> listGlobalVariableInProfile(String globalVariableNamePattern, String profileNamePattern) {
+		Objects.requireNonNull(globalVariableNamePattern)
+		Objects.requireNonNull(profileNamePattern)
+		List<GlobalVariableInProfile> filtered = listGVIP(profilesDir_, globalVariableNamePattern, profileNamePattern)
 		return toString(filtered)
 	}
 
@@ -111,17 +120,18 @@ public final class ProfilesHelper {
 	 */
 	static List<GlobalVariableInProfile> listAllGVIP(Path profilesDir) {
 		Objects.requireNonNull(profilesDir)
-		return listGVIP(profilesDir, ".*")
+		return listGVIP(profilesDir, ".*", ".*")
 	}
 
 	/**
 	 * 
 	 */
-	static List<GlobalVariableInProfile> listGVIP(Path profilesDir, String globalVariableNamePattern) {
+	static List<GlobalVariableInProfile> listGVIP(Path profilesDir, String globalVariableNamePattern, String profileNamePattern) {
 		Objects.requireNonNull(profilesDir)
 		Objects.requireNonNull(globalVariableNamePattern)
+		Objects.requireNonNull(profileNamePattern)
 		List<GlobalVariableInProfile> allGVIP = new ArrayList<>()
-		for (Path profile in listAllProfilePaths(profilesDir)) {
+		for (Path profile in listProfilePaths(profilesDir, profileNamePattern)) {
 			ExecutionProfile ep = ExecutionProfile.newInstance(profile)
 			GlobalVariableEntities gve = ep.getContent()
 			List<GlobalVariableEntity> entities = gve.entities()
@@ -133,10 +143,10 @@ public final class ProfilesHelper {
 		Pattern pattern = Pattern.compile(globalVariableNamePattern)
 		List<GlobalVariableInProfile> filtered =
 				allGVIP.stream()
-					.filter({ GlobalVariableInProfile gvip ->
-						pattern.matcher(gvip.getGlobalVariableEntity().name()).matches()
-					})
-					.collect(Collectors.toList())
+				.filter({ GlobalVariableInProfile gvip ->
+					pattern.matcher(gvip.getGlobalVariableEntity().name()).matches()
+				})
+				.collect(Collectors.toList())
 		Collections.sort(filtered)
 		return filtered
 	}
@@ -168,5 +178,5 @@ public final class ProfilesHelper {
 				.collect(Collectors.toList())
 	}
 
-	ProfilesHelper() {}
+	ProfilesRetriever() {}
 }

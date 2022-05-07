@@ -1,6 +1,6 @@
-// Test Cases/main/1_listing/1_listProfilesFiltered
+// Test Cases/main/1_listing/2_listProfiles
 
-List<String> filtered = CustomKeywords.'com.kazurayam.ks.globalvariable.ProfilesHelper.listProfiles'("test_\\w+")
+List<String> filtered = CustomKeywords.'com.kazurayam.ks.globalvariable.ProfilesRetriever.listProfiles'("test_\\w+")
 
 for (String profile in filtered) {
 	println profile

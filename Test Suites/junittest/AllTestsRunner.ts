@@ -36,7 +36,7 @@
       <guid>fa80f602-dcc0-4b43-8d32-af47c1f744ff</guid>
       <isReuseDriver>false</isReuseDriver>
       <isRun>true</isRun>
-      <testCaseId>Test Cases/junittest/com.kazurayam.ks.globalvariable/ProfilesHelperTestRunner</testCaseId>
+      <testCaseId>Test Cases/junittest/com.kazurayam.ks.globalvariable/ProfilesRetrieverTestRunner</testCaseId>
       <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
    </testCaseLink>
    <testCaseLink>

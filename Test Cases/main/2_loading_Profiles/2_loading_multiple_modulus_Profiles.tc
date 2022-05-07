@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <TestCaseEntity>
    <description></description>
-   <name>ProfilesHelperTestRunner</name>
+   <name>2_loading_multiple_modulus_Profiles</name>
    <tag></tag>
    <comment></comment>
-   <testCaseGuid>bcc7c7d9-72c2-4c5b-8f41-640a2edce4c0</testCaseGuid>
+   <testCaseGuid>92f0f1e4-5c36-4747-9e5b-7d90eddc59a6</testCaseGuid>
 </TestCaseEntity>

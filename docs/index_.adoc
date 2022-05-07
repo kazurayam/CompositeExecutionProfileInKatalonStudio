@@ -100,6 +100,8 @@ The output line should show the following items
 - the name of Execution Profile which contains the GV
 - the initial value of the GV declared in the Profile
 
+These 3 items should be delimited by TAB characters.
+
 Sample code:
 
 [source,groovy]
@@ -155,9 +157,7 @@ myList	test_C	['I\'m from test_C', 8090]
 
 Problem to solve:
 
-I want to list GlobalVariables filtered by its name with Regular Expression. If a name of GlobalVariable appear in 2 Profiles, want 2 lines of the GlobalVariable. 
-
-Sample code:
+I want to list GlobalVariables filtered by its name with Regular Expression. If a name of GlobalVariable appear in 2 Profiles, want 2 lines of that GlobalVariable. 
 
 Sample code:
 
@@ -165,4 +165,20 @@ Sample code:
 ----
 include::../Scripts/main/1_listing/4_listGlobalVariableInProfile/Script1651884270128.groovy[]
 ----
+
+The Regular Expression `ENV.\*` matches with a GlobalVariable name which starts with a string "`ENV`" followed by zero or more any characters.
+
+Output:
+
+----
+2022-05-07 20:53:12.722 INFO  c.k.katalon.core.main.TestCaseExecutor   - --------------------
+2022-05-07 20:53:12.727 INFO  c.k.katalon.core.main.TestCaseExecutor   - START Test Cases/main/1_listing/4_listGlobalVariableInProfile
+2022-05-07 20:53:13.800 INFO  k.k.c.m.CustomKeywordDelegatingMetaClass - com.kazurayam.ks.globalvariable.ProfilesHelper.listGlobalVariableInProfile is PASSED
+ENVIRONMENT	default	''
+ENVIRONMENT	main_envDevelopment	'Development'
+ENVIRONMENT	main_envProduction	'Production'
+ENVIRONMENT	main_envStaging	'Staging'
+2022-05-07 20:53:13.853 INFO  c.k.katalon.core.main.TestCaseExecutor   - END Test Cases/main/1_listing/4_listGlobalVariableInProfile
+----
+
 

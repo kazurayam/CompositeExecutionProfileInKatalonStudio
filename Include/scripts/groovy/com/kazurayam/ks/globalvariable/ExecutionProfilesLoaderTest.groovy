@@ -119,7 +119,7 @@ public class ExecutionProfilesLoaderTest {
 	}
 
 
-	@Ignore
+	
 	@Test
 	void test_clear() {
 		assertTrue("expected the value loaded from the default profile but was \"${GlobalVariable.CONFIG}\"",
