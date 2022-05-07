@@ -63,3 +63,108 @@ test_B
 test_C
 2022-05-06 22:32:11.228 INFO  c.k.katalon.core.main.TestCaseExecutor   - END Test Cases/main/1_listing/1_listAllProfiles
 ----
+
+=== List profiles filtered by name
+
+Problem to solve: I want to select some of Execution Profile names using RegularExpression.
+
+Sample Test Case:
+
+[source, groovy]
+----
+include::../Scripts/main/1_listing/1_listAllProfiles/Script1651843453034.groovy[]
+----
+
+Please note, `"test_\\w+"` is a link:https://docs.oracle.com/javase/7/docs/api/java/util/regex/Pattern.html[Pattern] of Regular Expression in Java. It matches with a Profile name that starts with a string "`test_`" followed by 1 or more alpha-numeric characters. For example, the Profile `test_A` does match, but the Profile `default` doesn't.
+
+Output:
+----
+2022-05-07 09:35:09.118 INFO  c.k.katalon.core.main.TestCaseExecutor   - --------------------
+2022-05-07 09:35:09.122 INFO  c.k.katalon.core.main.TestCaseExecutor   - START Test Cases/main/1_listing/2_listProfilesFiltered
+2022-05-07 09:35:09.767 INFO  k.k.c.m.CustomKeywordDelegatingMetaClass - com.kazurayam.ks.globalvariable.ProfilesHelper.listProfiles is PASSED
+test_A
+test_B
+test_C
+2022-05-07 09:35:09.822 INFO  c.k.katalon.core.main.TestCaseExecutor   - END Test Cases/main/1_listing/2_listProfilesFiltered
+----
+
+
+
+=== List all GlobalVariables in Profile
+
+Problem to solve:
+
+I want to list all GlobalVariables defined in all Execution Profiles. If a name of GlobalVariable appear in 2 Profiles, want 2 lines of the GlobalVariable. 
+
+The output line should show the following items
+
+- the name GlobalVariable 
+- the name of Execution Profile which contains the GV
+- the initial value of the GV declared in the Profile
+
+Sample code:
+
+[source,groovy]
+----
+include::../Scripts/main/1_listing/3_listAllGlobalVariableInProfile/Script1651884251194.groovy[]
+----
+
+Output:
+
+----
+2022-05-07 20:20:17.797 INFO  c.k.katalon.core.main.TestCaseExecutor   - --------------------
+2022-05-07 20:20:17.804 INFO  c.k.katalon.core.main.TestCaseExecutor   - START Test Cases/main/1_listing/3_listAllGlobalVariableInProfile
+2022-05-07 20:20:19.259 INFO  k.k.c.m.CustomKeywordDelegatingMetaClass - com.kazurayam.ks.globalvariable.ProfilesHelper.listAllGlobalVariableInProfile is PASSED
+AVAR1	test_A	'I\'m from test_A'
+AVAR2	test_A	999
+AVAR3	test_A	[('keyA') : 'valueA', ('keyB') : true]
+BVAR1	test_B	'I\'m from test_B'
+CATEGORY	default	0
+CATEGORY	main_category0	0
+CATEGORY	main_category1	1
+CATEGORY	main_category2	2
+CATEGORY	main_category3	3
+CONFIG	default	'./Include/fixture/Config.xlsx'
+DEBUG_MODE	default	false
+EMPTY_VARIABLE	test_C	''
+ENVIRONMENT	default	''
+ENVIRONMENT	main_envDevelopment	'Development'
+ENVIRONMENT	main_envProduction	'Production'
+ENVIRONMENT	main_envStaging	'Staging'
+Hostname	default	'demoaut.katalon.com'
+INCLUDE_SHEETS	default	[]
+INCLUDE_SHEETS	main_includeSheets_ALL	[]
+INCLUDE_SHEETS	main_includeSheets_CompanyA	['CompanyA']
+INCLUDE_SHEETS	main_includeSheets_CompanyB	['CompanyB']
+INCLUDE_SHEETS	main_includeSheets_CompanyC	['CompanyC']
+INCLUDE_SHEETS	main_includeSheets_GroupG	['CompanyL', 'CompanyM', 'CompanyN']
+INCLUDE_URLS	default	[]
+INCLUDE_URLS	main_includeURLs_ALL	[]
+INCLUDE_URLS	main_includeURLs_login	['login.html']
+INCLUDE_URLS	main_includeURLs_top	['top.html']
+NULL_VARIABLE	test_C	null
+SAVE_HTML	default	false
+TIMEOUT	default	10
+URL1	demoDevelopmentEnvironment	'http://demoaut-mimic.kazurayam.com/'
+URL1	demoProductionEnvironment	'http://demoaut.katalon.com/'
+myList	test_C	['I\'m from test_C', 8090]
+2022-05-07 20:20:19.388 INFO  c.k.katalon.core.main.TestCaseExecutor   - END Test Cases/main/1_listing/3_listAllGlobalVariableInProfile
+
+----
+
+
+=== List GlobalVariables filtered by name
+
+Problem to solve:
+
+I want to list GlobalVariables filtered by its name with Regular Expression. If a name of GlobalVariable appear in 2 Profiles, want 2 lines of the GlobalVariable. 
+
+Sample code:
+
+Sample code:
+
+[source,groovy]
+----
+include::../Scripts/main/1_listing/4_listGlobalVariableInProfile/Script1651884270128.groovy[]
+----
+

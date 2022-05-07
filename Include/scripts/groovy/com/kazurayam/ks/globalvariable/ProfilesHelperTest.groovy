@@ -43,16 +43,16 @@ public class ProfilesHelperTest {
 	
 	
 	@Test
-	void test_listAllGlobalVariableInProfileAsString() {
-		List<String> list = ProfilesHelper.listAllGlobalVariableInProfileAsString()
-		list.stream().forEach {s -> println "[test_listAllGlobalVariableInProfileAsString] " + s}
+	void test_listAllGlobalVariableInProfile() {
+		List<String> list = ProfilesHelper.listAllGlobalVariableInProfile()
+		list.stream().forEach {s -> println "[test_listAllGlobalVariableInProfile] " + s}
 		assertEquals(33, list.size())
 	}
 	
 	@Test
-	void test_listGlobalVariableInProfileAsStringFilteredByPattern() {
-		List<String> list = ProfilesHelper.listGlobalVariableInProfileAsString("URL.*")
-		list.stream().forEach {s -> println "[test_listGlobalVariableInProfileAsStringFilteredByPattern] " + s}
+	void test_listGlobalVariableInProfile() {
+		List<String> list = ProfilesHelper.listGlobalVariableInProfile("URL.*")
+		list.stream().forEach {s -> println "[test_listGVIP] " + s}
 		assertEquals(2, list.size())
 	}
 
