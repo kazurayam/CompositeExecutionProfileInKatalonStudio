@@ -78,11 +78,11 @@ Problem to solve: I want to select some of Execution Profile names using Regular
 
 Sample Test Case:
 
-    // Test Cases/main/1_listing/1_listAllProfiles
+    // Test Cases/main/1_listing/1_listProfilesFiltered
 
-    List<String> profiles = CustomKeywords.'com.kazurayam.ks.globalvariable.ProfilesHelper.listAllProfiles'()
+    List<String> filtered = CustomKeywords.'com.kazurayam.ks.globalvariable.ProfilesHelper.listProfiles'("test_\\w+")
 
-    for (String profile in profiles) {
+    for (String profile in filtered) {
         println profile
     }
 

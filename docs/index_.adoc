@@ -22,7 +22,7 @@ Once you locate the jar, pleast stop and restart Katalon Studio to let it acknow
 
 Given that there are many Execution Profiles defined in a project:
 
-image::images/1_listing/ExecutionProfilesDefined.png[]
+image::images/1_listing/ExecutionProfilesDefined.png[width=300px]
 
 Problem to solve: I want to list all Execution Profile names and print them in the console.
 
@@ -32,8 +32,6 @@ Sample Test Case:
 ----
 include::../Scripts/main/1_listing/1_listAllProfiles/Script1651843453034.groovy[]
 ----
-
-
 
 Output:
 ----
@@ -72,7 +70,7 @@ Sample Test Case:
 
 [source, groovy]
 ----
-include::../Scripts/main/1_listing/1_listAllProfiles/Script1651843453034.groovy[]
+include::../Scripts/main/1_listing/2_listProfiles/Script1651915776577.groovy[]
 ----
 
 Please note, `"test_\\w+"` is a link:https://docs.oracle.com/javase/7/docs/api/java/util/regex/Pattern.html[Pattern] of Regular Expression in Java. It matches with a Profile name that starts with a string "`test_`" followed by 1 or more alpha-numeric characters. For example, the Profile `test_A` does match, but the Profile `default` doesn't.
