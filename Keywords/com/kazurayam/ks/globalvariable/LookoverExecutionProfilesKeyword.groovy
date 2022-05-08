@@ -32,7 +32,7 @@ public final class LookoverExecutionProfilesKeyword {
 	 * returns a list of Path objects of "*.glbl" files
 	 */
 	@Keyword
-	static List<String> listAllProfiles() {
+	List<String> listAllProfiles() {
 		return listAllProfilePaths().stream()
 				.map({ Path profilePath -> LookoverExecutionProfilesKeyword.toProfileName(profilePath)})
 				.collect(Collectors.toList())
@@ -44,7 +44,7 @@ public final class LookoverExecutionProfilesKeyword {
 	 * @param pattern as Regular Expression
 	 */
 	@Keyword
-	static List<String> listProfiles(String profileNamePattern) {
+	List<String> listProfiles(String profileNamePattern) {
 		Objects.requireNonNull(profileNamePattern)
 		return listProfilePaths(profileNamePattern).stream()
 				.map({ Path profilePath -> LookoverExecutionProfilesKeyword.toProfileName(profilePath)})
@@ -52,7 +52,7 @@ public final class LookoverExecutionProfilesKeyword {
 	}
 
 
-	static List<Path> listAllProfilePaths() {
+	List<Path> listAllProfilePaths() {
 		return listProfilePaths(".*")
 	}
 
@@ -67,7 +67,7 @@ public final class LookoverExecutionProfilesKeyword {
 	 * @param pattern
 	 * @return List<Path>
 	 */
-	static List<Path> listProfilePaths(String profileNamePattern) {
+	List<Path> listProfilePaths(String profileNamePattern) {
 		Objects.requireNonNull(profileNamePattern)
 		final Pattern ptn = Pattern.compile(profileNamePattern)
 		List<Path> filtered =
@@ -88,20 +88,20 @@ public final class LookoverExecutionProfilesKeyword {
 	// ----------------------------------------------------------------
 
 	@Keyword
-	static List<String> listAllGlobalVariables() {
+	List<String> listAllGlobalVariables() {
 		return toString(listAllGVIP())
 	}
 
 
 	@Keyword
-	static List<String> listGlobalVariables(String globalVariableNamePattern) {
+	List<String> listGlobalVariables(String globalVariableNamePattern) {
 		Objects.requireNonNull(globalVariableNamePattern)
 		List<GlobalVariableInProfile> filtered = listGVIP(globalVariableNamePattern, ".*")
 		return toString(filtered)
 	}
 
 	@Keyword
-	static List<String> listGlobalVariablesInProfiles(String globalVariableNamePattern, String profileNamePattern) {
+	List<String> listGlobalVariablesInProfiles(String globalVariableNamePattern, String profileNamePattern) {
 		Objects.requireNonNull(globalVariableNamePattern)
 		Objects.requireNonNull(profileNamePattern)
 		List<GlobalVariableInProfile> filtered = listGVIP(globalVariableNamePattern, profileNamePattern)
@@ -113,14 +113,14 @@ public final class LookoverExecutionProfilesKeyword {
 	 * Make the list of GlobalVariableWithProfile objects of of all GlobalVariables contained in all Profiles
 	 * The returned List is used as the base of "lookupGlobalVariable" methods.
 	 */
-	static List<GlobalVariableInProfile> listAllGVIP() {
+	List<GlobalVariableInProfile> listAllGVIP() {
 		return listGVIP(".*", ".*")
 	}
 
 	/**
 	 * 
 	 */
-	static List<GlobalVariableInProfile> listGVIP(String globalVariableNamePattern, String profileNamePattern) {
+	List<GlobalVariableInProfile> listGVIP(String globalVariableNamePattern, String profileNamePattern) {
 		Objects.requireNonNull(globalVariableNamePattern)
 		Objects.requireNonNull(profileNamePattern)
 		List<GlobalVariableInProfile> allGVIP = new ArrayList<>()

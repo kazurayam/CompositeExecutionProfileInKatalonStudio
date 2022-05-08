@@ -21,14 +21,14 @@ import com.kms.katalon.core.configuration.RunConfiguration
 public class LookatGlobalVariablesKeywordTest {
 
 	private static final GlobalVariableAnnex XGV = GlobalVariableAnnex.newInstance()
-	 
+
 	private LookatGlobalVariablesKeyword KW
-	
+
 	@Before
 	void before() {
-		KW = new LookatGlobalVariablesKeyword()	
+		KW = new LookatGlobalVariablesKeyword()
 	}
-	
+
 	@Test
 	void test_allGVEntitiesAsString() {
 		XGV.clear()
