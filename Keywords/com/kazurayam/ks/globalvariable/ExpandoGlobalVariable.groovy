@@ -21,24 +21,26 @@ import java.util.regex.Pattern
 import java.util.regex.Matcher
 
 /**
- * ExpandoGlobalVariable object wraps the instance of "internal.GlobalVariable", 
- * and provides Map-like interface to it. Using ExpandoGlobalVariable you can
+ * The ExpandoGlobalVariable object maintain a object of type Map<String, Object> 
+ * which looks just similar to static instance of "internal.GlobalVariable".
  * 
- *  - list all key-value pairs (GVEntity) of GlobalVariables currently exists
- *  - create new instance of GlobalVariable runtime
+ * The ExpandoGlobalVariable modifies the behavior of the GlobalVariable class dynamically 
+ * using Groovy's Meta-programming technique.
  * 
- * ExecutionProfilesLoader is able to create instances of GVEntity dynamically.
- * ExecutionProfilesLoader is able to create GVE out of Profiles or out of Map<String, Object>.
+ * A caller script can add a new GVEntity named "FOO" into the ExpandoGlobalVariable object.
+ * 
+ * When `GlobalVariable.FOO` property is accessed, the GlobalVariable object will
+ * - first, try to look up "FOO" in the Map inside ExpandGlobalVariable
+ * - secondly, try to lookup "FOO" in the original internal.GlobalVariable object.
  * 
  * ExpandGlobalVariable implements methods to add/modify/delete GVEntries.
  * ExpandGlobalVariable provides method to retrieve all GVEntries' name and their current values runtime.
- * 
- * ExpandGlobalVariable class employs the Singleton design pattern of GOF.
  * 
  * @author kazurayam
  */
 public final class ExpandoGlobalVariable {
 
+	// Singleton design pattern of GOF
 	private static ExpandoGlobalVariable INSTANCE
 
 	// https://docs.groovy-lang.org/latest/html/documentation/core-metaprogramming.html#_properties
@@ -173,12 +175,17 @@ public final class ExpandoGlobalVariable {
 	}
 
 	/**
-	 * Clear properties added to GlobalVariables by addGlobalVariable() method.
-	 * The static properties are untouched.
+	 * remove name=value pairs added by ExpandoGlobalVariable#addGVEntity(String name, Object value) method calls.
+	 * The names that are NOT present in the original internal.GlobalVariable object will be removed.
+	 * The names that are present in the original internal.GlobalVariable object will be left untouched; the values will be also unchanged.
 	 */
+	// the "clear" method does not workis not implemented.
+	// we can add methods to a Metaclass, but we can not removed the added methods.
+	// see https://stackoverflow.com/questions/2745615/remove-single-metaclass-method
 	void clear() {
 		additionalGVEntities.clear()
 	}
+
 
 	/**
 	 * @return true if GlobalVarialbe.name is defined either in 2 places
@@ -203,6 +210,50 @@ public final class ExpandoGlobalVariable {
 
 
 	// ------------------------------------------------------------------------
+
+
+	/**
+	 * inspect the 'internal.GlobalVariable' object to find the GlobalVariables contained,
+	 * and return the list of the names.
+	 *
+	 * The list will include only the fields declared with modifiers `public static` in the internal.GlobalVariable class source.
+	 * You can find the source at
+	 * 
+	 *     projectDir/Libs/internal/GlobalVariable.groovy
+	 *  
+	 * The list will NOT include the GVentities properties dynamically added by calling
+	 * 
+	 *    ExpandoGlobalVariable XGV = ExpandoGlobalVariable.newInstance()
+	 *    XGV.addGVEntity(String name, Object value)
+	 *
+	 */
+	SortedSet<String> staticGVEntitiesKeySet() {
+		// getDeclaredFields() return fields both of static and additional
+		Set<Field> fields = GlobalVariable.class.getDeclaredFields() as Set<Field>
+		Set<String> result = fields.stream()
+				.filter { f ->
+					isPublic(f.modifiers) &&
+							isStatic(f.modifiers) &&
+							! isTransient(f.modifiers)
+				}
+				.map { f -> f.getName() }
+				.collect(Collectors.toSet())
+		SortedSet<String> sorted = new TreeSet()
+		sorted.addAll(result)
+		return sorted
+	}
+
+
+	Map<String, Object> staticGVEntitiesAsMap() {
+		SortedSet<String> names = this.staticGVEntitiesKeySet()
+		Map<String, Object> map = new HashMap<String, Object>()
+		for (name in names) {
+			map.put(name, GlobalVariable[name])
+		}
+		return map
+	}
+
+
 
 	/**
 	 * inspect the 'internal.GlobalVariable' object to find the GlobalVariables contained,
@@ -229,6 +280,7 @@ public final class ExpandoGlobalVariable {
 		}
 		return map
 	}
+
 
 	/**
 	 * inspect the 'internal.GlobalVariable' object to find the GlobalVariables contained,
@@ -268,47 +320,6 @@ public final class ExpandoGlobalVariable {
 		}
 		return map
 	}
-
-
-	/**
-	 * inspect the 'internal.GlobalVariable' object to find the GlobalVariables contained,
-	 * return the list of their names.
-	 *
-	 * The list will include the fields declared in the internal.GlobalVariable class with modifiers
-	 * `public static`. Have a look at the source of Libs/internal/GlobalVariables.groovy. In there,
-	 * you will find the names of all of GlobalVariables declared in all Execution Profiles prepared.
-	 *
-	 * The list will NOT include the properties dynamically added by calling
-	 *    ExpandoGlobalVariable.addGlobalVariable(name,value)
-	 *
-	 * @return
-	 */
-	SortedSet<String> staticGVEntitiesKeySet() {
-		// getDeclaredFields() return fields both of static and additional
-		Set<Field> fields = GlobalVariable.class.getDeclaredFields() as Set<Field>
-		Set<String> result = fields.stream()
-				.filter { f ->
-					isPublic(f.modifiers) &&
-							isStatic(f.modifiers) &&
-							! isTransient(f.modifiers)
-				}
-				.map { f -> f.getName() }
-				.collect(Collectors.toSet())
-		SortedSet<String> sorted = new TreeSet()
-		sorted.addAll(result)
-		return sorted
-	}
-
-
-	Map<String, Object> staticGVEntitiesAsMap() {
-		SortedSet<String> names = this.staticGVEntitiesKeySet()
-		Map<String, Object> map = new HashMap<String, Object>()
-		for (name in names) {
-			map.put(name, GlobalVariable[name])
-		}
-		return map
-	}
-
 
 
 	/**

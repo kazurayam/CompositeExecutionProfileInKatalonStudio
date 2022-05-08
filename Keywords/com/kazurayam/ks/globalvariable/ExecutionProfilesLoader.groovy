@@ -18,7 +18,7 @@ import groovy.util.slurpersupport.GPathResult
  * @author kazurayam
  */
 public final class ExecutionProfilesLoader {
-	
+
 	private static final ExpandoGlobalVariable XGV = ExpandoGlobalVariable.newInstance()
 
 	private Path profilesDir
@@ -97,9 +97,17 @@ public final class ExecutionProfilesLoader {
 	}
 
 
+	/* the clear() method is not implemented.
+	 * we can add method to a Metaclass, but can not remove the added method
+	 * see https://stackoverflow.com/questions/2745615/remove-single-metaclass-method
+	 */
+	// the clear() method does not work as expected.
+	// Why?
+	// We can add methods into Metaclass, but can not remove the added methods.
 	void clear() {
 		XGV.clear()
 	}
+
 
 	/**
 	 * 
