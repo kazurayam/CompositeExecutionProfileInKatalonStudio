@@ -25,6 +25,7 @@ public class ExpandoGlobalVariableTest {
 
 	private static Path json
 	private static String FILENAME = "ExpandoGlobalVariableTest.json"
+	private static ExpandoGlobalVariable EGV
 
 	@BeforeClass
 	static void setupClass() {
@@ -41,28 +42,129 @@ public class ExpandoGlobalVariableTest {
 			Files.createDirectories(classDir)
 		}
 		json = classDir.resolve(FILENAME)
+		EGV = ExpandoGlobalVariable.newInstance()
 	}
 
+	// tests for addGVEntity() method
+	
 	@Test
-	void test_addProperty_with_default_profile_for_predefined_Hostname_property() {
+	void test_addGVEntity_with_default_profile_for_predefined_Hostname_property() {
 		if (RunConfiguration != null && RunConfiguration.getExecutionProfile() != null) {
 			String profile = RunConfiguration.getExecutionProfile()
 			assertEquals("we assume that the default profile is applied to execute this test", "default", profile)
 			String newValue = "demoaut-mimic.kazurayam.com"
-			EGV.addProperty('Hostname', newValue)
-			assertEquals("EGV.getPropertyValue() should return ${newValue}", newValue, EGV.getPropertyValue("Hostname"))
+			EGV.addGVEntity('Hostname', newValue)
+			assertEquals("EGV.getPropertyValue() should return ${newValue}", newValue, EGV.getGVEntityValue("Hostname"))
 		}
 	}
 
 	/**
-	 * allPropertiesKeySet() should return a Set<String> of property names of the internal.GlobalVariable object
+	 * property "Username" will be rejected
+	 */
+	@Ignore
+	@Test
+	void test_addGVEntiry_Username() {
+		EGV.clear()
+		//
+		EGV.addGVEntity("password", "password")
+		assertEquals("password", GlobalVariable.getPassword())		// this statement passes
+		assertEquals("password", GlobalVariable.password)			// this statement passes as well
+		//
+		EGV.addGVEntity("Username", "Username")
+		assertEquals("Username", GlobalVariable.getUsername())		// this statement passes
+		assertEquals("Username", GlobalVariable.Username)			// this statement throws an Exception
+		/*
+		 * groovy.lang.MissingPropertyException: No such property: Username for class: internal.GlobalVariable
+		 *   at com.kazurayam.ks.globalvariable.ExpandoGlobalVariableTest.test_addProperty_Username(ExpandoGlobalVariableTest.groovy:177)
+		 *   at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+		 */
+	}
+
+	/**
+	 * assert that a new propety is created into the internal.GlobalVariable object on the fly
+	 */
+	@Test
+	void test_addGVEntiry_shouldImplementGetter() {
+		EGV.clear()
+		//
+		EGV.addGVEntity("foo", "foo")
+		assertEquals("foo", GlobalVariable.foo)
+		assertEquals("foo", GlobalVariable["foo"])
+		//
+		EGV.addGVEntity("FOO", "FOO")
+		assertEquals("FOO", GlobalVariable.FOO)
+		assertEquals("FOO", GlobalVariable["FOO"])
+		//
+		EGV.addGVEntity("fooBar", "fooBar")
+		assertEquals("fooBar", GlobalVariable.fooBar)
+		assertEquals("fooBar", GlobalVariable["fooBar"])
+		//
+		EGV.addGVEntity("foo_bar_1", "foo_bar_1")
+		assertEquals("foo_bar_1", GlobalVariable.foo_bar_1)
+		assertEquals("foo_bar_1", GlobalVariable["foo_bar_1"])
+		//
+		//EGV.addProperty('$foo', '$foo')
+		//assertEquals('$foo', GlobalVariable.$foo)
+		//assertEquals('$foo', GlobalVariable['$foo'])
+		//
+		//EGV.addProperty("_foo", "_foo")
+		//assertEquals("_foo", GlobalVariable._foo)
+		//assertEquals("_foo", GlobalVariable["_foo"])
+	}
+
+
+	/**
+	 * property "Username123" will be rejected
+	 */
+	@Ignore
+	@Test
+	void test_addGVEntity_too_similar_names_should_be_avoided_case1() {
+		EGV.addGVEntity("Username123", "foo")
+		try {
+			EGV.addGVEntity("username123", "bar")
+			fail("adding too similar name should be avoided")
+		} catch (Exception e) {
+			; // as expected
+		}
+	}
+
+	@Test
+	void test_addGVEntity_too_similar_names_should_be_avoided_case2() {
+		EGV.addGVEntity("password123", "foo")
+		try {
+			EGV.addGVEntity("Password123", "bar")
+			fail("adding too similar name should be avoided")
+		} catch (Exception e) {
+			; // as expected
+		}
+	}
+
+
+	/**
+	 * assert that a GlobalVariable.SETTABLE is created on the fly
+	 */
+	@Test
+	void test_addGVEntity_shouldImplementSetter() {
+		EGV.clear()
+		EGV.addGVEntity("SETTABLE", "not yet modified")
+		GlobalVariable.SETTABLE = "Hello, world"
+		assertEquals("Hello, world", GlobalVariable.SETTABLE)
+		assertEquals("Hello, world", GlobalVariable["SETTABLE"])
+	}
+
+	
+	
+	// tests for allGVEntityKeySet() method
+	
+	/**
+	 * allGVEntriesKeySet() should return a Set<String> of property names of the internal.GlobalVariable object
 	 * defined in the current context.
 	 * Here we assume that the "default" Execution Profile is selected where CONFIG="./Include/fixture/Config.xlsx" is defined
 	 */
 	@Test
-	void test_allPropertiesKeySet_withoutAdditive() {
+	void test_allGVEntriesKeySet_withoutAdditive() {
 		EGV.clear()
-		Set<String> names = EGV.allPropertiesKeySet()
+		Set<String> names = EGV.allGVEntitiesKeySet()
 		//names.each { String name -> println name }
 		assertTrue("expected 1 or more GlobalVaraiable(s) defined, but not found", names.size() > 0)
 		assertTrue("expected GlobalVariable.CONFIG but not found", names.contains('CONFIG'))
@@ -74,69 +176,51 @@ public class ExpandoGlobalVariableTest {
 	 * We will add a new property "NEW=VALUE" into the internal.GlobalVariable object dynamically in the current context.
 	 */
 	@Test
-	void test_allPropertiesKeySet_withAdditive() {
+	void test_allGVEnriesKeySet_withAdditive() {
 		EGV.clear()
-		EGV.addProperty("NEW", "VALUE")
-		Set<String> names = EGV.allPropertiesKeySet()
+		EGV.addGVEntity("NEW", "VALUE")
+		Set<String> names = EGV.allGVEntitiesKeySet()
 		assertTrue("names does not contain NEW", names.contains("NEW"))
 		assertTrue(names.size() >= 2)
 	}
 
 	/**
-	 * allPropertiesKeySet() should return a Set<String> of property names of the internal.GlobalVariable object, 
+	 * allGVEntriesKeySet() should return a Set<String> of property names of the internal.GlobalVariable object, 
 	 * which were added by ExecutionProfilesLoader.loadProfiles().
 	 * Here we assume that the "demoProductionEnvironment" Execution Profile is loaded and hence a GlobalVaraible.URL1 should be present 
 	 */
 	@Test
-	void test_allPropertiesKeySet() {
+	void test_allGVEntriesKeySet() {
 		EGV.clear()
 		ExecutionProfilesLoader epl = new ExecutionProfilesLoader()
 		epl.loadProfile("demoProductionEnvironment")
-		Set<String> names = EGV.allPropertiesKeySet()
+		Set<String> names = EGV.allGVEntitiesKeySet()
 		assertTrue("expected 1 or more additional GlobalVariable(s) but not found. names=${names}", names.size() > 0)
 		assertTrue("expected GlobalVariable.URL1 but not found. names=${names}", names.contains('URL1'))
 	}
 
-	@Test
-	void test_allPropertiesAsString() {
-		EGV.clear()
-		ExecutionProfilesLoader epl = new ExecutionProfilesLoader()
-		epl.loadProfile("demoProductionEnvironment")
-		String json = EGV.allPropertiesAsString()
-		assertTrue("expected \"URL1\" is contained in the json but not found. json=${json}", json.contains('URL1'))
-	}
 
 	@Test
-	void test_additionalPropertiesKeySet() {
+	void test_additionalGVEntriesKeySet() {
 		EGV.clear()
-		EGV.addProperty("test_additionalPropertiesKeySet_fixture", "foo")
-		Set<String> names = EGV.allPropertiesKeySet()
+		EGV.addGVEntity("test_additionalPropertiesKeySet_fixture", "foo")
+		Set<String> names = EGV.allGVEntitiesKeySet()
 		assertTrue("expected 1 or more additional GlobalVariable(s) but not found. names=${names}", names.size() > 0)
 	}
 
-	@Test
-	void test_additionalPropertiesAsString() {
-		EGV.clear()
-		String methodName = "test_allPropertiesAsString_fixture"
-		EGV.addProperty(methodName, "bar")
-		String json = EGV.additionalPropertiesAsString()
-		assertTrue("expected ${methodName} is contained in the json but not found. json=${json}",
-				json.contains(methodName))
-	}
-
 
 	@Test
-	void test_isPropertyPresent_negative() {
+	void test_isGVEntityPresent_negative() {
 		EGV.clear()
-		EGV.addProperty("NEW", "VALUE")
-		assertTrue("NEW is not present", EGV.isPropertyPresent("NEW"))
-		assertFalse("THERE_IS_NO_SUCH_VARIABLE should not be there", EGV.isPropertyPresent("THERE_IS_NO_SUCH_VARIABLE"))
+		EGV.addGVEntity("NEW", "VALUE")
+		assertTrue("NEW is not present", EGV.isGVEntityPresent("NEW"))
+		assertFalse("THERE_IS_NO_SUCH_VARIABLE should not be there", EGV.isGVEntityPresent("THERE_IS_NO_SUCH_VARIABLE"))
 	}
 
 	@Test
-	void test_validatePropertyName_leadingDigits() {
+	void test_validateGVEntityName_leadingDigits() {
 		try	{
-			EGV.validatePropertyName('1st')
+			EGV.validateGVEntityName('1st')
 			fail("name=1st must not start with a digit")
 		} catch (IllegalArgumentException ex) {
 			;
@@ -144,9 +228,9 @@ public class ExpandoGlobalVariableTest {
 	}
 
 	@Test
-	void test_validatePropertyName_1stUpperLetter_2ndLowerLetter_should_be_accepted() {
+	void test_validateGVEntityName_1stUpperLetter_2ndLowerLetter_should_be_accepted() {
 		try	{
-			EGV.validatePropertyName('Aa')
+			EGV.validateGVEntityName('Aa')
 			fail("name=Hostname; 1st upper case letter followed by lower case letter should not be accepted")
 		} catch (IllegalArgumentException ex) {
 			;
@@ -172,110 +256,17 @@ public class ExpandoGlobalVariableTest {
 		assertEquals("setFOO", EGV.getSetterName("FOO"))
 	}
 
-	/**
-	 * property "Username" will be rejected
-	 */
-	@Ignore
-	@Test
-	void test_addProperty_Username() {
-		EGV.clear()
-		//
-		EGV.addProperty("password", "password")
-		assertEquals("password", GlobalVariable.getPassword())		// this statement passes
-		assertEquals("password", GlobalVariable.password)			// this statement passes as well
-		//
-		EGV.addProperty("Username", "Username")
-		assertEquals("Username", GlobalVariable.getUsername())		// this statement passes
-		assertEquals("Username", GlobalVariable.Username)			// this statement throws an Exception
-		/*
-		 * groovy.lang.MissingPropertyException: No such property: Username for class: internal.GlobalVariable
-		 *   at com.kazurayam.ks.globalvariable.ExpandoGlobalVariableTest.test_addProperty_Username(ExpandoGlobalVariableTest.groovy:177)
-		 *   at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
-		 */
-	}
-
-	/**
-	 * assert that a new propety is created into the internal.GlobalVariable object on the fly
-	 */
-	@Test
-	void test_addProperty_shouldImplementGetter() {
-		EGV.clear()
-		//
-		EGV.addProperty("foo", "foo")
-		assertEquals("foo", GlobalVariable.foo)
-		assertEquals("foo", GlobalVariable["foo"])
-		//
-		EGV.addProperty("FOO", "FOO")
-		assertEquals("FOO", GlobalVariable.FOO)
-		assertEquals("FOO", GlobalVariable["FOO"])
-		//
-		EGV.addProperty("fooBar", "fooBar")
-		assertEquals("fooBar", GlobalVariable.fooBar)
-		assertEquals("fooBar", GlobalVariable["fooBar"])
-		//
-		EGV.addProperty("foo_bar_1", "foo_bar_1")
-		assertEquals("foo_bar_1", GlobalVariable.foo_bar_1)
-		assertEquals("foo_bar_1", GlobalVariable["foo_bar_1"])
-		//
-		//EGV.addProperty('$foo', '$foo')
-		//assertEquals('$foo', GlobalVariable.$foo)
-		//assertEquals('$foo', GlobalVariable['$foo'])
-		//
-		//EGV.addProperty("_foo", "_foo")
-		//assertEquals("_foo", GlobalVariable._foo)
-		//assertEquals("_foo", GlobalVariable["_foo"])
-	}
-
-
-	/**
-	 * property "Username123" will be rejected
-	 */
-	@Ignore
-	@Test
-	void test_addProperty_too_similar_names_should_be_avoided_case1() {
-		EGV.addProperty("Username123", "foo")
-		try {
-			EGV.addProperty("username123", "bar")
-			fail("adding too similar name should be avoided")
-		} catch (Exception e) {
-			; // as expected
-		}
-	}
-
-	@Test
-	void test_addProperty_too_similar_names_should_be_avoided_case2() {
-		EGV.addProperty("password123", "foo")
-		try {
-			EGV.addProperty("Password123", "bar")
-			fail("adding too similar name should be avoided")
-		} catch (Exception e) {
-			; // as expected
-		}
-	}
-
-
-	/**
-	 * assert that a GlobalVariable.SETTABLE is created on the fly
-	 */
-	@Test
-	void test_addProperty_shouldImplementSetter() {
-		EGV.clear()
-		EGV.addProperty("SETTABLE", "not yet modified")
-		GlobalVariable.SETTABLE = "Hello, world"
-		assertEquals("Hello, world", GlobalVariable.SETTABLE)
-		assertEquals("Hello, world", GlobalVariable["SETTABLE"])
-	}
-
+	
 
 	@Test
 	void test_basic_operations() {
 		EGV.clear()
 		String name = "BASIC_NAME"
 		Object value = "BASIC_VALUE"
-		EGV.ensureProperty(name, value)
-		assertTrue("GlobalVariable.${name} is not present", EGV.isPropertyPresent(name))
-		Object obj = EGV.getPropertyValue(name)
-		assertNotNull("GVH.getGlobalVariableValue('${name}') returned null", obj)
+		EGV.ensureGVEntity(name, value)
+		assertTrue("GlobalVariable.${name} is not present", EGV.isGVEntityPresent(name))
+		Object obj = EGV.getGVEntityValue(name)
+		assertNotNull("EGV.getGVEntityValue('${name}') returned null", obj)
 		assertTrue(obj instanceof String)
 		assertEquals((String)value, (String)obj)
 		obj = GlobalVariable.BASIC_NAME
@@ -283,29 +274,6 @@ public class ExpandoGlobalVariableTest {
 		assertTrue(obj instanceof String)
 		assertEquals((String)value, (String)obj)
 	}
-
-	/*
-	 @Test
-	 void test_write_read_JSON() {
-	 EGV.clear()
-	 // setup
-	 String name = 'added_GLOBALVARIABLE'
-	 Object value = "The Hill We Climb"
-	 EGV.ensureGlobalVariable(name, value)
-	 // when:
-	 Writer writer = new OutputStreamWriter(new FileOutputStream(json.toFile()),"utf-8")
-	 Set<String> names = ExpandoGlobalVariable.keySetOfGlobalVariables()
-	 EGV.writeJSON(names, writer)
-	 // then
-	 assertTrue(json.toFile().length() > 0)
-	 // OK, next
-	 Reader reader = new InputStreamReader(new FileInputStream(json.toFile()),"utf-8")
-	 Map<String, Object> loaded = EGV.readJSON(names, reader)
-	 assertTrue(loaded.containsKey(name))
-	 assertEquals(value, loaded.get(name))
-	 //println "value read from file: name=${gvName}, value=${loaded.get(gvName)}"
-	 }
-	 */
 
 	@Test
 	void test_String_capitalize() {
@@ -320,14 +288,14 @@ public class ExpandoGlobalVariableTest {
 	@Test
 	void test_clear() {
 		EGV.clear()
-		Set<String> staticGvBeforeAdd = EGV.staticPropertiesKeySet()
-		Set<String> additionalGvBeforeAdd = EGV.additionalPropertiesKeySet()
-		EGV.addProperty("test_clear_fixture", "yah!")
-		Set<String> staticGvAfterAdd = EGV.staticPropertiesKeySet()
-		Set<String> additionalGvAfterAdd = EGV.additionalPropertiesKeySet()
+		Set<String> staticGvBeforeAdd = EGV.staticGVEntitiesKeySet()
+		Set<String> additionalGvBeforeAdd = EGV.additionalGVEntitiesKeySet()
+		EGV.addGVEntity("test_clear_fixture", "yah!")
+		Set<String> staticGvAfterAdd = EGV.staticGVEntitiesKeySet()
+		Set<String> additionalGvAfterAdd = EGV.additionalGVEntitiesKeySet()
 		EGV.clear()
-		Set<String> staticGvAfterClear = EGV.staticPropertiesKeySet()
-		Set<String> additionalGvAfterClear = EGV.additionalPropertiesKeySet()
+		Set<String> staticGvAfterClear = EGV.staticGVEntitiesKeySet()
+		Set<String> additionalGvAfterClear = EGV.additionalGVEntitiesKeySet()
 		assertEquals(staticGvBeforeAdd.size(), staticGvAfterAdd.size())
 		assertEquals(staticGvAfterAdd.size(), staticGvAfterClear.size())
 		assertEquals(additionalGvBeforeAdd.size() + 1, additionalGvAfterAdd.size())

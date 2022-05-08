@@ -1,6 +1,6 @@
 import static com.kazurayam.junit4ks.JUnitCustomKeywords.runWithJUnitRunner
 
-import com.kazurayam.ks.globalvariable.GlobalVariableProfilePairTest
+import com.kazurayam.ks.globalvariable.GlobalVariableInProfileTest
 
-runWithJUnitRunner(GlobalVariableProfilePairTest.class)
+runWithJUnitRunner(GlobalVariableInProfileTest.class)
 

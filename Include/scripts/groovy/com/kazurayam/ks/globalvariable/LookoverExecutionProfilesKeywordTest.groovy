@@ -15,7 +15,7 @@ import org.junit.runners.JUnit4
 import com.kms.katalon.core.configuration.RunConfiguration
 
 @RunWith(JUnit4.class)
-public class ProfilesRetrieverTest {
+public class LookoverExecutionProfilesKeywordTest {
 
 	Path profilesDir
 
@@ -29,36 +29,36 @@ public class ProfilesRetrieverTest {
 
 	@Test
 	void test_listProfiles() {
-		List<String> profiles = ProfilesRetriever.listAllProfiles()
+		List<String> profiles = LookoverExecutionProfilesKeyword.listAllProfiles()
 		assertEquals(21, profiles.size())
 	}
 
 	@Test
 	void test_listProfilesFilteredByPattern() {
-		assertEquals(1, ProfilesRetriever.listProfiles("default").size());
-		assertEquals(2, ProfilesRetriever.listProfiles("demo.*").size());
-		assertEquals(15, ProfilesRetriever.listProfiles("main\\w+").size());
-		assertEquals(3, ProfilesRetriever.listProfiles("test_[ABC]").size());
+		assertEquals(1, LookoverExecutionProfilesKeyword.listProfiles("default").size());
+		assertEquals(2, LookoverExecutionProfilesKeyword.listProfiles("demo.*").size());
+		assertEquals(15, LookoverExecutionProfilesKeyword.listProfiles("main\\w+").size());
+		assertEquals(3, LookoverExecutionProfilesKeyword.listProfiles("test_[ABC]").size());
 	}
 
 
 	@Test
 	void test_listAllGlobalVariable() {
-		List<String> list = ProfilesRetriever.listAllGlobalVariable()
+		List<String> list = LookoverExecutionProfilesKeyword.listAllGlobalVariable()
 		list.stream().forEach {s -> println "[test_listAllGlobalVariable] " + s}
 		assertEquals(33, list.size())
 	}
 
 	@Test
 	void test_listGlobalVariable() {
-		List<String> list = ProfilesRetriever.listGlobalVariable("URL.*")
+		List<String> list = LookoverExecutionProfilesKeyword.listGlobalVariable("URL.*")
 		list.stream().forEach {s -> println "[test_listGlobalVariable] " + s}
 		assertEquals(2, list.size())
 	}
-	
+
 	@Test
 	void test_listGlobalVariableInProfile() {
-		List<String> list = ProfilesRetriever.listGlobalVariableInProfile("URL.*", "demoProd.*")
+		List<String> list = LookoverExecutionProfilesKeyword.listGlobalVariableInProfile("URL.*", "demoProd.*")
 		list.stream().forEach {s -> println "[test_listGlobalVariableInProfile] " + s}
 		assertEquals(1, list.size())
 	}
@@ -66,7 +66,7 @@ public class ProfilesRetrieverTest {
 	@Test
 	void test_toProfileName() {
 		Path glbl = profilesDir.resolve("test_A.glbl")
-		String profileName = ProfilesRetriever.toProfileName(glbl);
+		String profileName = LookoverExecutionProfilesKeyword.toProfileName(glbl);
 		assertEquals("test_A", profileName);
 	}
 }

@@ -17,7 +17,7 @@ import com.kms.katalon.core.configuration.RunConfiguration
  * 
  * @author kazurayam
  */
-public final class ProfilesRetriever {
+public final class LookoverExecutionProfilesKeyword {
 
 	static final Path profilesDir_ = Paths.get(RunConfiguration.getProjectDir()).resolve("Profiles")
 
@@ -29,7 +29,7 @@ public final class ProfilesRetriever {
 	@Keyword
 	static List<String> listAllProfiles() {
 		return listAllProfilePaths().stream()
-				.map({ Path profilePath -> ProfilesRetriever.toProfileName(profilePath)})
+				.map({ Path profilePath -> LookoverExecutionProfilesKeyword.toProfileName(profilePath)})
 				.collect(Collectors.toList())
 	}
 
@@ -42,7 +42,7 @@ public final class ProfilesRetriever {
 	static List<String> listProfiles(String profileNamePattern) {
 		Objects.requireNonNull(profileNamePattern)
 		return listProfilePaths(profileNamePattern).stream()
-				.map({ Path profilePath -> ProfilesRetriever.toProfileName(profilePath)})
+				.map({ Path profilePath -> LookoverExecutionProfilesKeyword.toProfileName(profilePath)})
 				.collect(Collectors.toList())
 	}
 
@@ -81,7 +81,7 @@ public final class ProfilesRetriever {
 					p.getFileName().toString().endsWith(".glbl")
 				})
 				.filter({ p ->
-					String profileName = ProfilesRetriever.toProfileName(p);
+					String profileName = LookoverExecutionProfilesKeyword.toProfileName(p);
 					Matcher m = ptn.matcher(profileName)
 					return m.matches()
 				})
@@ -178,5 +178,5 @@ public final class ProfilesRetriever {
 				.collect(Collectors.toList())
 	}
 
-	ProfilesRetriever() {}
+	LookoverExecutionProfilesKeyword() {}
 }

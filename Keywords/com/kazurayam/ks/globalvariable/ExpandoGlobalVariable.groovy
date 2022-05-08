@@ -21,25 +21,45 @@ import java.util.regex.Pattern
 import java.util.regex.Matcher
 
 /**
- * The container of properties of a GlobalVariable dynamically added by ExecutionProfilesLoader.
+ * ExpandoGlobalVariable object wraps the instance of "internal.GlobalVariable", 
+ * and provides Map-like interface to it. Using ExpandoGlobalVariable you can
  * 
- * This provides quick methods to retrieve the pairs of GlobalVariable name and values;
- * both of statically defined ones and dynamically added ones.
+ *  - list all key-value pairs (GVEntity) of GlobalVariables currently exists
+ *  - create new instance of GlobalVariable runtime
+ * 
+ * ExecutionProfilesLoader is able to create instances of GVEntity dynamically.
+ * ExecutionProfilesLoader is able to create GVE out of Profiles or out of Map<String, Object>.
+ * 
+ * ExpandGlobalVariable implements methods to add/modify/delete GVEntries.
+ * ExpandGlobalVariable provides method to retrieve all GVEntries' name and their current values runtime.
+ * 
+ * ExpandGlobalVariable class employs the Singleton design pattern of GOF.
  * 
  * @author kazurayam
  */
 public final class ExpandoGlobalVariable {
 
+	private static ExpandoGlobalVariable INSTANCE
+
 	// https://docs.groovy-lang.org/latest/html/documentation/core-metaprogramming.html#_properties
-	static final Map<String, Object> additionalProperties = Collections.synchronizedMap([:])
+	private static final Map<String, Object> additionalGVEntries = Collections.synchronizedMap([:])
 
 	private ExpandoGlobalVariable() {}
 
+	public static ExpandoGlobalVariable getInstance() {
+		if (INSTANCE == null) {
+			INSTANCE = new ExpandoGlobalVariable()
+		}
+		return INSTANCE
+	}
+
 	/**
+	 * "GVEntity" means "an entry of the GlobalVariable object" for short.
+	 * 
 	 * insert a public static property of type java.lang.Object
 	 * into the internal.GlobalVarialbe runtime.
 	 *
-	 * e.g, GVH.addProperty('my_new_variable', 'foo') makes
+	 * e.g, GVH.addGVEntity('my_new_variable', 'foo') makes
 	 * 1) internal.GlobalVariable.my_new_variable to be present and to have value 'foo'
 	 * 2) internal.GlobalVariable.getMy_new_variale() to return 'foo'
 	 * 3) internal.GlobalVariable.setMy_new_variable('bar') to set 'bar' as the value
@@ -47,10 +67,10 @@ public final class ExpandoGlobalVariable {
 	 * @param name
 	 * @param value
 	 */
-	static int addProperty(String name, Object value) {
+	int addGVEntity(String name, Object value) {
 
 		// check if the "name" is declared as a property of internal.GlobalVariable object statically or not
-		if (staticPropertiesKeySet().contains(name)) {
+		if (staticGVEntitiesKeySet().contains(name)) {
 			// Yes, the internal.GlobalVariable object has "name" already.
 			// No need to add the name. Just update the value
 			GlobalVariable[name] = value
@@ -61,39 +81,39 @@ public final class ExpandoGlobalVariable {
 			// No, the "name" is not present. Let's add a new property using Groovy's ExpandoMetaClass
 
 			// the characters in the name must be valid as a Groovy variable name
-			validatePropertyName(name)
+			validateGVEntityName(name)
 
 			// obtain the ExpandoMetaClass of the internal.GlobalVariable class
 			MetaClass mc = GlobalVariable.metaClass
 
 			// register the Getter method for the name
 			String getterName = getGetterName(name)
-			mc.'static'."${getterName}" = { -> return additionalProperties[name] }
+			mc.'static'."${getterName}" = { -> return additionalGVEntries[name] }
 
 			// register the Setter method for the name
 			String setterName = getSetterName(name)
 			mc.'static'."${setterName}" = { newValue ->
-				additionalProperties[name] = newValue
+				additionalGVEntries[name] = newValue
 			}
 
 			// store the value into the storage
-			additionalProperties.put(name, value)
+			additionalGVEntries.put(name, value)
 
 			return 1
 		}
 	}
 
 
-	private static String getGetterName(String name) {
+	private String getGetterName(String name) {
 		return 'get' + getAccessorName(name)
 	}
 
-	private static String getSetterName(String name) {
+	private String getSetterName(String name) {
 		return 'set' + getAccessorName(name)
 	}
 
 
-	private static String getAccessorName(String name) {
+	private String getAccessorName(String name) {
 		return ((CharSequence)name).capitalize()
 	}
 
@@ -111,8 +131,7 @@ public final class ExpandoGlobalVariable {
 	private static Pattern PTTN_LEADING_PUNCTUATIONS = Pattern.compile('^[$_]')
 	private static Pattern PTTN_UPPER_LOWER    = Pattern.compile('^[A-Z][a-z]')
 
-
-	static void validatePropertyName(String name) {
+	void validateGVEntityName(String name) {
 		Objects.requireNonNull(name)
 		if (PTTN_LEADING_DIGITS.matcher(name).find()) {
 			throw new IllegalArgumentException("name=${name} must not start with digits")
@@ -125,20 +144,18 @@ public final class ExpandoGlobalVariable {
 		}
 	}
 
-
 	/**
 	 *
 	 * @param entries
 	 * @return the number of entries which have been dynamically added as GlobalVariable
 	 */
-	static int addProperties(Map<String, Object> entries) {
+	int addGVEntities(Map<String, Object> entities) {
 		int count = 0
-		entries.each { entry ->
-			count += addProperty(entry.key, entry.value)
+		entities.each { entity ->
+			count += addGVEntity(entity.key, entity.value)
 		}
 		return count
 	}
-
 
 	/**
 	 * If GlobaleVariable.name is present, set the value into it.
@@ -147,43 +164,45 @@ public final class ExpandoGlobalVariable {
 	 * @param name
 	 * @param value
 	 */
-	static void ensureProperty(String name, Object value) {
-		if (isPropertyPresent(name)) {
-			addProperty(name, value)   // will overwrite the previous value
+	void ensureGVEntity(String name, Object value) {
+		if (isGVEntityPresent(name)) {
+			addGVEntity(name, value)   // will overwrite the previous value
 		} else {
-			addProperty(name, value)
+			addGVEntity(name, value)
 		}
 	}
-
 
 	/**
 	 * Clear properties added to GlobalVariables by addGlobalVariable() method.
 	 * The static properties are untouched.
 	 */
-	static void clear() {
-		additionalProperties.clear()
+	void clear() {
+		additionalGVEntries.clear()
 	}
-
 
 	/**
 	 * @return true if GlobalVarialbe.name is defined either in 2 places
 	 * 1. statically predefined in the Execution Profile
 	 * 2. dynamically added by ExpandoGlobalVariable.addGlobalVariable(name, value) call
 	 */
-	static boolean isPropertyPresent(String name) {
-		return allPropertiesKeySet().contains(name)
+	boolean isGVEntityPresent(String name) {
+		return allGVEntitiesKeySet().contains(name)
 	}
 
-	static Object getPropertyValue(String name) {
-		if (additionalPropertiesKeySet().contains(name)) {
-			return additionalProperties[name]
-		} else if (staticPropertiesKeySet().contains(name)) {
+	Object getGVEntityValue(String name) {
+		if (additionalGVEntitiesKeySet().contains(name)) {
+			return additionalGVEntries[name]
+		} else if (staticGVEntitiesKeySet().contains(name)) {
 			return GlobalVariable[name]
 		} else {
 			return null
 		}
 	}
 
+
+
+
+	// ------------------------------------------------------------------------
 
 	/**
 	 * inspect the 'internal.GlobalVariable' object to find the GlobalVariables contained,
@@ -196,28 +215,11 @@ public final class ExpandoGlobalVariable {
 	 * The list will NOT include the GlobalVariables statically defined in the Execution Profile which was applied
 	 *    to the Test Case run.
 	 */
-	static SortedSet<String> additionalPropertiesKeySet() {
+	SortedSet<String> additionalGVEntitiesKeySet() {
 		SortedSet<String> sorted = new TreeSet<String>()
-		sorted.addAll(additionalProperties.keySet())
+		sorted.addAll(additionalGVEntries.keySet())
 		return sorted
 	}
-
-
-	static Map<String, Object> additionalPropertiesAsMap() {
-		SortedSet<String> names = additionalPropertiesKeySet()
-		Map<String, Object> map = new HashMap<String, Object>()
-		for (name in names) {
-			map.put(name, GlobalVariable[name])
-		}
-		return map
-	}
-
-
-	static String additionalPropertiesAsString() {
-		Gson gson = new GsonBuilder().setPrettyPrinting().create()
-		gson.toJson(additionalPropertiesAsMap())
-	}
-
 
 	/**
 	 * inspect the 'internal.GlobalVariable' object to find the GlobalVariables contained,
@@ -239,36 +241,12 @@ public final class ExpandoGlobalVariable {
 	 *    ExpandoGlobalVariable.addProperty(name,value) or equivalently
 	 *    ExecutionProfilesLoader.loadProfile(name)
 	 */
-	static SortedSet<String> allPropertiesKeySet() {
+	SortedSet<String> allGVEntitiesKeySet() {
 		SortedSet<String> sorted = new TreeSet()
-		sorted.addAll(staticPropertiesKeySet())
-		sorted.addAll(additionalPropertiesKeySet())
+		sorted.addAll(staticGVEntitiesKeySet())
+		sorted.addAll(additionalGVEntitiesKeySet())
 		return sorted
 	}
-
-	/**
-	 * transform the GlobalVariable <name, vale> pairs as a Map. 
-	 */
-	static Map<String, Object> allPropertiesAsMap() {
-		SortedSet<String> names = allPropertiesKeySet()
-		Map<String, Object> map = new HashMap<String, Object>()
-		for (name in names) {
-			map.put(name, GlobalVariable[name])
-		}
-		return map
-	}
-
-
-	/**
-	 * pretty-printed JSON text of Map returned by mapOfGlobalVariables()
-	 * 
-	 * @return
-	 */
-	static String allPropertiesAsString() {
-		Gson gson = new GsonBuilder().setPrettyPrinting().create()
-		gson.toJson(allPropertiesAsMap())
-	}
-
 
 	/**
 	 * inspect the 'internal.GlobalVariable' object to find the GlobalVariables contained,
@@ -277,13 +255,13 @@ public final class ExpandoGlobalVariable {
 	 * The list will include the fields declared in the internal.GlobalVariable class with modifiers
 	 * `public static`. Have a look at the source of Libs/internal/GlobalVariables.groovy. In there,
 	 * you will find the names of all of GlobalVariables declared in all Execution Profiles prepared.
-	 * 
+	 *
 	 * The list will NOT include the properties dynamically added by calling
 	 *    ExpandoGlobalVariable.addGlobalVariable(name,value)
-	 *    
+	 *
 	 * @return
 	 */
-	static SortedSet<String> staticPropertiesKeySet() {
+	SortedSet<String> staticGVEntitiesKeySet() {
 		// getDeclaredFields() return fields both of static and additional
 		Set<Field> fields = GlobalVariable.class.getDeclaredFields() as Set<Field>
 		Set<String> result = fields.stream()
@@ -298,59 +276,37 @@ public final class ExpandoGlobalVariable {
 		sorted.addAll(result)
 		return sorted
 	}
-
-
-	static Map<String, Object> staticPropertiesAsMap() {
-		SortedSet<String> names = staticPropertiesKeySet()
-		Map<String, Object> map = new HashMap<String, Object>()
-		for (name in names) {
-			map.put(name, GlobalVariable[name])
-		}
-		return map
-	}
-
-
-	static String staticPropertiesAsString() {
-		Gson gson = new GsonBuilder().setPrettyPrinting().create()
-		gson.toJson(staticPropertiesAsMap())
-	}
-
-
-
-
-
+	
+	
 	/**
-	 * Create a JSON text of specified GlobalVariable and value pairs,
-	 * and write the text
-	 *
-	 * @param nameList
-	 * @param writer
+	 * make String representation of the ExpandGlobalVariable instance in JSON format 
 	 */
-	static void writeJSON(Set<String> nameList, Writer writer) {
-		Objects.requireNonNull(nameList, "nameList must not be null")
-		Objects.requireNonNull(writer, "writer must not be null")
+	String toJson() {
+		Set<String> nameList = this.allGVEntitiesKeySet()
 		SortedMap buffer = new TreeMap<String, Object>()
 		for (name in nameList) {
-			if (isPropertyPresent(name)) {
-				buffer.put(name, getPropertyValue(name))
-			} else {
-				;
+			if (isGVEntityPresent(name)) {
+				buffer.put(name, getGVEntityValue(name))
 			}
 		}
 		GsonBuilder gb = new GsonBuilder()
 		gb.disableHtmlEscaping()
-		gb.setPrettyPrinting()
 		Gson gson = gb.create()
-		writer.write(gson.toJson(buffer))
-		writer.flush()
+		StringWriter sw = new StringWriter()
+		sw.write(gson.toJson(buffer))
+		sw.flush()
+		return sw.toString()
 	}
 
-
-	static String toJSON() {
-		StringWriter sw = new StringWriter()
-		Set<String> names = allPropertiesKeySet()
-		writeJSON(names, sw)
-		return sw.toString()
+	/**
+	 * @param prettyPrint true to make pretty-print with NEWLINES and indents
+	 */
+	String toJson(boolean prettyPrint) {
+		if (prettyPrint) {
+			return JsonUtil.prettyPrint(toJson());
+		} else {
+			return toJson();
+		}
 	}
 
 }

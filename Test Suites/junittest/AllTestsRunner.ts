@@ -12,17 +12,17 @@
    <rerunImmediately>false</rerunImmediately>
    <testSuiteGuid>1af25ce7-c3f3-4694-8cba-805cc727d5e9</testSuiteGuid>
    <testCaseLink>
-      <guid>9646acdf-b699-4cc4-a62f-32b6f5d21ac1</guid>
-      <isReuseDriver>false</isReuseDriver>
-      <isRun>true</isRun>
-      <testCaseId>Test Cases/junittest/com.kazurayam.ks.globalvariable/ExecutionProfileTestRunner</testCaseId>
-      <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
-   </testCaseLink>
-   <testCaseLink>
       <guid>abb5865b-6d32-4e1c-9f4a-0287c90a2b5f</guid>
       <isReuseDriver>false</isReuseDriver>
       <isRun>true</isRun>
       <testCaseId>Test Cases/junittest/com.kazurayam.ks.globalvariable/ExecutionProfilesLoaderTestRunner</testCaseId>
+      <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
+   </testCaseLink>
+   <testCaseLink>
+      <guid>9646acdf-b699-4cc4-a62f-32b6f5d21ac1</guid>
+      <isReuseDriver>false</isReuseDriver>
+      <isRun>true</isRun>
+      <testCaseId>Test Cases/junittest/com.kazurayam.ks.globalvariable/ExecutionProfileTestRunner</testCaseId>
       <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
    </testCaseLink>
    <testCaseLink>
@@ -33,14 +33,28 @@
       <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
    </testCaseLink>
    <testCaseLink>
-      <guid>fa80f602-dcc0-4b43-8d32-af47c1f744ff</guid>
+      <guid>19b686bc-8eef-4838-940b-08058a43311a</guid>
       <isReuseDriver>false</isReuseDriver>
       <isRun>true</isRun>
-      <testCaseId>Test Cases/junittest/com.kazurayam.ks.globalvariable/ProfilesRetrieverTestRunner</testCaseId>
+      <testCaseId>Test Cases/junittest/com.kazurayam.ks.globalvariable/GlobalVariableProfilePairTestRunner</testCaseId>
       <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
    </testCaseLink>
    <testCaseLink>
-      <guid>9ea5d23f-f428-45ca-ae27-59138f7b2afd</guid>
+      <guid>98eeb132-23bf-4853-9821-6a0dd1bd5c52</guid>
+      <isReuseDriver>false</isReuseDriver>
+      <isRun>true</isRun>
+      <testCaseId>Test Cases/junittest/com.kazurayam.ks.globalvariable/LookatGlobalVariablesKeywordTestRunner</testCaseId>
+      <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
+   </testCaseLink>
+   <testCaseLink>
+      <guid>fa80f602-dcc0-4b43-8d32-af47c1f744ff</guid>
+      <isReuseDriver>false</isReuseDriver>
+      <isRun>true</isRun>
+      <testCaseId>Test Cases/junittest/com.kazurayam.ks.globalvariable/LookoverExecutionProfilesKeywordTestRunner</testCaseId>
+      <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
+   </testCaseLink>
+   <testCaseLink>
+      <guid>3ef10030-3b7f-4cc3-acf0-177323b52bbc</guid>
       <isReuseDriver>false</isReuseDriver>
       <isRun>true</isRun>
       <testCaseId>Test Cases/junittest/com.kazurayam.ks.globalvariable.xml/GlobalVariableEntitiesTestRunner</testCaseId>

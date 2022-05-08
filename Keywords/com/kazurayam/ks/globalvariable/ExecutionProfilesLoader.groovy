@@ -18,6 +18,8 @@ import groovy.util.slurpersupport.GPathResult
  * @author kazurayam
  */
 public final class ExecutionProfilesLoader {
+	
+	private static final ExpandoGlobalVariable XGV = ExpandoGlobalVariable.newInstance()
 
 	private Path profilesDir
 	private XmlSlurper xmlSlurper
@@ -45,7 +47,7 @@ public final class ExecutionProfilesLoader {
 		this.profilesDir = profilesDir
 		this.xmlSlurper = new XmlSlurper()
 		// important!
-		ExpandoGlobalVariable.clear()
+		this.clear()
 	}
 
 
@@ -86,7 +88,7 @@ public final class ExecutionProfilesLoader {
 			loadedGlobalVariables.entrySet().each({ entry ->
 				String name = entry.key.toString()
 				Object value = evaluateGroovyLiteral(entry.value.toString())
-				ExpandoGlobalVariable.addProperty(name, value)
+				XGV.addGVEntity(name, value)
 				count += 1
 			})
 		}
@@ -96,7 +98,7 @@ public final class ExecutionProfilesLoader {
 
 
 	void clear() {
-		ExpandoGlobalVariable.clear()
+		XGV.clear()
 	}
 
 	/**
@@ -163,7 +165,7 @@ public final class ExecutionProfilesLoader {
 	static int loadEntries(Map<String, Object> globalVariableEntries) {
 		int count = 0
 		globalVariableEntries.entrySet().each({ entry ->
-			ExpandoGlobalVariable.addProperty(entry.key, entry.value)
+			XGV.addGVEntity(entry.key, entry.value)
 			count += 1
 		})
 		return count
