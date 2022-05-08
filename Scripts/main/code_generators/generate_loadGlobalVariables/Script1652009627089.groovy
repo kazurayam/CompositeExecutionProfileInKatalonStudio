@@ -1,15 +1,14 @@
-import com.kazurayam.ks.globalvariable.sampledomain.Category
-import com.kazurayam.ks.globalvariable.sampledomain.Env
-import com.kazurayam.ks.globalvariable.sampledomain.IncludeSheets
-import com.kazurayam.ks.globalvariable.sampledomain.IncludeURLs
-import com.kazurayam.ks.globalvariable.sampledomain.SaveHTML
-
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
 
-import com.kazurayam.ks.globalvariable.ProfilesHelper as PH
 import com.kms.katalon.core.configuration.RunConfiguration
+
+import glbl.sampledomain.Category
+import glbl.sampledomain.Env
+import glbl.sampledomain.IncludeSheets
+import glbl.sampledomain.IncludeURLs
+import glbl.sampledomain.SaveHTML
 
 assert RunConfiguration.getProjectDir() != null
 

@@ -1,6 +1,8 @@
-import internal.GlobalVariable as GlobalVariable
-import com.kazurayam.ks.globalvariable.ExpandoGlobalVariable
 import com.kms.katalon.core.configuration.RunConfiguration
+
+import com.kazurayam.ks.globalvariable.ExecutionProfilesLoader
+import com.kazurayam.ks.globalvariable.GlobalVariableAnnex
+import internal.GlobalVariable
 
 /**
  * Test Cases/main/TC1
@@ -16,18 +18,22 @@ println "${tc} CATEGORY       : ${GlobalVariable.CATEGORY}"
 println "${tc} INCLUDE_SHEETS : ${GlobalVariable.INCLUDE_SHEETS}"
 println "${tc} INCLUDE_URLS   : ${GlobalVariable.INCLUDE_URLS}"
 
+GlobalVariableAnnex gva = GlobalVariableAnnex.newInstance()
+
 println "\n--- Names of GlobalVaraibles statically listed in any of Profiles ---"
-ExpandoGlobalVariable.staticPropertiesAsMap().each { name ->
+gva.staticGVEntitiesAsMap().keySet().each { name ->
 	println "GlobalVariable.${name}"	
 }
 
+ExecutionProfilesLoader.loadEntries(["foo": "bar"])
+
 println "\n--- Names of GlobalVaraibles additionally loaded by ExecutionProfilesLoader ---"
-ExpandoGlobalVariable.additionalPropertiesAsMap().each { name ->
+gva.additionalGVEntitiesAsMap().keySet().each { name ->
 	println "GlobalVariable.${name}"
 }
 
 println "\n--- All name:value pairs as GlobalVariable available in the current context ---"
-ExpandoGlobalVariable.allPropertiesAsMap().each { name ->
+gva.allGVEntitiesAsMap().keySet().each { name ->
 	println "GlobalVariable.${name} : " + GlobalVariable[name]
 }
 

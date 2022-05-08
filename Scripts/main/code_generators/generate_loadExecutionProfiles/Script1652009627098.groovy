@@ -2,7 +2,7 @@ import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
 
-import com.kazurayam.ks.globalvariable.ProfilesHelper as PH
+import com.kazurayam.ks.globalvariable.LookoverExecutionProfilesKeyword
 import com.kms.katalon.core.configuration.RunConfiguration
 
 assert RunConfiguration.getProjectDir() != null
@@ -14,6 +14,8 @@ assert RunConfiguration.getProjectDir() != null
 Path projectDir = Paths.get(RunConfiguration.getProjectDir())
 Path profilesDir = projectDir.resolve('Profiles')
 
+LookoverExecutionProfilesKeyword KW = new LookoverExecutionProfilesKeyword(profilesDir)
+
 StringBuilder sb = new StringBuilder()
 sb.append("import com.kazurayam.ks.globalvariable.ExecutionProfilesLoader\n")
 sb.append("\n")
@@ -21,10 +23,10 @@ sb.append("ExecutionProfilesLoader loader = new ExecutionProfilesLoader()\n")
 sb.append("\n")
 
 int count = 0
-PH.selectProfiles(profilesDir, 'main_env').each { environment ->
-	PH.selectProfiles(profilesDir, 'main_category').each { category ->
-		PH.selectProfiles(profilesDir, 'main_includeSheets').each { sheets ->
-			PH.selectProfiles(profilesDir, 'main_includeURLs').each { urls ->
+KW.listProfiles('main_env').each { environment ->
+	KW.listProfiles('main_category').each { category ->
+		KW.listProfiles('main_includeSheets').each { sheets ->
+			KW.listProfiles('main_includeURLs').each { urls ->
 				if (count != 14) {
 					sb.append("""//""")
 				}
