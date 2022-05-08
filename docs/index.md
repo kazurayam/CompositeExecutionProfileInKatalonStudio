@@ -585,4 +585,56 @@ Output:
 
 ## Background story: why I developed this library
 
+A few years ago (sometime in 2019) I developed a project with Katalon Studio where I wanted to implement the following items.
+
+1.  I want to compare 2 URLs: <http://demoaut.katalon.com> and <http://demoaut-mimic.kazurayam.com> to find if these 2 pages have any visual differences.
+
+2.  I want to create 3 script modules
+
+    -   preProsess, which does some preparention (create work directories, etc)
+
+    -   processURL, which will visit a URL and take a screenshot
+
+    -   postProcess, which will compile a report in HTML format
+
+3.  I want to use a `GlobalVariable.URL` to tell the `processURL` module of the target URL string.
+
+4.  I want to create 2 Execution Profiles named `demoProductionEnv` and `demoDevelopmentEnv`.
+
+5.  I want to execute the `processURL` module 2 twice while applying 2 Profiles `demoProductionEnv` and `demoDevelopmentEnv`
+
+Yes. I could develop a set of code that implements this idea.
+
+You can try it by opening the `Test Suites/demo_using_TestSuiteCollection` of this Katalon project. The following screenshot shows how that Test Suite Collection is defined.
+
+![demo2 TSC](images/README2/demo2_TSC.png)
+
+The Test Suite Collection `TCS` comprises with the following code modules.
+
+1.  `Test Suites/demo_using_TestSuiteCollection/TSC`
+
+2.  `Test Suites/demo_using_TestSuiteCollection/preProcess`
+
+3.  `Test Suites/demo_using_TestSuiteCollection/processURL`
+
+4.  `Test Suites/demo_using_TestSuiteCollection/postProcess`
+
+5.  `Test Cases/demo/demo_using_TestSuiteCollection/preProcess`
+
+6.  `Test Cases/demo/demo_using_TestSuiteCollection/processURL`
+
+7.  `Test Cases/demo/demo_using_TestSuiteCollection/postProcess`
+
+Why do I have to make this many modules?
+
+The reason is that Katalon Studio does not provide a means of loading an Execution Profile in test script programaticaly. Katalon Studio forces me to create a Test Suite Collection, in which I execute the Test Suite `processURL` 2 twice while applying 2 Profiles `demoProductionEnv` and `demoEnvironmentEnv`.What I wanted to do was fairly simple, but the code set I got was terribly complicated.
+
+I got an idea of the `ExecutionProfilesLoader` class. I thought that it will change many things. I thought I would be able to implement what I wanted in a single Test Case script.
+
+Now I have developed the `ExecutionProfilesLoader` and other classes. Using these supportive classes, I could develop alternative solution. The following single Test Case script of 84 lines does exactly the same as my old solution achieved.
+
+-   <https://github.com/kazurayam/ExecutionProfilesLoader/blob/master/Scripts/demo/demo_using_ExecutionProfilesLoader/batch/Script1651983315860.groovy>
+
 ## Conclusion
+
+The `ExecutionProfilesLoader` and other classes helps me organize my Katalon projects with GlobalVariables in much flexible way.
