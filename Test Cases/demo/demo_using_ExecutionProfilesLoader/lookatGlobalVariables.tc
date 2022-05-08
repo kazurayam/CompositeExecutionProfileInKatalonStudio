@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <TestCaseEntity>
    <description></description>
-   <name>minial</name>
+   <name>lookatGlobalVariables</name>
    <tag></tag>
    <comment></comment>
    <testCaseGuid>3ba427a0-da32-408c-ada5-c85e55ae6eeb</testCaseGuid>

@@ -39,7 +39,7 @@ public class LookatGlobalVariablesKeyword {
 		gson.toJson(XGV.staticGVEntitiesAsMap())
 	}
 
-	
+
 	@Keyword
 	String toJson() {
 		return XGV.toJson()

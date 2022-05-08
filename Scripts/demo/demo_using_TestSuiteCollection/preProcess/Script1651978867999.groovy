@@ -10,7 +10,7 @@ assert RunConfiguration.getProjectDir() != null
  * pre-process : create a directory for storing output files 
  */
 Path projectDir = Paths.get(RunConfiguration.getProjectDir())
-Path workDir = projectDir.resolve("build").resolve("demo2")
+Path workDir = projectDir.resolve("build").resolve("demo").resolve("demo_using_TestSuiteCollection")
 if (Files.exists(workDir)) {
 	Files.walk(workDir).sorted(Comparator.reverseOrder()).map{ Path p -> p.toFile() }.forEach { File f -> f.delete() }
 }
