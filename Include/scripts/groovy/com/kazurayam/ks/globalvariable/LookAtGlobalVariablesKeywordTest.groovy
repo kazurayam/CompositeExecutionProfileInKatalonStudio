@@ -18,15 +18,15 @@ import org.junit.runners.JUnit4
 import com.kms.katalon.core.configuration.RunConfiguration
 
 @RunWith(JUnit4.class)
-public class LookatGlobalVariablesKeywordTest {
+public class LookAtGlobalVariablesKeywordTest {
 
 	private static final GlobalVariableAnnex XGV = GlobalVariableAnnex.newInstance()
 
-	private LookatGlobalVariablesKeyword KW
+	private LookAtGlobalVariablesKeyword KW
 
 	@Before
 	void before() {
-		KW = new LookatGlobalVariablesKeyword()
+		KW = new LookAtGlobalVariablesKeyword()
 	}
 
 	@Test

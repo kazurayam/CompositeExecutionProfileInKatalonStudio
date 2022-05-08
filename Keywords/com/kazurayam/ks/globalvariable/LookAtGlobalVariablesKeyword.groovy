@@ -6,11 +6,11 @@ import com.kms.katalon.core.annotation.Keyword
 
 import internal.GlobalVariable
 
-public class LookatGlobalVariablesKeyword {
+public class LookAtGlobalVariablesKeyword {
 
 	private final GlobalVariableAnnex XGV
 
-	LookatGlobalVariablesKeyword() {
+	LookAtGlobalVariablesKeyword() {
 		XGV = GlobalVariableAnnex.newInstance()
 	}
 

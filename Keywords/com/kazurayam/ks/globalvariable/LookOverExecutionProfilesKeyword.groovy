@@ -17,13 +17,13 @@ import com.kms.katalon.core.configuration.RunConfiguration
  * 
  * @author kazurayam
  */
-public final class LookoverExecutionProfilesKeyword {
+public final class LookOverExecutionProfilesKeyword {
 
 	private static Path profilesDir_ = Paths.get(RunConfiguration.getProjectDir()).resolve("Profiles")
 
-	LookoverExecutionProfilesKeyword() {}
+	LookOverExecutionProfilesKeyword() {}
 
-	LookoverExecutionProfilesKeyword(Path profilesDir) {
+	LookOverExecutionProfilesKeyword(Path profilesDir) {
 		this.profilesDir_ = profilesDir
 	}
 
@@ -34,7 +34,7 @@ public final class LookoverExecutionProfilesKeyword {
 	@Keyword
 	List<String> listAllProfiles() {
 		return listAllProfilePaths().stream()
-				.map({ Path profilePath -> LookoverExecutionProfilesKeyword.toProfileName(profilePath)})
+				.map({ Path profilePath -> LookOverExecutionProfilesKeyword.toProfileName(profilePath)})
 				.collect(Collectors.toList())
 	}
 
@@ -47,7 +47,7 @@ public final class LookoverExecutionProfilesKeyword {
 	List<String> listProfiles(String profileNamePattern) {
 		Objects.requireNonNull(profileNamePattern)
 		return listProfilePaths(profileNamePattern).stream()
-				.map({ Path profilePath -> LookoverExecutionProfilesKeyword.toProfileName(profilePath)})
+				.map({ Path profilePath -> LookOverExecutionProfilesKeyword.toProfileName(profilePath)})
 				.collect(Collectors.toList())
 	}
 
@@ -76,7 +76,7 @@ public final class LookoverExecutionProfilesKeyword {
 					p.getFileName().toString().endsWith(".glbl")
 				})
 				.filter({ p ->
-					String profileName = LookoverExecutionProfilesKeyword.toProfileName(p);
+					String profileName = LookOverExecutionProfilesKeyword.toProfileName(p);
 					Matcher m = ptn.matcher(profileName)
 					return m.matches()
 				})

@@ -15,10 +15,10 @@ import org.junit.runners.JUnit4
 import com.kms.katalon.core.configuration.RunConfiguration
 
 @RunWith(JUnit4.class)
-public class LookoverExecutionProfilesKeywordTest {
+public class LookOverExecutionProfilesKeywordTest {
 
 	Path profilesDir;
-	LookoverExecutionProfilesKeyword kw = new LookoverExecutionProfilesKeyword()
+	LookOverExecutionProfilesKeyword kw = new LookOverExecutionProfilesKeyword()
 
 	@Before
 	void setup() {

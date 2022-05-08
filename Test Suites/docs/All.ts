@@ -50,7 +50,7 @@
       <guid>e5a2a0a3-cd3e-4b1f-8f0d-b758caeee790</guid>
       <isReuseDriver>false</isReuseDriver>
       <isRun>true</isRun>
-      <testCaseId>Test Cases/docs/2_loading_Profiles/2_loading_multiple_Profiles_programatically</testCaseId>
+      <testCaseId>Test Cases/docs/2_loading_Profiles/3_loading_multiple_Profiles_at_once</testCaseId>
       <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
    </testCaseLink>
    <testCaseLink>
@@ -64,14 +64,14 @@
       <guid>d2fb59ce-4eaf-469e-a55f-150e901c9101</guid>
       <isReuseDriver>false</isReuseDriver>
       <isRun>true</isRun>
-      <testCaseId>Test Cases/docs/3_looking-at_GlobalVariable_objects/1_look-at_GVs_loaded_from_the_default_Profile</testCaseId>
+      <testCaseId>Test Cases/docs/3_looking-at_GlobalVariables_in_action/1_look-at_GVs_loaded_from_the_default_Profile</testCaseId>
       <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
    </testCaseLink>
    <testCaseLink>
       <guid>f486f388-0144-4174-adef-779cf13ffc4f</guid>
       <isReuseDriver>false</isReuseDriver>
       <isRun>true</isRun>
-      <testCaseId>Test Cases/docs/3_looking-at_GlobalVariable_objects/2_look-at_GVs_loaded_from_multiple_Profiles</testCaseId>
+      <testCaseId>Test Cases/docs/3_looking-at_GlobalVariables_in_action/2_look-at_GVs_loaded_added_with_another_Profile</testCaseId>
       <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
    </testCaseLink>
 </TestSuiteEntity>

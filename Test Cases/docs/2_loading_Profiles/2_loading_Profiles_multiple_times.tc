@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <TestCaseEntity>
    <description></description>
-   <name>2_loading_multiple_Profiles_programatically</name>
+   <name>2_loading_Profiles_multiple_times</name>
    <tag></tag>
    <comment></comment>
-   <testCaseGuid>92f0f1e4-5c36-4747-9e5b-7d90eddc59a6</testCaseGuid>
+   <testCaseGuid>b76616a5-5325-4838-864e-69d46bce50dc</testCaseGuid>
 </TestCaseEntity>

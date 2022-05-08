@@ -43,14 +43,14 @@
       <guid>98eeb132-23bf-4853-9821-6a0dd1bd5c52</guid>
       <isReuseDriver>false</isReuseDriver>
       <isRun>true</isRun>
-      <testCaseId>Test Cases/junittest/com.kazurayam.ks.globalvariable/LookatGlobalVariablesKeywordTestRunner</testCaseId>
+      <testCaseId>Test Cases/junittest/com.kazurayam.ks.globalvariable/LookAtGlobalVariablesKeywordTestRunner</testCaseId>
       <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
    </testCaseLink>
    <testCaseLink>
       <guid>fa80f602-dcc0-4b43-8d32-af47c1f744ff</guid>
       <isReuseDriver>false</isReuseDriver>
       <isRun>true</isRun>
-      <testCaseId>Test Cases/junittest/com.kazurayam.ks.globalvariable/LookoverExecutionProfilesKeywordTestRunner</testCaseId>
+      <testCaseId>Test Cases/junittest/com.kazurayam.ks.globalvariable/LookOverExecutionProfilesKeywordTestRunner</testCaseId>
       <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
    </testCaseLink>
    <testCaseLink>

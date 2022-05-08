@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <TestCaseEntity>
    <description></description>
-   <name>LookatGlobalVariablesKeywordTestRunner</name>
+   <name>LookAtGlobalVariablesKeywordTestRunner</name>
    <tag></tag>
    <comment></comment>
    <testCaseGuid>d7982495-2cbe-483d-8a34-395a8a8bce23</testCaseGuid>
