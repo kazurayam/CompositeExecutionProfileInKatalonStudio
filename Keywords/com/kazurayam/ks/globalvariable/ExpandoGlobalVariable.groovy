@@ -42,7 +42,7 @@ public final class ExpandoGlobalVariable {
 	private static ExpandoGlobalVariable INSTANCE
 
 	// https://docs.groovy-lang.org/latest/html/documentation/core-metaprogramming.html#_properties
-	private static final Map<String, Object> additionalGVEntries = Collections.synchronizedMap([:])
+	private static final Map<String, Object> additionalGVEntities = Collections.synchronizedMap([:])
 
 	private ExpandoGlobalVariable() {}
 
@@ -88,16 +88,16 @@ public final class ExpandoGlobalVariable {
 
 			// register the Getter method for the name
 			String getterName = getGetterName(name)
-			mc.'static'."${getterName}" = { -> return additionalGVEntries[name] }
+			mc.'static'."${getterName}" = { -> return additionalGVEntities[name] }
 
 			// register the Setter method for the name
 			String setterName = getSetterName(name)
 			mc.'static'."${setterName}" = { newValue ->
-				additionalGVEntries[name] = newValue
+				additionalGVEntities[name] = newValue
 			}
 
 			// store the value into the storage
-			additionalGVEntries.put(name, value)
+			additionalGVEntities.put(name, value)
 
 			return 1
 		}
@@ -177,7 +177,7 @@ public final class ExpandoGlobalVariable {
 	 * The static properties are untouched.
 	 */
 	void clear() {
-		additionalGVEntries.clear()
+		additionalGVEntities.clear()
 	}
 
 	/**
@@ -191,7 +191,7 @@ public final class ExpandoGlobalVariable {
 
 	Object getGVEntityValue(String name) {
 		if (additionalGVEntitiesKeySet().contains(name)) {
-			return additionalGVEntries[name]
+			return additionalGVEntities[name]
 		} else if (staticGVEntitiesKeySet().contains(name)) {
 			return GlobalVariable[name]
 		} else {
@@ -217,8 +217,17 @@ public final class ExpandoGlobalVariable {
 	 */
 	SortedSet<String> additionalGVEntitiesKeySet() {
 		SortedSet<String> sorted = new TreeSet<String>()
-		sorted.addAll(additionalGVEntries.keySet())
+		sorted.addAll(additionalGVEntities.keySet())
 		return sorted
+	}
+
+	Map<String, Object> additionalGVEntitiesAsMap() {
+		SortedSet<String> names = this.additionalGVEntitiesKeySet()
+		Map<String, Object> map = new HashMap<String, Object>()
+		for (name in names) {
+			map.put(name, GlobalVariable[name])
+		}
+		return map
 	}
 
 	/**
@@ -249,6 +258,19 @@ public final class ExpandoGlobalVariable {
 	}
 
 	/**
+	 * transform the GlobalVariable <name, vale> pairs as a Map.
+	 */
+	Map<String, Object> allGVEntitiesAsMap() {
+		SortedSet<String> names = this.allGVEntitiesKeySet()
+		Map<String, Object> map = new HashMap<String, Object>()
+		for (name in names) {
+			map.put(name, GlobalVariable[name])
+		}
+		return map
+	}
+
+
+	/**
 	 * inspect the 'internal.GlobalVariable' object to find the GlobalVariables contained,
 	 * return the list of their names.
 	 *
@@ -276,8 +298,19 @@ public final class ExpandoGlobalVariable {
 		sorted.addAll(result)
 		return sorted
 	}
-	
-	
+
+
+	Map<String, Object> staticGVEntitiesAsMap() {
+		SortedSet<String> names = this.staticGVEntitiesKeySet()
+		Map<String, Object> map = new HashMap<String, Object>()
+		for (name in names) {
+			map.put(name, GlobalVariable[name])
+		}
+		return map
+	}
+
+
+
 	/**
 	 * make String representation of the ExpandGlobalVariable instance in JSON format 
 	 */
