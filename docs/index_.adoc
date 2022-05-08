@@ -1,4 +1,4 @@
-= ExecutionProfilesLoader
+= ExecutionProfilesLoader and other helper classes that extend GlobalVariable in Katalon Studio
 
 == How to use this library in your Katalon Studio project
 
@@ -30,7 +30,7 @@ Sample Test Case:
 
 [source, groovy]
 ----
-include::../Scripts/main/1_listing/1_listAllProfiles/Script1651843453034.groovy[]
+include::../Scripts/docs/1_looking-over_Profiles/1_listAllProfiles/Script1651976508120.groovy[]
 ----
 
 Output:
@@ -70,7 +70,7 @@ Sample Test Case:
 
 [source, groovy]
 ----
-include::../Scripts/main/1_listing/2_listProfiles/Script1651915776577.groovy[]
+include::../Scripts/docs/1_looking-over_Profiles/2_listProfiles/Script1651976508118.groovy[]
 ----
 
 Please note, `"test_\\w+"` is a link:https://docs.oracle.com/javase/7/docs/api/java/util/regex/Pattern.html[Pattern] of Regular Expression in Java. It matches with a Profile name that starts with a string "`test_`" followed by 1 or more alpha-numeric characters. For example, the Profile `test_A` does match, but the Profile `default` doesn't.
@@ -88,7 +88,7 @@ test_C
 
 
 
-=== List all GlobalVariables in Profile
+=== List all GlobalVariables defined in Profiles
 
 Problem to solve:
 
@@ -106,7 +106,7 @@ Sample code:
 
 [source,groovy]
 ----
-include::../Scripts/main/1_listing/3_listAllGlobalVariableInProfile/Script1651884251194.groovy[]
+include::../Scripts/docs/1_looking-over_Profiles/3_listAllGlobalVariable/Script1651976508116.groovy[]
 ----
 
 Output:

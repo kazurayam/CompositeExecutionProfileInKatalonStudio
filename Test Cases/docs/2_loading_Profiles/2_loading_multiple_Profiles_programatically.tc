@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <TestCaseEntity>
    <description></description>
-   <name>4_listGlobalVariable</name>
+   <name>2_loading_multiple_Profiles_programatically</name>
    <tag></tag>
    <comment></comment>
-   <testCaseGuid>c3793870-bf25-4c76-bd43-6ee4475b80e2</testCaseGuid>
+   <testCaseGuid>92f0f1e4-5c36-4747-9e5b-7d90eddc59a6</testCaseGuid>
 </TestCaseEntity>

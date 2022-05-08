@@ -36,42 +36,35 @@
       <guid>9af9a775-67bc-4931-8308-893bb0c982c5</guid>
       <isReuseDriver>false</isReuseDriver>
       <isRun>true</isRun>
-      <testCaseId>Test Cases/docs/1_looking-over_Profiles/4_listGlobalVariable</testCaseId>
+      <testCaseId>Test Cases/docs/1_looking-over_Profiles/4_listGlobalVariables</testCaseId>
       <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
    </testCaseLink>
    <testCaseLink>
       <guid>5ffac7b4-8381-4d47-8e4b-6e6a43d71fea</guid>
       <isReuseDriver>false</isReuseDriver>
       <isRun>true</isRun>
-      <testCaseId>Test Cases/docs/1_looking-over_Profiles/5_listGlobalVariableInProfile</testCaseId>
+      <testCaseId>Test Cases/docs/1_looking-over_Profiles/5_listGlobalVariablesInProfiles</testCaseId>
       <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
    </testCaseLink>
    <testCaseLink>
       <guid>e5a2a0a3-cd3e-4b1f-8f0d-b758caeee790</guid>
       <isReuseDriver>false</isReuseDriver>
       <isRun>true</isRun>
-      <testCaseId>Test Cases/docs/2_loading_Profiles/2_loading_multiple_modulus_Profiles</testCaseId>
-      <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
-   </testCaseLink>
-   <testCaseLink>
-      <guid>d44604ac-2527-4fb2-b7e0-a98259fe5fc0</guid>
-      <isReuseDriver>false</isReuseDriver>
-      <isRun>true</isRun>
-      <testCaseId>Test Cases/docs/2_loading_Profiles/3_clearing_added_values</testCaseId>
+      <testCaseId>Test Cases/docs/2_loading_Profiles/2_loading_multiple_Profiles_programatically</testCaseId>
       <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
    </testCaseLink>
    <testCaseLink>
       <guid>d5ae052e-611d-45da-8a3c-df91bf56a7e6</guid>
       <isReuseDriver>false</isReuseDriver>
       <isRun>true</isRun>
-      <testCaseId>Test Cases/docs/2_loading_Profiles/1_loading_Profile_programatically</testCaseId>
+      <testCaseId>Test Cases/docs/2_loading_Profiles/1_loading_a_Profile_programatically</testCaseId>
       <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
    </testCaseLink>
    <testCaseLink>
       <guid>d2fb59ce-4eaf-469e-a55f-150e901c9101</guid>
       <isReuseDriver>false</isReuseDriver>
       <isRun>true</isRun>
-      <testCaseId>Test Cases/docs/3_looking-at_GlobalVariable_objects/1_look-at_GVs_loaded_from_default</testCaseId>
+      <testCaseId>Test Cases/docs/3_looking-at_GlobalVariable_objects/1_look-at_GVs_loaded_from_the_default_Profile</testCaseId>
       <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
    </testCaseLink>
    <testCaseLink>

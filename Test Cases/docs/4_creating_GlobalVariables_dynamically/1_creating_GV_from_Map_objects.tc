@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <TestCaseEntity>
    <description></description>
-   <name>ExpandoGlobalVariableTestRunner</name>
+   <name>1_creating_GV_from_Map_objects</name>
    <tag></tag>
    <comment></comment>
-   <testCaseGuid>501ddf42-39c1-4bbf-b7b5-813bc425d553</testCaseGuid>
+   <testCaseGuid>9536724f-e45d-446b-943f-5b3466b87703</testCaseGuid>
 </TestCaseEntity>

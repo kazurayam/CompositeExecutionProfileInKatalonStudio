@@ -29,7 +29,7 @@
       <guid>674946c4-2967-4b21-b62b-d3159eb5755e</guid>
       <isReuseDriver>false</isReuseDriver>
       <isRun>true</isRun>
-      <testCaseId>Test Cases/junittest/com.kazurayam.ks.globalvariable/ExpandoGlobalVariableTestRunner</testCaseId>
+      <testCaseId>Test Cases/junittest/com.kazurayam.ks.globalvariable/GlobalVariableAnnexTestRunner</testCaseId>
       <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
    </testCaseLink>
    <testCaseLink>

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <TestCaseEntity>
    <description></description>
-   <name>1_loading_Profile_programatically</name>
+   <name>1_look-at_GVs_loaded_from_the_default_Profile</name>
    <tag></tag>
    <comment></comment>
-   <testCaseGuid>e2aef46a-ab1c-4480-91d0-8e73aee23d8c</testCaseGuid>
+   <testCaseGuid>fcf0ecf0-53f0-4a78-9f9f-029e3791e219</testCaseGuid>
 </TestCaseEntity>

@@ -38,19 +38,19 @@ import java.util.regex.Matcher
  * 
  * @author kazurayam
  */
-public final class ExpandoGlobalVariable {
+public final class GlobalVariableAnnex {
 
 	// Singleton design pattern of GOF
-	private static ExpandoGlobalVariable INSTANCE
+	private static GlobalVariableAnnex INSTANCE
 
 	// https://docs.groovy-lang.org/latest/html/documentation/core-metaprogramming.html#_properties
 	private static final Map<String, Object> additionalGVEntities = Collections.synchronizedMap([:])
 
-	private ExpandoGlobalVariable() {}
+	private GlobalVariableAnnex() {}
 
-	public static ExpandoGlobalVariable getInstance() {
+	public static GlobalVariableAnnex getInstance() {
 		if (INSTANCE == null) {
-			INSTANCE = new ExpandoGlobalVariable()
+			INSTANCE = new GlobalVariableAnnex()
 		}
 		return INSTANCE
 	}

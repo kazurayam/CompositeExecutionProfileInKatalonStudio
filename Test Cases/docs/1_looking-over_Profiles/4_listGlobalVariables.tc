@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <TestCaseEntity>
    <description></description>
-   <name>3_clearing_added_values</name>
+   <name>4_listGlobalVariables</name>
    <tag></tag>
    <comment></comment>
-   <testCaseGuid>9536724f-e45d-446b-943f-5b3466b87703</testCaseGuid>
+   <testCaseGuid>c3793870-bf25-4c76-bd43-6ee4475b80e2</testCaseGuid>
 </TestCaseEntity>

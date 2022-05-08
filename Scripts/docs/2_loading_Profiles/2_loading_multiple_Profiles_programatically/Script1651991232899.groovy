@@ -3,15 +3,15 @@
 import internal.GlobalVariable
 
 List<String> gvInCategory1 = 
-    CustomKeywords.'com.kazurayam.ks.globalvariable.LookoverExecutionProfilesKeyword.listGlobalVariableInProfile'(".*", "main_category1")
+    CustomKeywords.'com.kazurayam.ks.globalvariable.LookoverExecutionProfilesKeyword.listGlobalVariablesInProfiles'(".*", "main_category1")
 gvInCategory1.stream().forEach({msg -> println msg})
 
 List<String> gvInEnvDevelopment = 
-    CustomKeywords.'com.kazurayam.ks.globalvariable.LookoverExecutionProfilesKeyword.listGlobalVariableInProfile'(".*", "main_envDevelopment")
+    CustomKeywords.'com.kazurayam.ks.globalvariable.LookoverExecutionProfilesKeyword.listGlobalVariablesInProfiles'(".*", "main_envDevelopment")
 gvInEnvDevelopment.stream().forEach({msg -> println msg})
 
 List<String> gvInIncludeSheets_CompanyB = 
-    CustomKeywords.'com.kazurayam.ks.globalvariable.LookoverExecutionProfilesKeyword.listGlobalVariableInProfile'(".*", "main_includeSheets_CompanyB")
+    CustomKeywords.'com.kazurayam.ks.globalvariable.LookoverExecutionProfilesKeyword.listGlobalVariablesInProfiles'(".*", "main_includeSheets_CompanyB")
 gvInIncludeSheets_CompanyB.stream().forEach({msg -> println msg})
 
 // load multiple modulus Profiles at once

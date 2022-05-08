@@ -12,7 +12,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 
-import com.kazurayam.ks.globalvariable.ExpandoGlobalVariable as EGV
+import com.kazurayam.ks.globalvariable.GlobalVariableAnnex as EGV
 import com.kms.katalon.core.configuration.RunConfiguration
 
 import internal.GlobalVariable
@@ -21,11 +21,11 @@ import internal.GlobalVariable
 /**
  * Here we assume the "default" Profile is selected to run this test
  */
-public class ExpandoGlobalVariableTest {
+public class GlobalVariableAnnexTest {
 
 	private static Path json
 	private static String FILENAME = "ExpandoGlobalVariableTest.json"
-	private static ExpandoGlobalVariable EGV
+	private static GlobalVariableAnnex EGV
 
 	@BeforeClass
 	static void setupClass() {
@@ -37,12 +37,12 @@ public class ExpandoGlobalVariableTest {
 		}
 		Path testOutputDir = projectDir.resolve("build/tmp/testOutput")
 		Path pkgDir = testOutputDir.resolve("com.kazurayam.visualtesting")
-		Path classDir = pkgDir.resolve(ExpandoGlobalVariableTest.class.getSimpleName())
+		Path classDir = pkgDir.resolve(GlobalVariableAnnexTest.class.getSimpleName())
 		if (!Files.exists(classDir)) {
 			Files.createDirectories(classDir)
 		}
 		json = classDir.resolve(FILENAME)
-		EGV = ExpandoGlobalVariable.newInstance()
+		EGV = GlobalVariableAnnex.newInstance()
 	}
 
 	// tests for addGVEntity() method

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <TestCaseEntity>
    <description></description>
-   <name>1_look-at_GVs_loaded_from_default</name>
+   <name>5_listGlobalVariablesInProfiles</name>
    <tag></tag>
    <comment></comment>
-   <testCaseGuid>fcf0ecf0-53f0-4a78-9f9f-029e3791e219</testCaseGuid>
+   <testCaseGuid>d586043a-3b08-4816-baba-3ab11b106bd8</testCaseGuid>
 </TestCaseEntity>

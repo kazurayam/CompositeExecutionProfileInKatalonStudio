@@ -44,21 +44,21 @@ public class LookoverExecutionProfilesKeywordTest {
 
 	@Test
 	void test_listAllGlobalVariable() {
-		List<String> list = LookoverExecutionProfilesKeyword.listAllGlobalVariable()
+		List<String> list = LookoverExecutionProfilesKeyword.listAllGlobalVariables()
 		list.stream().forEach {s -> println "[test_listAllGlobalVariable] " + s}
 		assertEquals(33, list.size())
 	}
 
 	@Test
 	void test_listGlobalVariable() {
-		List<String> list = LookoverExecutionProfilesKeyword.listGlobalVariable("URL.*")
+		List<String> list = LookoverExecutionProfilesKeyword.listGlobalVariables("URL.*")
 		list.stream().forEach {s -> println "[test_listGlobalVariable] " + s}
 		assertEquals(2, list.size())
 	}
 
 	@Test
 	void test_listGlobalVariableInProfile() {
-		List<String> list = LookoverExecutionProfilesKeyword.listGlobalVariableInProfile("URL.*", "demoProd.*")
+		List<String> list = LookoverExecutionProfilesKeyword.listGlobalVariablesInProfiles("URL.*", "demoProd.*")
 		list.stream().forEach {s -> println "[test_listGlobalVariableInProfile] " + s}
 		assertEquals(1, list.size())
 	}

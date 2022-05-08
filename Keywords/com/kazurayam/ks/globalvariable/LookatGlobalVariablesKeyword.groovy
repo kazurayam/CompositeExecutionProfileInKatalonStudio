@@ -8,10 +8,10 @@ import internal.GlobalVariable
 
 public class LookatGlobalVariablesKeyword {
 
-	private final ExpandoGlobalVariable XGV
+	private final GlobalVariableAnnex XGV
 
 	LookatGlobalVariablesKeyword() {
-		XGV = ExpandoGlobalVariable.newInstance()
+		XGV = GlobalVariableAnnex.newInstance()
 	}
 
 	@Keyword

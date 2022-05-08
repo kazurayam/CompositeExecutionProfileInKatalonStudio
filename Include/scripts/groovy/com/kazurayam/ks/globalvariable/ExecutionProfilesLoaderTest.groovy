@@ -13,7 +13,7 @@ import internal.GlobalVariable
 @RunWith(JUnit4.class)
 public class ExecutionProfilesLoaderTest {
 	
-	private static final ExpandoGlobalVariable XGV = ExpandoGlobalVariable.newInstance()
+	private static final GlobalVariableAnnex XGV = GlobalVariableAnnex.newInstance()
 
 	@Before
 	void setup() {}

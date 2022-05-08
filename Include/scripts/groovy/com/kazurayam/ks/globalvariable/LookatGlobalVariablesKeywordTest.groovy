@@ -20,7 +20,7 @@ import com.kms.katalon.core.configuration.RunConfiguration
 @RunWith(JUnit4.class)
 public class LookatGlobalVariablesKeywordTest {
 
-	private static final ExpandoGlobalVariable XGV = ExpandoGlobalVariable.newInstance()
+	private static final GlobalVariableAnnex XGV = GlobalVariableAnnex.newInstance()
 	 
 	private LookatGlobalVariablesKeyword KW
 	

@@ -19,7 +19,7 @@ import groovy.util.slurpersupport.GPathResult
  */
 public final class ExecutionProfilesLoader {
 
-	private static final ExpandoGlobalVariable XGV = ExpandoGlobalVariable.newInstance()
+	private static final GlobalVariableAnnex XGV = GlobalVariableAnnex.newInstance()
 
 	private Path profilesDir
 	private XmlSlurper xmlSlurper
