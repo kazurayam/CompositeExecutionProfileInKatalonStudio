@@ -1,4 +1,4 @@
--   [ExecutionProfilesLoader and other helper classes that extend GlobalVariable in Katalon Studio](#executionprofilesloader-and-other-helper-classes-that-extend-globalvariable-in-katalon-studio)
+-   [ExecutionProfilesLoader and other helper classes that expands GlobalVariable in Katalon Studio](#executionprofilesloader-and-other-helper-classes-that-expands-globalvariable-in-katalon-studio)
     -   [How to use this library in your Katalon Studio project](#how-to-use-this-library-in-your-katalon-studio-project)
     -   [1. Listing Profiles and GlobalVariables defined in the Profiles storage](#1-listing-profiles-and-globalvariables-defined-in-the-profiles-storage)
         -   [1.1 List all Profiles](#1-1-list-all-profiles)
@@ -7,24 +7,20 @@
         -   [1.4 List GlobalVariables filtered by its name](#1-4-list-globalvariables-filtered-by-its-name)
         -   [1.5 List GlobalVariables filtered by the GV name and the Profile name with Regex](#1-5-list-globalvariables-filtered-by-the-gv-name-and-the-profile-name-with-regex)
     -   [2. Loading Profiles by code](#2-loading-profiles-by-code)
-        -   [2.1 Loading a Profile programaticaly](#2-1-loading-a-profile-programaticaly)
+        -   [2.1 Loading a Profile programmatically](#2-1-loading-a-profile-programmatically)
         -   [2.2 Loading Profiles multiple times](#2-2-loading-profiles-multiple-times)
         -   [2.3 Loading multiple Profiles at once](#2-3-loading-multiple-profiles-at-once)
     -   [3. Looking at GlobalVariables in action](#3-looking-at-globalvariables-in-action)
         -   [3.1 Looking at GlobalVariables](#3-1-looking-at-globalvariables)
         -   [3.2 Looking at GlobalVariables](#3-2-looking-at-globalvariables)
-    -   [4. Creating GlobalVariables dynamically without Profile](#4-creating-globalvariables-dynamically-without-profile)
-        -   [4.1 Creating GlobalVariables from Map&lt;String,Object> instance](#4-1-creating-globalvariables-from-mapstringobject-instance)
+    -   [4. Creating GlobalVariables without Profile](#4-creating-globalvariables-without-profile)
+        -   [4.1 Creating GlobalVariables with an instance of Map&lt;String,Object>](#4-1-creating-globalvariables-with-an-instance-of-mapstringobject)
     -   [Background story: why I developed this library](#background-story-why-i-developed-this-library)
     -   [Conclusion](#conclusion)
 
-# ExecutionProfilesLoader and other helper classes that extend GlobalVariable in Katalon Studio
+# ExecutionProfilesLoader and other helper classes that expands GlobalVariable in Katalon Studio
 
 ## How to use this library in your Katalon Studio project
-
-You can download the latest jar file from Maven Central repository
-
--   [Maven Central](https://mvnrepository.com/artifact/com.kazurayam/ExecutionProfilesLoader)
 
 Please have a look at Katalon’s document
 
@@ -34,11 +30,17 @@ You want to configure your project like this:
 
 ![ExternalLibraries](images/ExternalLibraries.png)
 
-Once you locate the jar, pleast stop and restart Katalon Studio to let it acknowledge the added jar.
+You can download the latest jar file from the Maven Central repository
+
+-   [Maven Central](https://mvnrepository.com/artifact/com.kazurayam/ExecutionProfilesLoader)
+
+Once you locate the jar, you should close and reopen the project so that Katalon Studuio acknowledges the added jar.
 
 ## 1. Listing Profiles and GlobalVariables defined in the Profiles storage
 
-If you want to use GlobalVariables in a Katalon Studio project, you need to work out on the Katalon Studio GUI and create a **Profile** in the `Profiles` directory. In each Profile you declare **GlobalVariable**(s) with name and initial values. Unfortunately Katalon Studio provides no API with which your test scripts scan through the entities contained in the `Profiles` directory. This library provides some Custom Keywords that enable your test scripts look over the Profiles and the GlobalVariables defined in the `.glbl` files under the `Profiles` directory.
+When you want to use GlobalVariables in a Katalon Studio project, you need to work in the Katalon Studio GUI and create a **Profile** in the `Profiles` directory. In Profiles you will declare some **GlobalVariable**(s) with name and initial values.
+
+If you have got many Profiles and many GlobalVariables defined, you are likely to get lost where a specific name of GlobalVariable is defined. Unfortunately Katalon Studio provides no API which scans through the entities contained in the `Profiles` directory. So, this library provides some Custom Keywords that enable your test scripts look over the Profiles and the GlobalVariables defined in the `.glbl` files under the `Profiles` directory.
 
 ### 1.1 List all Profiles
 
@@ -92,7 +94,7 @@ Output:
 
 Problem to solve:
 
-I want my test script to select some of Execution Profiles by name with Regular Expression.
+I want my test script to select some of Execution Profiles filtered by name with Regular Expression.
 
 Sample Test Case:
 
@@ -120,7 +122,7 @@ Output:
 
 Problem to solve:
 
-I want my test script to list all GlobalVariables defined in all Execution Profiles. If a single GlobalVariable name appears in 2 Profiles, I want 2 lines of the GlobalVariable with different Profile name are listed.
+I want my test script to list all GlobalVariables defined in all Execution Profiles. If a single GlobalVariable name appears in 2 Profiles, I want 2 lines of the GlobalVariable with different Profile name are associated.
 
 The output line should show the following items
 
@@ -216,7 +218,7 @@ Output:
 
 Problem to solve:
 
-I want my test script to list GlobalVariables while filtering by the name of GlobalVariable and by the name of containing Profile, both with Regular Expression.
+I want my test script to list GlobalVariables while filtering by both of the GlobalVariable name and by the Profile name.
 
 Sample code:
 
@@ -245,15 +247,15 @@ Output:
 
 ## 2. Loading Profiles by code
 
-Katalon Studio requires you to specify a Profile before launching a test. Katalon Studio provides no way to load Profile(s) by code while your test is running. I argue that this design is short for a lot of test scenarios.
+Katalon Studio requires you to specify a Profile before launching a test. Katalon Studio provides no way to load Profile(s) by code while your test is running. I would argue that this design is short for a lot of test scenarios.
 
-This library provides a few Custom Keywords that supports more flexible Profiles loading.
+This library provides a Custom Keywords that supports loading Profile(s) in more flexible manner.
 
-### 2.1 Loading a Profile programaticaly
+### 2.1 Loading a Profile programmatically
 
-The following sample code shows how to
-1. programaticaly resolve a name of Profile to load
-2. load the Profile and update the values of GlobalVariables with the initial values declared in the Profile.
+The following sample code shows how to :
+1. resolve the name of Profile to load by code
+2. load the Profile and update the values of GlobalVariables in action with the initial values declared in the Profile.
 
 Sample code:
 
@@ -278,11 +280,11 @@ Output:
 
     2022-05-08 22:04:36.958 INFO  c.k.katalon.core.main.TestCaseExecutor   - END Test Cases/docs/2_loading_Profiles/1_loading_a_Profile_programaticaly
 
-Please find that the `GlobalVariable.URL1` was null before the Profile `demoProductionEnvironment` was loaded. Then the value changed after the Profile was loaded by calling `ExecutionProfileLoader.loadProfile(String)`. Of course the new value was loaded from the Profile specified.
+Please find that the `GlobalVariable.URL1` was null before the Profile `demoProductionEnvironment` was loaded. After the Profile was loaded by calling `ExecutionProfileLoader.loadProfile(String)`, the value changed. Of course, the new value was loaded out of the Profile specified.
 
 ### 2.2 Loading Profiles multiple times
 
-The following sample code shows that your test script can repeat loading Profiles multiple times and update a single GlobalVariable to have 2 or more values during a test run.
+The following sample code shows that your test script can repeat loading Profile(s) multiple times and update a single GlobalVariable to have 2 or more values during a test run.
 
 Sample code:
 
@@ -366,9 +368,9 @@ Output:
 
     2022-05-08 22:28:40.203 INFO  c.k.katalon.core.main.TestCaseExecutor   - END Test Cases/docs/2_loading_Profiles/3_loading_multiple_Profiles_at_once
 
-This sample tells you that it is possible to **modularize Profiles** using the `ExecutionProfilesLoader.loadProfies(String…​ profileNames)`.
+This sample tells you that the `ExecutionProfilesLoader.loadProfies(String…​ profileNames)` enables you to modularize Profiles. What do I mean by "modularize Profiles"?
 
-What do I mean by "modularize Profiles"? I have the following 15 Profiles. Each of them contains a single GlobalVariable: `CATEGORY`, `ENVIRONMENT`, `INCLUDE_SHEETS`, `INCLUDE_URLS`.
+Let me assume I have the following 15 Profiles. Each of them contains a single GlobalVariable: `CATEGORY`, `ENVIRONMENT`, `INCLUDE_SHEETS`, `INCLUDE_URLS`.
 
     $ tree .
     .
@@ -388,9 +390,9 @@ What do I mean by "modularize Profiles"? I have the following 15 Profiles. Each 
     ├── main_includeURLs_login.glbl
     ├── main_includeURLs_top.glbl
 
-As you can guess from the above, `GlobalVariable.CATEGORY` can possibly take 4 values, `ENVIRONMENT` can take 3 values, `INCLUDE_SHEETS` can take 5 values, and `INCLUDE_URLS` can take 3 values. So my test script can programaticaly create 4 \* 3 \* 5 \* 3 = 120 combinations of value set provided with 15 Profiles manually prepared.
+As you can guess from the above, `GlobalVariable.CATEGORY` can possibly take 4 variations of values, `ENVIRONMENT` can take 3, `INCLUDE_SHEETS` can take 5, and `INCLUDE_URLS` can take 3. So my test script can programmatically enumerate 4 \* 3 \* 5 \* 3 = 180 possible combinations of values provided with 15 Profiles manually prepared. If I need to increase the number of `INCLUDE_SHEETS` values from 5 → 10, then the number of combinations will go up to 4 \* 3 \* 10 \* 3 = 360.
 
-Please imagine a case where I do not have the `ExecutionProfilesLoader` class so that I have to prepare 120 Profiles manually in Katalon Studio’s GUI. It’s just terrible. I do not like to do that job.
+If I don’t have the `ExecutionProfilesLoader` class, I have to prepare 180 or 360 Profiles manually in Katalon Studio’s GUI. It’s just terrible. Modularization of Execution Profiles by `ExecutionProfilesLoader` class shines to me.
 
 ## 3. Looking at GlobalVariables in action
 
@@ -409,9 +411,9 @@ This will give you an output like this:
 
     2022-05-08 22:57:05.937 INFO  c.k.katalon.core.main.TestCaseExecutor   - END Test Cases/docs/3_looking-at_GlobalVariables_in_action/0_show_GlobalVariable_value
 
-This is fine. Then, **can I list ALL of GlobalVariables currently present in the scope of this test script using Katalon’s API?** --- No. Katalon’s API does not support it.
+OK. Then, **how can I list all of GlobalVariables currently in action in scope of the running test? Any Katalon’s API?** --- No. Katalon’s API does not support it.
 
-This library support a feature of looking at GlobalVariables in depth.
+This library support a feature of looking at GlobalVariables in action.
 
 ### 3.1 Looking at GlobalVariables
 
@@ -452,13 +454,13 @@ Output:
 
     2022-05-08 23:10:59.560 INFO  c.k.katalon.core.main.TestCaseExecutor   - END Test Cases/docs/3_looking-at_GlobalVariables_in_action/1_look-at_GVs_loaded_from_the_default_Profile
 
-As you can see, the `toJson()` method of `LookAtGlobalVariablesKeyword` class generates a JSON string, which contains all GlobalVariables present. The `toJson(true)` makes the JSON to be pretty-printed with NEWLINEs and indents.
+As you can see, the `toJson()` method of `LookAtGlobalVariablesKeyword` class generates a JSON string, which contains all GlobalVariables that are present in scope of the running test. The `toJson(true)` makes the JSON string to be pretty-printed with NEWLINEs and indents.
 
 This JSON shows the current value of GlobalVariables in memory, which could be different from the initial values written in the `.glbl` files in the `Profiles` directory.
 
 ### 3.2 Looking at GlobalVariables
 
-When you do not explicity specify a Profile to load, Katalon Studio loads the `default` Profiles. Consequently the JSON by `LookAtGlobalVariablesKeyword.toJson()` will be as defined by the `default` Profile. If you call `ExecutionProfilesLoader.loadProfile(String profileName)`, then the JSON will additionally include the GlobalVariables loaded from the additonal Profile. The following sample code shows this scenario.
+When you do not explicity specify a Profile to load, Katalon Studio loads the `default` Profiles. Consequently the JSON by `LookAtGlobalVariablesKeyword.toJson()` will show GlobalVariables as defined in the `default` Profile. If you call `ExecutionProfilesLoader.loadProfile(String profileName)`, then the JSON will overwrite the GlobalVariables with values loaded out of the specified Profile. The following sample code shows this scenario.
 
 Sample code:
 
@@ -516,15 +518,15 @@ Output:
 
     2022-05-08 23:07:28.654 INFO  c.k.katalon.core.main.TestCaseExecutor   - END Test Cases/docs/3_looking-at_GlobalVariables_in_action/2_look-at_GVs_loaded_from_multiple_Profiles
 
-## 4. Creating GlobalVariables dynamically without Profile
+## 4. Creating GlobalVariables without Profile
 
-In Katalon Studio, if you want to add a new GlobalVariable to use in your test script, you have to declare it in some Profile. Katalon Studio provides no way to add a GlobalVariable programatically without preparing Profile `glbl` files.
+In Katalon Studio, if you want to add a new GlobalVariable to use in your test script, you have to prepare a Profile where you declare the name of the GV. Katalon Studio provides no way to add a GlobalVariable programmatically without the `glbl` files.
 
-This library supports adding GlobalVariables with an instance of `java.util.Map<String, Object>` as parameter.
+This library supports creating GlobalVariable(s) with an instance of `java.util.Map<String, Object>` as parameter.
 
-Please note that the added GlobalVariables is present only in memory during a run of test; they are not persisted into the `glbl` files in the `Profiles` directory.
+*Please note that an additional GlobalVariable is present only in memory during a run of test; it is not persisted into any `glbl` file in the `Profiles` directory.*
 
-### 4.1 Creating GlobalVariables from Map&lt;String,Object> instance
+### 4.1 Creating GlobalVariables with an instance of Map&lt;String,Object>
 
 Just see the sample code. You will easily see what happens.
 
@@ -589,7 +591,7 @@ A few years ago (sometime in 2019) I developed a project with Katalon Studio whe
 
 1.  I want to compare 2 URLs: <http://demoaut.katalon.com> and <http://demoaut-mimic.kazurayam.com> to find if these 2 pages have any visual differences.
 
-2.  I want to create 3 script modules
+2.  I will write 3 script modules
 
     -   preProsess, which does some preparention (create work directories, etc)
 
@@ -605,7 +607,7 @@ A few years ago (sometime in 2019) I developed a project with Katalon Studio whe
 
 Yes. I could develop a set of code that implements this idea.
 
-You can try it by opening the `Test Suites/demo_using_TestSuiteCollection` of this Katalon project. The following screenshot shows how that Test Suite Collection is defined.
+You can try it by opening the `Test Suites/demo_using_TestSuiteCollection` of this Katalon project. The following screenshot shows how that Test Suite Collection is constructed.
 
 ![demo2 TSC](images/README2/demo2_TSC.png)
 
@@ -625,16 +627,16 @@ The Test Suite Collection `TCS` comprises with the following code modules.
 
 7.  `Test Cases/demo/demo_using_TestSuiteCollection/postProcess`
 
-Why do I have to make this many modules?
+7 modules! The problem I wanted to solve was simple, but the code set I got was complicated as such. Why?
 
-The reason is that Katalon Studio does not provide a means of loading an Execution Profile in test script programaticaly. Katalon Studio forces me to create a Test Suite Collection, in which I execute the Test Suite `processURL` 2 twice while applying 2 Profiles `demoProductionEnv` and `demoEnvironmentEnv`.What I wanted to do was fairly simple, but the code set I got was terribly complicated.
+The reason is that Katalon Studio does not provide any means of loading an Execution Profile in test script programmatically. Katalon Studio forces me to create a Test Suite Collection, in which I execute the Test Suite `processURL` 2 twice while applying 2 Profiles `demoProductionEnv` and `demoEnvironmentEnv`.
 
-I got an idea of the `ExecutionProfilesLoader` class. I thought that it will change many things. I thought I would be able to implement what I wanted in a single Test Case script.
+I thought about this for several months and I got an idea of the `ExecutionProfilesLoader` class. This tool changes many things.
 
-Now I have developed the `ExecutionProfilesLoader` and other classes. Using these supportive classes, I could develop alternative solution. The following single Test Case script of 84 lines does exactly the same as my old solution achieved.
+Now I have developed the `ExecutionProfilesLoader` and other classes. Using this supportive library, I could develop an alternative solution. The following single Test Case script of just 84 lines does exactly the same as my old solution achieved.
 
 -   <https://github.com/kazurayam/ExecutionProfilesLoader/blob/master/Scripts/demo/demo_using_ExecutionProfilesLoader/batch/Script1651983315860.groovy>
 
 ## Conclusion
 
-The `ExecutionProfilesLoader` and other classes helps me organize my Katalon projects with GlobalVariables in much flexible way.
+The `ExecutionProfilesLoader` library helps me organize my Katalon projects with GlobalVariables with much flexibilities.

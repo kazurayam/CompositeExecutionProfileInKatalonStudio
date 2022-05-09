@@ -10,24 +10,23 @@ The following screenshot shows how we apply Execution Profiles to Test Suites.
 
 ![weCanApplyOnlyOneExecutionProfileBeforeRunningTest](./docs/images/weCanApplyOnlyOneExecutionProfileBeforeRunningTest.png)
 
-As this screenshot shows, a user has to choose a single Execution Profile for a test run before you start it.
+As this screenshot indicates, **a user has to choose a single Execution Profile for a test run before you start it**. You can NOT apply 2 or more Profiles to a single test run. Your script can NOT determine programmatically which Profiles to locad.
 
 ## Problems to solve
 
-In my humble option, Katalon Studio provides only basic set of capabilities for utilizing and administrating GlobalVariables. I think that Katalon is designed with implicit assumption that a user would have just a few Execution Profiles --- less than 5?, just small number of GlobalVariables --- less than 10?. This assumption may apply to some projects but not always.
+In my option, Katalon Studio provides a basic set of capabilities for utilizing GlobalVariables. The functionalities provided are not versatile. I think that Katalon Studio is designed with implicit assumption that a user would need just a few Execution Profiles with small number of GlobalVariables --- 10 GlobalVariables in 5 Execution Profiles, for example. This assumption may apply to some projects but not to the real business projects.
 
-As my projects grow, I demanded more complex usages.
-Please imagine a situation where I have got many Execution Profiles with many GlobalVariables. For example, 50 Execution Profiles each of which contains 5 GlobalVariables, resulting in over 200 values of GV. A single name of GlobalVariable (e.g, `URL`, `ENVIRONMENT`) appears in multiple Execution Profiles with different initial values set.
+Please imagine a situation where I have got 50 Execution Profiles each of which contains 10 GlobalVariables, resulting in over 500 values of GV; and a single name of GlobalVariable (e.g, `URL`, `ENVIRONMENT`) appears in multiple Execution Profiles with different initial values declared.
 
-I found the following problems:
+In such situation I find the following problems:
 
-1.  For example, I know my project has a GlobalVariable `ENVIRONMENT` declared in multiple Execution Profiles. But I can not remember which Profiles contains that GV. I have to spend quite some time looking into the Profiles one by one for the `ENVIRONMENT`. **Katalon Studio does not provide any feature that helps me looking up a GlobalVariable amongst bunches of Execution Profiles.**
+1.  My project has a GlobalVariable, e.g, `ENVIRONMENT`, declared in multiple Execution Profiles. But I can not remember which Profiles contains that GV. I have to look into the 50 Execution Profiles one by one for the GV `ENVIRONMENT`. It is time-consuming and tiring. **Katalon Studio does not provide any feature that helps me looking up a GlobalVariable amongst bunches of Execution Profiles.**
 
-2.  I want to apply 2 or more Profiles to a single test run. In other words, I want to be able to modularize Execution Profiles into parts; and build a full set of GlobalVariables for a test run by joining selected modules.
+2.  I want to apply **2 or more Profiles to a single test run**. In other words, I want to be able to modularize Execution Profiles into parts; and build a full set of GlobalVariables for a test run by joining selected modulus Profiles.
 
-3.  I want my test script to programmatically decide which Profiles to load.
+3.  I want a capability that **my test script can choose which Profiles to load programmatically runtime**.
 
-The `ExecutionProfilesLoader` project addresses all these problems and provides sufficient solutions for me. Please have a look into the document for more detail.
+My `ExecutionProfilesLoader` project addresses all these problems and provides sufficient solutions for me. Please have a look into the document for more detail.
 
 -   <https://kazurayam.github.io/ExecutionProfilesLoader/>
 

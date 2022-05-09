@@ -81,7 +81,7 @@ publishing {
             pom {
                 groupId = project.group
                 name = project.rootProject.name
-                description = 'A Katalon Studio plugin that enables loading Excecutioin Profiles in test case scripts'
+                description = 'A Katalon Studio plugin that enables loading Execution Profiles in test scripts'
                 url = 'https://kazurayam.github.io/ExecutionProfilesLoader/'
                 from components.java
                 licenses {
