@@ -490,9 +490,9 @@ include::../Scripts/docs/4_creating_GlobalVariables_dynamically/1_creating_GV_fr
 Output:
 
 ----
-2022-05-08 23:42:19.494 INFO  c.k.katalon.core.main.TestCaseExecutor   - --------------------
-2022-05-08 23:42:19.499 INFO  c.k.katalon.core.main.TestCaseExecutor   - START Test Cases/docs/4_creating_GlobalVariables_dynamically/1_creating_GV_from_Map_objects
-2022-05-08 23:42:20.616 INFO  k.k.c.m.CustomKeywordDelegatingMetaClass - com.kazurayam.ks.globalvariable.LookAtGlobalVariablesKeyword.toJson is PASSED
+2022-05-10 20:47:48.328 INFO  c.k.katalon.core.main.TestCaseExecutor   - --------------------
+2022-05-10 20:47:48.334 INFO  c.k.katalon.core.main.TestCaseExecutor   - START Test Cases/docs/4_creating_GlobalVariables_dynamically/1_creating_GV_from_Map_objects
+2022-05-10 20:47:50.091 INFO  k.k.c.m.CustomKeywordDelegatingMetaClass - com.kazurayam.ks.globalvariable.LookAtGlobalVariablesKeyword.toJson is PASSED
 
 [BEFORE] {
   "CATEGORY": 0.0,
@@ -506,8 +506,13 @@ Output:
   "TIMEOUT": 10.0
 }
 
-2022-05-08 23:42:20.773 INFO  k.k.c.m.CustomKeywordDelegatingMetaClass - com.kazurayam.ks.globalvariable.ExecutionProfilesLoader.loadEntries is PASSED
-2022-05-08 23:42:20.792 INFO  k.k.c.m.CustomKeywordDelegatingMetaClass - com.kazurayam.ks.globalvariable.LookAtGlobalVariablesKeyword.toJson is PASSED
+2022-05-10 20:47:50.296 INFO  k.k.c.m.CustomKeywordDelegatingMetaClass - com.kazurayam.ks.globalvariable.ExecutionProfilesLoader.loadEntries is PASSED
+
+GlobalVariable.MY_FAVORITE_AUTHOR = King, Steven
+GlobalVariable.MY_CURRENT_READ = Rita Hayworth and Shawshank Redemption
+GlobalVariable.MY_CURRENT_READ = SHINING
+
+2022-05-10 20:47:50.332 INFO  k.k.c.m.CustomKeywordDelegatingMetaClass - com.kazurayam.ks.globalvariable.LookAtGlobalVariablesKeyword.toJson is PASSED
 
 [AFTER] {
   "CATEGORY": 0.0,
@@ -517,13 +522,13 @@ Output:
   "Hostname": "demoaut.katalon.com",
   "INCLUDE_SHEETS": [],
   "INCLUDE_URLS": [],
-  "MY_CURRENT_READ": "Rita Hayworth and Shawshank Redemption",
+  "MY_CURRENT_READ": "SHINING",
   "MY_FAVORITE_AUTHOR": "King, Steven",
   "SAVE_HTML": false,
   "TIMEOUT": 10.0
 }
 
-2022-05-08 23:42:20.803 INFO  c.k.katalon.core.main.TestCaseExecutor   - END Test Cases/docs/4_creating_GlobalVariables_dynamically/1_creating_GV_from_Map_objects
+2022-05-10 20:47:50.345 INFO  c.k.katalon.core.main.TestCaseExecutor   - END Test Cases/docs/4_creating_GlobalVariables_dynamically/1_creating_GV_from_Map_objects
 ----
 
 

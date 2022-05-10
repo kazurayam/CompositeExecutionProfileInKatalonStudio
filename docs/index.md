@@ -1,3 +1,23 @@
+-   [ExecutionProfilesLoader and other helper classes that expands GlobalVariable in Katalon Studio](#executionprofilesloader-and-other-helper-classes-that-expands-globalvariable-in-katalon-studio)
+    -   [How to use this library in your Katalon Studio project](#how-to-use-this-library-in-your-katalon-studio-project)
+    -   [1. Listing Profiles and GlobalVariables defined in the Profiles storage](#1-listing-profiles-and-globalvariables-defined-in-the-profiles-storage)
+        -   [1.1 List all Profiles](#1-1-list-all-profiles)
+        -   [1.2 List profiles filtered by name with regex](#1-2-list-profiles-filtered-by-name-with-regex)
+        -   [1.3 List all GlobalVariables defined in the Profiles directory](#1-3-list-all-globalvariables-defined-in-the-profiles-directory)
+        -   [1.4 List GlobalVariables filtered by its name](#1-4-list-globalvariables-filtered-by-its-name)
+        -   [1.5 List GlobalVariables filtered by the GV name and the Profile name with Regex](#1-5-list-globalvariables-filtered-by-the-gv-name-and-the-profile-name-with-regex)
+    -   [2. Loading Profiles by code](#2-loading-profiles-by-code)
+        -   [2.1 Loading a Profile programmatically](#2-1-loading-a-profile-programmatically)
+        -   [2.2 Loading Profiles multiple times](#2-2-loading-profiles-multiple-times)
+        -   [2.3 Loading multiple Profiles at once](#2-3-loading-multiple-profiles-at-once)
+    -   [3. Looking at GlobalVariables in action](#3-looking-at-globalvariables-in-action)
+        -   [3.1 Looking at GlobalVariables](#3-1-looking-at-globalvariables)
+        -   [3.2 Looking at GlobalVariables](#3-2-looking-at-globalvariables)
+    -   [4. Creating GlobalVariables without Profile](#4-creating-globalvariables-without-profile)
+        -   [4.1 Creating GlobalVariables with an instance of Map&lt;String,Object>](#4-1-creating-globalvariables-with-an-instance-of-mapstringobject)
+    -   [Background story: why I developed this library](#background-story-why-i-developed-this-library)
+    -   [Conclusion](#conclusion)
+
 # ExecutionProfilesLoader and other helper classes that expands GlobalVariable in Katalon Studio
 
 This library is a plugin for \[Katalon Studio\](<https://katalon.com/katalon-studio/>).
@@ -516,6 +536,8 @@ Sample code:
 
     // Test Cases/docs/4_creating_GlobalVariables_dynamically/1_creating_GV_from_Map_object
 
+    import internal.GlobalVariable
+
     String beforeAddition = CustomKeywords.'com.kazurayam.ks.globalvariable.LookAtGlobalVariablesKeyword.toJson'(true)
 
     println "\n" + "[BEFORE] " + beforeAddition + "\n"
@@ -526,15 +548,24 @@ Sample code:
                 "MY_CURRENT_READ": "Rita Hayworth and Shawshank Redemption"
             ])
 
+    println ""
+    println "GlobalVariable.MY_FAVORITE_AUTHOR = " + GlobalVariable.MY_FAVORITE_AUTHOR
+    println "GlobalVariable.MY_CURRENT_READ = " + GlobalVariable.MY_CURRENT_READ
+
+    GlobalVariable.MY_CURRENT_READ = "SHINING"
+
+    println "GlobalVariable.MY_CURRENT_READ = " + GlobalVariable.MY_CURRENT_READ
+    println ""
+
     String afterAddition = CustomKeywords.'com.kazurayam.ks.globalvariable.LookAtGlobalVariablesKeyword.toJson'(true)
 
     println "\n" + "[AFTER] " + afterAddition + "\n"
 
 Output:
 
-    2022-05-08 23:42:19.494 INFO  c.k.katalon.core.main.TestCaseExecutor   - --------------------
-    2022-05-08 23:42:19.499 INFO  c.k.katalon.core.main.TestCaseExecutor   - START Test Cases/docs/4_creating_GlobalVariables_dynamically/1_creating_GV_from_Map_objects
-    2022-05-08 23:42:20.616 INFO  k.k.c.m.CustomKeywordDelegatingMetaClass - com.kazurayam.ks.globalvariable.LookAtGlobalVariablesKeyword.toJson is PASSED
+    2022-05-10 20:47:48.328 INFO  c.k.katalon.core.main.TestCaseExecutor   - --------------------
+    2022-05-10 20:47:48.334 INFO  c.k.katalon.core.main.TestCaseExecutor   - START Test Cases/docs/4_creating_GlobalVariables_dynamically/1_creating_GV_from_Map_objects
+    2022-05-10 20:47:50.091 INFO  k.k.c.m.CustomKeywordDelegatingMetaClass - com.kazurayam.ks.globalvariable.LookAtGlobalVariablesKeyword.toJson is PASSED
 
     [BEFORE] {
       "CATEGORY": 0.0,
@@ -548,8 +579,13 @@ Output:
       "TIMEOUT": 10.0
     }
 
-    2022-05-08 23:42:20.773 INFO  k.k.c.m.CustomKeywordDelegatingMetaClass - com.kazurayam.ks.globalvariable.ExecutionProfilesLoader.loadEntries is PASSED
-    2022-05-08 23:42:20.792 INFO  k.k.c.m.CustomKeywordDelegatingMetaClass - com.kazurayam.ks.globalvariable.LookAtGlobalVariablesKeyword.toJson is PASSED
+    2022-05-10 20:47:50.296 INFO  k.k.c.m.CustomKeywordDelegatingMetaClass - com.kazurayam.ks.globalvariable.ExecutionProfilesLoader.loadEntries is PASSED
+
+    GlobalVariable.MY_FAVORITE_AUTHOR = King, Steven
+    GlobalVariable.MY_CURRENT_READ = Rita Hayworth and Shawshank Redemption
+    GlobalVariable.MY_CURRENT_READ = SHINING
+
+    2022-05-10 20:47:50.332 INFO  k.k.c.m.CustomKeywordDelegatingMetaClass - com.kazurayam.ks.globalvariable.LookAtGlobalVariablesKeyword.toJson is PASSED
 
     [AFTER] {
       "CATEGORY": 0.0,
@@ -559,13 +595,13 @@ Output:
       "Hostname": "demoaut.katalon.com",
       "INCLUDE_SHEETS": [],
       "INCLUDE_URLS": [],
-      "MY_CURRENT_READ": "Rita Hayworth and Shawshank Redemption",
+      "MY_CURRENT_READ": "SHINING",
       "MY_FAVORITE_AUTHOR": "King, Steven",
       "SAVE_HTML": false,
       "TIMEOUT": 10.0
     }
 
-    2022-05-08 23:42:20.803 INFO  c.k.katalon.core.main.TestCaseExecutor   - END Test Cases/docs/4_creating_GlobalVariables_dynamically/1_creating_GV_from_Map_objects
+    2022-05-10 20:47:50.345 INFO  c.k.katalon.core.main.TestCaseExecutor   - END Test Cases/docs/4_creating_GlobalVariables_dynamically/1_creating_GV_from_Map_objects
 
 ## Background story: why I developed this library
 
