@@ -21,20 +21,21 @@ import java.util.regex.Pattern
 import java.util.regex.Matcher
 
 /**
- * The ExpandoGlobalVariable object maintain a object of type Map<String, Object> 
+ * 
+ * The GlobalVariableAnnex modifies the behavior of the GlobalVariable class dynamically using Groovy's Meta-programming technique.
+ *
+ * The GlobalVariableAnnex object maintain a object of type Map<String, Object> 
  * which looks just similar to static instance of "internal.GlobalVariable".
  * 
- * The ExpandoGlobalVariable modifies the behavior of the GlobalVariable class dynamically 
- * using Groovy's Meta-programming technique.
+ * A caller script can add a new GlobalVariableEntity with any name and value into the ExpandoGlobalVariable object.
  * 
- * A caller script can add a new GVEntity named "FOO" into the ExpandoGlobalVariable object.
- * 
- * When `GlobalVariable.FOO` property is accessed, the GlobalVariable object will
- * - first, try to look up "FOO" in the Map inside ExpandGlobalVariable
+ * For example, let's assume that `GlobalVariable.FOO` has been added by
+ * ExecutionProfilesLoader class. When `GlobalVaraible.FOO` is accessed, the GlobalVariable object will
+ * - first, try to look up "FOO" in the Map inside the GlobalVariableAnnex object
  * - secondly, try to lookup "FOO" in the original internal.GlobalVariable object.
  * 
- * ExpandGlobalVariable implements methods to add/modify/delete GVEntries.
- * ExpandGlobalVariable provides method to retrieve all GVEntries' name and their current values runtime.
+ * GlobalVariableAnnex implements methods to add/modify/delete GVEntries.
+ * GlobalVariableAnnex provides method to retrieve all GVEntries' name and their current values runtime.
  * 
  * @author kazurayam
  */

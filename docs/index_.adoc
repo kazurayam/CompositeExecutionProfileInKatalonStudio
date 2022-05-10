@@ -1,5 +1,7 @@
 = ExecutionProfilesLoader and other helper classes that expands GlobalVariable in Katalon Studio
 
+This library is a plugin for [Katalon Studio](https://katalon.com/katalon-studio/).
+
 == How to use this library in your Katalon Studio project
 
 Please have a look at Katalon's document

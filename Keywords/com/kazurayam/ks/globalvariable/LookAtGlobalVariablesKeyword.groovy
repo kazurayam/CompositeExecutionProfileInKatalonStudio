@@ -6,6 +6,10 @@ import com.kms.katalon.core.annotation.Keyword
 
 import internal.GlobalVariable
 
+/**
+ * This looks at the GlobalVariables (name=value pairs) in action;
+ * provides a view in JSON text.
+ */
 public class LookAtGlobalVariablesKeyword {
 
 	private final GlobalVariableAnnex XGV
