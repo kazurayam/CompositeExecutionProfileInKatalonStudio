@@ -16,10 +16,11 @@ import com.kms.katalon.core.configuration.RunConfiguration
 @RunWith(JUnit4.class)
 public class GlobalVariableEntitiesTest {
 
-	private Path projectDir = Paths.get(RunConfiguration.getProjectDir())
+	private static Path projectDir = Paths.get(RunConfiguration.getProjectDir())
 
 	@Test
 	public void test_contains() {
+		assert projectDir != null
 		Path test_A = projectDir.resolve("Profiles").resolve("test_A.glbl")
 		ExecutionProfile ep = ExecutionProfile.newInstance(test_A)
 		GlobalVariableEntities gve = ep.getContent()
